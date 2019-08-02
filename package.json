@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dohuyvuong/awesome-chat#readme",
   "dependencies": {
+    "bluebird": "^3.5.5",
     "express": "^4.17.1",
     "mongoose": "^5.6.7"
   },
