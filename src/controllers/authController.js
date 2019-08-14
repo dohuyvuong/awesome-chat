@@ -1,20 +1,38 @@
 import { validationResult } from "express-validator";
+import { auth } from "../services";
 
 let getLoginRegister = (req, res) => {
-  return res.render("auth/master");
+  return res.render("auth/master", {
+    errors: req.flash("errors"),
+    success: req.flash("success")
+  });
 };
 
-let postRegister = (req, res) => {
+let postRegister = async (req, res) => {
+  let errors = [];
+  let success = [];
+
   let validationErrors = validationResult(req);
-
   if (!validationErrors.isEmpty()) {
-    let errorArr = validationErrors.errors.map(error => error.msg);
+    errors.push(validationErrors.errors.map(error => error.msg));
+    req.flash("errors", errors);
 
-    console.log(errorArr);
-    return;
+    return res.redirect("/login-register");
   }
 
-  console.log(req.body);
+  try {
+    let successMsg = await auth.register(req.body.email, req.body.gender, req.body.password);
+
+    success.push(successMsg);
+    req.flash("success", success);
+
+    return res.redirect("/login-register");
+  } catch (error) {
+    errors.push(error);
+    req.flash("errors", errors);
+
+    return res.redirect("/login-register");
+  }
 };
 
 module.exports = {
