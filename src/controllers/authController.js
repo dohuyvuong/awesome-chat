@@ -4,7 +4,7 @@ import { auth } from "../services";
 let getLoginRegister = (req, res) => {
   return res.render("auth/master", {
     errors: req.flash("errors"),
-    success: req.flash("success")
+    success: req.flash("success"),
   });
 };
 
@@ -21,7 +21,13 @@ let postRegister = async (req, res) => {
   }
 
   try {
-    let successMsg = await auth.register(req.body.email, req.body.gender, req.body.password, req.protocol, req.get("host"));
+    let successMsg = await auth.register(
+      req.body.email,
+      req.body.gender,
+      req.body.password,
+      req.protocol,
+      req.get("host")
+    );
 
     success.push(successMsg);
     req.flash("success", success);
@@ -54,10 +60,10 @@ let verifyAccount = async (req, res) => {
 
     return res.redirect("/login-register");
   }
-}
+};
 
 module.exports = {
   getLoginRegister,
   postRegister,
-  verifyAccount
+  verifyAccount,
 };

@@ -26,8 +26,8 @@ let register = async (email, gender, password, protocol, host) => {
     local: {
       email: email,
       password: bcrypt.hashSync(password, saltRounds),
-      verifyToken: uuid()
-    }
+      verifyToken: uuid(),
+    },
   };
 
   try {
@@ -37,7 +37,7 @@ let register = async (email, gender, password, protocol, host) => {
       // Send email
       let data = {
         email: email,
-        verifyLink: `${protocol}://${host}/verify?verifyToken=${user.local.verifyToken}`
+        verifyLink: `${protocol}://${host}/verify?verifyToken=${user.local.verifyToken}`,
       };
       await sendMail(email, transMail.mail_active_registration_subject, data);
     } catch (error) {
@@ -68,9 +68,9 @@ let verifyAccount = async (verifyToken) => {
   } catch (error) {
     throw transErrors.account_active_failed;
   }
-}
+};
 
 module.exports = {
   register,
-  verifyAccount
+  verifyAccount,
 };

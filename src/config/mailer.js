@@ -16,18 +16,21 @@ let sendMail = (mailTo, subject, data) => {
     secure: false,
     auth: {
       user: adminEmail,
-      pass: adminPassword
-    }
+      pass: adminPassword,
+    },
   });
 
-  let template = fs.readFileSync(path.join(__dirname + "/../template/email_active_template.html"), { encoding: 'utf8' });
+  let template = fs.readFileSync(
+    path.join(__dirname + "/../template/email_active_template.html"),
+    { encoding: "utf8" }
+  );
   let htmlContent = ejs.render(template, data);
 
   let options = {
     from: `"${adminName}" <${adminEmail}>`,
     to: mailTo,
     subject: subject,
-    html: htmlContent
+    html: htmlContent,
   };
 
   return transporter.sendMail(options);
