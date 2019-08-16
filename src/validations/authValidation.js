@@ -13,9 +13,9 @@ let register = [
   check("password_confirmation", transValidation.password_confirmation_incorrect)
     .custom((value, { req }) => {
       return value === req.body.password;
-    })
+    }),
 ];
 
 module.exports = {
-  register
-}
+  register,
+};

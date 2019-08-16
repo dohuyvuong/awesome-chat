@@ -15,6 +15,6 @@ let initRoutes = (app) => {
   router.get("/verify", auth.verifyAccount);
 
   return app.use(router);
-}
+};
 
 module.exports = initRoutes;

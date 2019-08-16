@@ -10,6 +10,6 @@ let configViewEngine = (app) => {
   app.engine("ejs", expressEJSExtend);
   app.set("view engine", "ejs");
   app.set("views", "./src/views");
-}
+};
 
 module.exports = configViewEngine;
