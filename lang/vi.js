@@ -8,11 +8,20 @@ export const transValidation = {
 export const transErrors = {
   account_email_is_exist: "Email này đã được sử dụng.",
   account_email_is_exist_but_disabled: "Email này đã bị vô hiệu hoá.",
-  account_email_is_exist_but_not_active: "Email này đã được đăng kí nhưng chưa kích hoạt. Vui lòng kiểm tra email và kích hoạt tài khoản để sử dụng."
+  account_email_is_exist_but_not_active: "Email này đã được đăng kí nhưng chưa kích hoạt. Vui lòng kiểm tra email và kích hoạt tài khoản để sử dụng.",
+  account_create_failed: "Có lỗi xảy ra trong quá trình tạo tài khoản. Vui lòng thử lại!",
+  account_active_token_invalid: "Mã kích hoạt không hợp lệ, hoặc tài khoản đã được kích hoạt trước đó.<br/>Bạn có thể kiểm tra bằng cách đăng nhập tài khoản!",
+  account_active_failed: "Có lỗi xảy ra trong quá trình kích hoạt tài khoản. Vui lòng thử lại!"
 };
 
 export const transSuccess = {
   userCreated: (email) => {
     return `Tài khoản <strong>${email}</strong> đã được đăng kí.<br/> Vui lòng kiểm tra email và kích hoạt tài khoản để sử dụng.`;
-  }
+  },
+  account_active_successfully: "Tài khoản của bạn đã được kích hoạt.<br/>Bạn đã có thể đăng nhập để sử dụng."
+};
+
+export const transMail = {
+  mail_active_registration_subject: "Awesome Chat: Xác nhận kích hoạt tài khoản",
+  mail_active_registration_send_failed: "Tài khoản đã được tạo, nhưng có lỗi xảy ra trong quá trình gửi email xác thực.<br/>Vui lòng đăng nhập tài khoản, rồi yêu cầu gửi lại email xác thực."
 };

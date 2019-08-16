@@ -21,7 +21,7 @@ let postRegister = async (req, res) => {
   }
 
   try {
-    let successMsg = await auth.register(req.body.email, req.body.gender, req.body.password);
+    let successMsg = await auth.register(req.body.email, req.body.gender, req.body.password, req.protocol, req.get("host"));
 
     success.push(successMsg);
     req.flash("success", success);
@@ -35,7 +35,29 @@ let postRegister = async (req, res) => {
   }
 };
 
+let verifyAccount = async (req, res) => {
+  let errors = [];
+  let success = [];
+
+  let verifyToken = req.query.verifyToken;
+
+  try {
+    let successMsg = await auth.verifyAccount(verifyToken);
+
+    success.push(successMsg);
+    req.flash("success", successMsg);
+
+    return res.redirect("/login-register");
+  } catch (error) {
+    errors.push(error);
+    req.flash("errors", errors);
+
+    return res.redirect("/login-register");
+  }
+}
+
 module.exports = {
   getLoginRegister,
-  postRegister
+  postRegister,
+  verifyAccount
 };

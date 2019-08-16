@@ -1,11 +1,12 @@
 import UserModel from "../models/userModel";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
-import { transErrors, transSuccess } from "../../lang/vi";
+import { transErrors, transSuccess, transMail } from "../../lang/vi";
+import sendMail from "../config/mailer";
 
 let saltRounds = 7;
 
-let register = async (email, gender, password) => {
+let register = async (email, gender, password, protocol, host) => {
   let userByEmail = await UserModel.findByEmail(email);
   if (userByEmail) {
     if (userByEmail.deletedAt != null) {
@@ -29,16 +30,47 @@ let register = async (email, gender, password) => {
     }
   };
 
-  let user;
   try {
-    user = await UserModel.createNew(userItem);
-  } catch (error) {
-    throw error;
-  }
+    let user = await UserModel.createNew(userItem);
 
-  return transSuccess.userCreated(user.local.email);
+    try {
+      // Send email
+      let data = {
+        email: email,
+        verifyLink: `${protocol}://${host}/verify?verifyToken=${user.local.verifyToken}`
+      };
+      await sendMail(email, transMail.mail_active_registration_subject, data);
+    } catch (error) {
+      throw transMail.mail_active_registration_send_failed;
+    }
+
+    return transSuccess.userCreated(user.local.email);
+  } catch (error) {
+    if (error === transMail.mail_active_registration_send_failed) {
+      throw error;
+    }
+
+    throw transErrors.account_create_failed;
+  }
 };
 
+let verifyAccount = async (verifyToken) => {
+  let userByVerifyToken = await UserModel.findByVerifyToken(verifyToken);
+
+  if (!userByVerifyToken) {
+    throw transErrors.account_active_token_invalid;
+  }
+
+  try {
+    await UserModel.verify(verifyToken);
+
+    return transSuccess.account_active_successfully;
+  } catch (error) {
+    throw transErrors.account_active_failed;
+  }
+}
+
 module.exports = {
-  register
+  register,
+  verifyAccount
 };
