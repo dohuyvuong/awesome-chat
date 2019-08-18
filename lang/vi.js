@@ -12,6 +12,8 @@ export const transErrors = {
   account_create_failed: "Có lỗi xảy ra trong quá trình tạo tài khoản. Vui lòng thử lại!",
   account_active_token_invalid: "Mã kích hoạt không hợp lệ, hoặc tài khoản đã được kích hoạt trước đó.<br/>Bạn có thể kiểm tra bằng cách đăng nhập tài khoản!",
   account_active_failed: "Có lỗi xảy ra trong quá trình kích hoạt tài khoản. Vui lòng thử lại!",
+  login_failed: "Tài khoản hoặc mật khẩu không chính xác!",
+  server_error: "Có lỗi thuộc về server. Vui lòng liên hệ với chúng tôi và rất mong bạn thông cảm.",
 };
 
 export const transSuccess = {
@@ -19,6 +21,9 @@ export const transSuccess = {
     return `Tài khoản <strong>${email}</strong> đã được đăng kí.<br/> Vui lòng kiểm tra email và kích hoạt tài khoản để sử dụng.`;
   },
   account_active_successfully: "Tài khoản của bạn đã được kích hoạt.<br/>Bạn đã có thể đăng nhập để sử dụng.",
+  login_successfuly: (username) => {
+    return `Xin chào ${username}!`;
+  },
 };
 
 export const transMail = {

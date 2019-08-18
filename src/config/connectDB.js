@@ -14,6 +14,7 @@ let connectDB = () => {
     {
       useNewUrlParser: true,
       useFindAndModify: false,
+      useUnifiedTopology: true,
     },
     (err) => {
       if (err) {
