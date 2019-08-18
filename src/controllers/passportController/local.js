@@ -27,12 +27,12 @@ let initPassportLocal = () => {
         return done(null, false, req.flash("errors", transErrors.account_email_is_exist_but_disabled));
       }
 
-      let checkedPassword = await user.comparePassword(password);
-      if (!checkedPassword) {
+      let checkPassword = await user.comparePassword(password);
+      if (!checkPassword) {
         return done(null, false, req.flash("errors", transErrors.login_failed));
       }
 
-      return done(null, user, req.flash("success", transSuccess.login_successfuly(user.username)));
+      return done(null, user, req.flash("success", transSuccess.login_successfully(user.username)));
     } catch (error) {
       console.log(error);
       return done(null, false, req.flash("errors", transErrors.server_error));
