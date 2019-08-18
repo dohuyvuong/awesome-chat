@@ -40,6 +40,10 @@ UserSchema.statics = {
     return this.findById(id).exec();
   },
 
+  findByFacebookUid(uid) {
+    return this.findOne({ "facebook.uid": uid }).exec();
+  },
+
   findByEmail(email) {
     return this.findOne({ "local.email": email }).exec();
   },
