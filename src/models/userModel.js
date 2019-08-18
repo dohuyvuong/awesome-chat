@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 let Schema = mongoose.Schema;
 
@@ -35,6 +36,10 @@ UserSchema.statics = {
     return this.create(item);
   },
 
+  findUserById(id) {
+    return this.findById(id).exec();
+  },
+
   findByEmail(email) {
     return this.findOne({ "local.email": email }).exec();
   },
@@ -52,6 +57,12 @@ UserSchema.statics = {
 
   removeById(id) {
     return this.findByIdAndRemove(id).exec();
+  },
+};
+
+UserSchema.methods = {
+  comparePassword(password) {
+    return bcrypt.compare(password, this.local.password);
   },
 };
 
