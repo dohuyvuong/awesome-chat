@@ -21,9 +21,14 @@ export const transSuccess = {
     return `Tài khoản <strong>${email}</strong> đã được đăng kí.<br/> Vui lòng kiểm tra email và kích hoạt tài khoản để sử dụng.`;
   },
   account_active_successfully: "Tài khoản của bạn đã được kích hoạt.<br/>Bạn đã có thể đăng nhập để sử dụng.",
-  login_successfuly: (username) => {
+  login_successfully: (username) => {
     return `Xin chào ${username}!`;
   },
+  logout_successfully: "Tài khoản của bạn đã được đăng xuất trên phiên này!",
+};
+
+export const transNotify = {
+  user_logging_in: "Bạn đang trong một phiên đăng nhập!",
 };
 
 export const transMail = {
