@@ -4,10 +4,12 @@ import { authValid } from "../validations";
 import passport from "passport";
 import initPassportLocal from "../controllers/passportController/local";
 import initPassportFacebook from "../controllers/passportController/facebook";
+import initPassportGoogle from "../controllers/passportController/google";
 
 // Init all passport
 initPassportLocal();
 initPassportFacebook();
+initPassportGoogle();
 
 let router = express.Router();
 
@@ -27,6 +29,11 @@ let initRoutes = (app) => {
   }));
   router.get("/auth/facebook", auth.checkNotLoggedIn, passport.authenticate("facebook", { scope: ["email"] }));
   router.get("/auth/facebook/callback", auth.checkNotLoggedIn, passport.authenticate("facebook", {
+    successRedirect: "/",
+    failureRedirect: "/login-register",
+  }));
+  router.get("/auth/google", auth.checkNotLoggedIn, passport.authenticate("google", { scope: ["profile"] }));
+  router.get("/auth/google/callback", auth.checkNotLoggedIn, passport.authenticate("google", {
     successRedirect: "/",
     failureRedirect: "/login-register",
   }));
