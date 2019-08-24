@@ -6,6 +6,13 @@ function updateUserInfo() {
 
   $("#input-change-avatar").bind("change", function() {
     let fileData = $(this).prop("files")[0];
+    if (fileData == null) {
+      userAvatar = null;
+      $("#user-modal-avatar").attr("src", currentAvatarSrc);
+
+      return;
+    }
+
     let match = ["image/png", "image/jpg", "image/jpeg"];
     let limit = 1048576; // 1048576 B = 1 MB
 
@@ -68,7 +75,7 @@ function updateUserInfo() {
 
   $("#input-btn-update-user").bind("click", function() {
     if ($.isEmptyObject(userInfo) && !userAvatar) {
-      alertify.notify("Bạn chưa thay đổi thông ti!", "error", 3);
+      return alertify.notify("Bạn chưa thay đổi thông tin!", "error", 3);
     }
 
     $.ajax({
@@ -79,15 +86,22 @@ function updateUserInfo() {
       processData: false,
       data: userAvatar,
       success: function(result) {
-        //
+        $("#seting-profile .personal-info .alert-success span").text(result.message);
+        $("#seting-profile .personal-info .alert-success").css("display", "block");
+        $("#navbar-avatar").attr("src", result.imageSrc);
+        currentAvatarSrc = result.imageSrc;
       },
       error: function(error) {
-        //
+        $("#seting-profile .personal-info .alert-danger span").text(error.responseText);
+        $("#seting-profile .personal-info .alert-danger").css("display", "block");
       }
     });
+
+    $("#input-btn-cancel-update-user").click();
   });
 
   $("#input-btn-cancel-update-user").bind("click", function() {
+    $("#seting-profile .personal-info .alert").css("display", "none");
     $("#user-modal-avatar").attr("src", currentAvatarSrc);
 
     userAvatar = null;

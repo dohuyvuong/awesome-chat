@@ -14,6 +14,8 @@ export const transErrors = {
   account_active_failed: "Có lỗi xảy ra trong quá trình kích hoạt tài khoản. Vui lòng thử lại!",
   login_failed: "Tài khoản hoặc mật khẩu không chính xác!",
   server_error: "Có lỗi thuộc về server. Vui lòng liên hệ với chúng tôi và rất mong bạn thông cảm.",
+  avatar_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
+  avatar_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
 };
 
 export const transSuccess = {
@@ -25,6 +27,7 @@ export const transSuccess = {
     return `Xin chào ${username}!`;
   },
   logout_successfully: "Tài khoản của bạn đã được đăng xuất trên phiên này!",
+  avatar_updated_successfully: "Cập nhật ảnh đại diện thành công!",
 };
 
 export const transNotify = {
