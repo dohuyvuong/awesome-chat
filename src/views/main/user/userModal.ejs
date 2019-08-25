@@ -27,14 +27,22 @@
                                 </div>
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div class="alert alert-danger alert-dismissable">
+                                    <div class="user-avatar-message alert alert-danger alert-dismissable">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        <span>Update user error example.</span><br>
+                                        <span>Update user avatar error example.</span><br>
+                                    </div>
+                                    <div class="user-info-message alert alert-danger alert-dismissable">
+                                        <a class="panel-close close" data-dismiss="alert">×</a>
+                                        <span>Update user info error example.</span><br>
                                     </div>
 
-                                    <div class="alert alert-success alert-dismissable">
+                                    <div class="user-avatar-message alert alert-success alert-dismissable">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        <span>Update user success example.</span><br>
+                                        <span>Update user avatar success example.</span><br>
+                                    </div>
+                                    <div class="user-info-message alert alert-success alert-dismissable">
+                                        <a class="panel-close close" data-dismiss="alert">×</a>
+                                        <span>Update user info success example.</span><br>
                                     </div>
 
                                     <% if (user.local.email) { %>
@@ -98,7 +106,7 @@
                                         <div class="col-md-8">
                                             <input type="button" id="input-btn-update-user" class="btn btn-primary custom-background-btn-primary" name="submit" value="Lưu lại">
                                             <span></span>
-                                            <input type="reset" id="input-btn-cancel-update-user" class="btn btn-default custom-background-btn-reset" value="Hủy bỏ">
+                                            <input type="button" id="input-btn-cancel-update-user" class="btn btn-default custom-background-btn-reset" value="Hủy bỏ">
                                         </div>
                                     </div>
                                 </div>
