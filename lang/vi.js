@@ -3,6 +3,9 @@ export const transValidation = {
   gender_incorrect: "Giới tính không hợp lệ!",
   password_incorrect: "Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!",
   password_confirmation_incorrect: "Mật khẩu nhập lại chưa chính xác!",
+  username_invalid: "Username có độ dài từ 3 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt!",
+  address_invalid: "Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!",
+  phone_invalid: "Số điện thoại bắt đầu bắng số 0, và có độ dài từ 10 đến 11 số!",
 };
 
 export const transErrors = {
@@ -28,6 +31,7 @@ export const transSuccess = {
   },
   logout_successfully: "Tài khoản của bạn đã được đăng xuất trên phiên này!",
   avatar_updated_successfully: "Cập nhật ảnh đại diện thành công!",
+  user_info_updated_successfully: "Cập nhật thông tin người dùng thành công!",
 };
 
 export const transNotify = {
