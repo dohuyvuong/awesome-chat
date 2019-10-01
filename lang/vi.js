@@ -1,7 +1,9 @@
 export const transValidation = {
-  email_incorrect: "Email không hợp lệ! Email phải có dạng example@abc.com!",
-  gender_incorrect: "Giới tính không hợp lệ!",
-  password_incorrect: "Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!",
+  email_invalid: "Email không hợp lệ! Email phải có dạng example@abc.com!",
+  gender_invalid: "Giới tính không hợp lệ!",
+  password_invalid: "Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!",
+  password_current_invalid: "Mật khẩu hiện tại không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!",
+  password_new_invalid: "Mật khẩu mới không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!",
   password_confirmation_incorrect: "Mật khẩu nhập lại chưa chính xác!",
   username_invalid: "Username có độ dài từ 3 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt!",
   address_invalid: "Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!",
@@ -15,10 +17,12 @@ export const transErrors = {
   account_create_failed: "Có lỗi xảy ra trong quá trình tạo tài khoản. Vui lòng thử lại!",
   account_active_token_invalid: "Mã kích hoạt không hợp lệ, hoặc tài khoản đã được kích hoạt trước đó.<br/>Bạn có thể kiểm tra bằng cách đăng nhập tài khoản!",
   account_active_failed: "Có lỗi xảy ra trong quá trình kích hoạt tài khoản. Vui lòng thử lại!",
+  account_not_found: "Tài khoản này không tồn tại.",
   login_failed: "Tài khoản hoặc mật khẩu không chính xác!",
   server_error: "Có lỗi thuộc về server. Vui lòng liên hệ với chúng tôi và rất mong bạn thông cảm.",
   avatar_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
   avatar_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
+  password_incorrect: "Mật khẩu hiện tại không chính xác!",
 };
 
 export const transSuccess = {
@@ -32,6 +36,7 @@ export const transSuccess = {
   logout_successfully: "Tài khoản của bạn đã được đăng xuất trên phiên này!",
   avatar_updated_successfully: "Cập nhật ảnh đại diện thành công!",
   user_info_updated_successfully: "Cập nhật thông tin người dùng thành công!",
+  user_password_updated_successfully: "Cập nhật mật khẩu người dùng thành công!",
 };
 
 export const transNotify = {

@@ -2,6 +2,32 @@ let currentAvatarSrc = null;
 let currentUserInfo = {};
 let updatingUserAvatar = null;
 let updatingUserInfo = {};
+let updatingUserPassword = {};
+
+function callLogout() {
+  let timerInterval;
+
+  Swal.fire({
+    position: "top-end",
+    type: "success",
+    title: "Mật khẩu của bạn đã được thay đổi. Hệ thống sẽ tự động đăng xuất sau 5 giây!",
+    html: "Thời gian: <strong>5</strong>",
+    timer: 5000,
+    onBeforeOpen: () => {
+      Swal.showLoading();
+      timerInterval = setInterval(() => {
+        Swal.getContent().querySelector("strong").textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+      }, 1000);
+    },
+    onClose: () => {
+      clearInterval(timerInterval);
+    }
+  }).then((result) => {
+    $.get("/logout", function() {
+      location.reload();
+    });
+  });
+}
 
 function updateUserInfo() {
   initCurrentUserData();
@@ -18,14 +44,14 @@ function updateUserInfo() {
     let limit = 1048576; // 1048576 B = 1 MB
 
     if ($.inArray(fileData.type, match) === -1) {
-      alertify.notify("Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.", "error", 3);
+      alertify.notify("Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.", "error", 5);
       $(this).val(null);
       resetImageData();
 
       return false;
     }
     if (fileData.size > limit) {
-      alertify.notify("Ảnh upload tối đa cho phép là 1 MB!", "error", 3);
+      alertify.notify("Ảnh upload tối đa cho phép là 1 MB!", "error", 5);
       $(this).val(null);
       resetImageData();
 
@@ -54,7 +80,7 @@ function updateUserInfo() {
 
       updatingUserAvatar = formData;
     } else {
-      alertify.notify("Trình duyệt của bạn không hỗ trợ FileReader!", "error", 3);
+      alertify.notify("Trình duyệt của bạn không hỗ trợ FileReader!", "error", 5);
     }
   });
 
@@ -63,7 +89,7 @@ function updateUserInfo() {
     let usernameRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/);
 
     if (username.length < 3 || username.length > 30 || !usernameRegex.test(username)) {
-      alertify.notify("Username có độ dài từ 3 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt!", "error", 3);
+      alertify.notify("Username có độ dài từ 3 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt!", "error", 5);
       $(this).val(currentUserInfo.username);
       delete updatingUserInfo.username;
 
@@ -77,7 +103,7 @@ function updateUserInfo() {
     let gender = $(this).val();
 
     if (gender != "male") {
-      alertify.notify("Giới tính không hợp lệ!", "error", 3);
+      alertify.notify("Giới tính không hợp lệ!", "error", 5);
       $(this).val(currentUserInfo.gender);
       delete updatingUserInfo.gender;
 
@@ -91,7 +117,7 @@ function updateUserInfo() {
     let gender = $(this).val();
 
     if (gender != "female") {
-      alertify.notify("Giới tính không hợp lệ!", "error", 3);
+      alertify.notify("Giới tính không hợp lệ!", "error", 5);
       $(this).val(currentUserInfo.gender);
       delete updatingUserInfo.gender;
 
@@ -106,7 +132,7 @@ function updateUserInfo() {
     let addressRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ,\- ]+$/);
 
     if (address.length < 3 || address.length > 100 || !addressRegex.test(address)) {
-      alertify.notify("Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!", "error", 3);
+      alertify.notify("Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!", "error", 5);
       $(this).val(currentUserInfo.address);
       delete updatingUserInfo.address;
 
@@ -121,7 +147,7 @@ function updateUserInfo() {
     let phoneRegex = new RegExp(/^(0)[1-9]{1}[0-9]{8,9}$/);
 
     if (!phoneRegex.test(phone)) {
-      alertify.notify("Số điện thoại bắt đầu bắng số 0, và có độ dài từ 10 đến 11 số!", "error", 3);
+      alertify.notify("Số điện thoại bắt đầu bắng số 0, và có độ dài từ 10 đến 11 số!", "error", 5);
       $(this).val(currentUserInfo.phone);
       delete updatingUserInfo.phone;
 
@@ -135,7 +161,8 @@ function updateUserInfo() {
     resetAlert();
 
     if ($.isEmptyObject(updatingUserInfo) && !updatingUserAvatar) {
-      return alertify.notify("Bạn chưa thay đổi thông tin!", "error", 3);
+      alertify.notify("Bạn chưa thay đổi thông tin!", "error", 5);
+      return false;
     }
 
     if (updatingUserAvatar) {
@@ -151,6 +178,89 @@ function updateUserInfo() {
     resetImageData();
     resetUserInfoData();
   });
+
+  $("#input-change-current-password").bind("change", function() {
+    let currentPassword = $(this).val();
+    let passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/);
+
+    if (currentPassword.length < 8 || !passwordRegex.test(currentPassword)) {
+      alertify.notify("Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!", "error", 5);
+      $(this).val(null);
+      delete updatingUserPassword.currentPassword;
+
+      return false;
+    }
+
+    updatingUserPassword.currentPassword = currentPassword;
+  });
+
+  $("#input-change-new-password").bind("change", function() {
+    let newPassword = $(this).val();
+    let passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/);
+
+    if (newPassword === updatingUserPassword.currentPassword) {
+      alertify.notify("Mật khẩu mới phải khác mật khẩu cũ!", "error", 5);
+      $(this).val(null);
+      delete updatingUserPassword.newPassword;
+
+      return false;
+    }
+    if (newPassword.length < 8 || !passwordRegex.test(newPassword)) {
+      alertify.notify("Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường, chữ số và kí tự đặc biệt!", "error", 5);
+      $(this).val(null);
+      delete updatingUserPassword.newPassword;
+
+      return false;
+    }
+
+    updatingUserPassword.newPassword = newPassword;
+  });
+
+  $("#input-change-confirm-new-password").bind("change", function() {
+    let confirmNewPassword = $(this).val();
+
+    if (confirmNewPassword !== updatingUserPassword.newPassword) {
+      alertify.notify("Mật khẩu xác nhận không khớp với mật khẩu mới!", "error", 5);
+      $(this).val(null);
+      delete updatingUserPassword.confirmNewPassword;
+
+      return false;
+    }
+
+    updatingUserPassword.confirmNewPassword = confirmNewPassword;
+  });
+
+  $("#input-btn-update-user-password").bind("click", function() {
+    resetAlert();
+
+    if (!(updatingUserPassword.currentPassword && updatingUserPassword.newPassword && updatingUserPassword.confirmNewPassword)) {
+      alertify.notify("Vui lòng đảm bảo mật khẩu cũ, mật khẩu mới và mật khẩu xác nhận là hợp lệ!", "error", 5);
+      return false;
+    }
+
+    Swal.fire({
+      title: "Bạn có chắc chắn muốn thay đổi mật khẩu không?",
+      text: "Bạn không thể hoàn tác quá trình này!",
+      type: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#2ECC71",
+      cancelButtonColor: "#FF7675",
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Huỷ"
+    }).then((result) => {
+      if (!result.value) {
+        $("#input-btn-cancel-update-user-password").click();
+        return false;
+      }
+
+      callUpdateUserPassword();
+    });
+  });
+
+  $("#input-btn-cancel-update-user-password").bind("click", function() {
+    resetAlert();
+    resetUserPasswordData();
+  });
 }
 
 function initCurrentUserData() {
@@ -164,12 +274,7 @@ function initCurrentUserData() {
 }
 
 function resetAlert() {
-  $("#seting-profile .personal-info .alert").css("display", "none");
-}
-
-function resetData() {
-  resetImageData();
-  updatingUserInfo = {};
+  $(".personal-info .alert").css("display", "none");
 }
 
 function resetImageData() {
@@ -184,6 +289,13 @@ function resetUserInfoData() {
   $("#input-change-address").val(currentUserInfo.address);
   $("#input-change-phone").val(currentUserInfo.phone);
   updatingUserInfo = {};
+}
+
+function resetUserPasswordData() {
+  $("#input-change-current-password").val(null);
+  $("#input-change-new-password").val(null);
+  $("#input-change-confirm-new-password").val(null);
+  updatingUserPassword = {};
 }
 
 function callUpdateUserAvatar() {
@@ -231,6 +343,28 @@ function callUpdateUserInfo() {
       $("#seting-profile .personal-info .user-info-message.alert-danger span").html(error.responseText);
       $("#seting-profile .personal-info .user-info-message.alert-danger").css("display", "block");
       resetUserInfoData();
+    }
+  });
+}
+
+function callUpdateUserPassword() {
+  $.ajax({
+    url: "/user/update-password",
+    type: "put",
+    data: updatingUserPassword,
+    success: function(result) {
+      $("#password-profile .personal-info .user-password-message.alert-success span").html(result.message);
+      $("#password-profile .personal-info .user-password-message.alert-success").css("display", "block");
+
+      resetUserPasswordData();
+
+      callLogout();
+    },
+    error: function(error) {
+      $("#password-profile .personal-info .user-password-message.alert-danger span").html(error.responseText);
+      $("#password-profile .personal-info .user-password-message.alert-danger").css("display", "block");
+
+      resetUserPasswordData();
     }
   });
 }

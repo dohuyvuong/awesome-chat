@@ -3,8 +3,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import { transErrors, transSuccess, transMail } from "../../lang/vi";
 import sendMail from "../config/mailer";
-
-let saltRounds = 7;
+import { app } from "../config/app";
 
 let register = async (email, gender, password, protocol, host) => {
   let userByEmail = await UserModel.findByEmail(email);
@@ -25,7 +24,7 @@ let register = async (email, gender, password, protocol, host) => {
     gender: gender,
     local: {
       email: email,
-      password: bcrypt.hashSync(password, saltRounds),
+      password: bcrypt.hashSync(password, app.saltRounds),
       verifyToken: uuid(),
     },
   };
