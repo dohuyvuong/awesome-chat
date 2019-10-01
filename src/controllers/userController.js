@@ -86,7 +86,34 @@ let updateInfo = async (req, res) => {
   }
 };
 
+let updatePassword = async (req, res) => {
+  let validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    let errors = validationErrors.errors.map(error => `- ${error.msg}`).join("<br/>");
+
+    return res.status(400).send(errors);
+  }
+
+  try {
+    // Update user by id
+    await user.updateUserPassword(req.user._id, req.body);
+
+    let result = {
+      message: transSuccess.user_password_updated_successfully,
+    };
+
+    return res.status(200).send(result);
+  } catch (error) {
+    if (error === transErrors.account_not_found || error === transErrors.password_incorrect) {
+      return res.status(400).send(error);
+    }
+
+    return res.status(500).send(transErrors.server_error);
+  }
+};
+
 module.exports = {
   updateAvatar,
   updateInfo,
+  updatePassword,
 };
