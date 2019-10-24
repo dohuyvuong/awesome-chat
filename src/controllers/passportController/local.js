@@ -1,6 +1,6 @@
 import passport from "passport";
 import passportLocal from "passport-local";
-import UserModel from "../../models/userModel";
+import { UserModel } from "../../models";
 import { transErrors, transSuccess } from "../../../lang/vi";
 
 let LocalStrategy = passportLocal.Strategy;
@@ -8,7 +8,7 @@ let LocalStrategy = passportLocal.Strategy;
 /**
  * Valid user account type: local
  */
-let initPassportLocal = () => {
+let init = () => {
   passport.use(new LocalStrategy({
     usernameField: "email",
     passwordField: "password",
@@ -57,4 +57,4 @@ let initPassportLocal = () => {
   });
 };
 
-module.exports = initPassportLocal;
+export const LocalPassport = { init };

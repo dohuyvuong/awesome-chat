@@ -6,6 +6,6 @@ let getHome = (req, res) => {
   });
 };
 
-module.exports = {
+export const homeController = {
   getHome,
 };

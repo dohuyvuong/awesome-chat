@@ -16,6 +16,6 @@ let register = [
     }),
 ];
 
-module.exports = {
+export const authValidation = {
   register,
 };

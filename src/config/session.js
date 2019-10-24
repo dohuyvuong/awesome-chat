@@ -30,4 +30,4 @@ let configSession = (app) => {
   );
 };
 
-module.exports = configSession;
+export default configSession;

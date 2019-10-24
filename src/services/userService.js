@@ -1,7 +1,7 @@
-import UserModel from "../models/userModel";
+import { UserModel } from "../models";
 import { transErrors } from "../../lang/vi";
 import bcrypt from "bcrypt";
-import { app } from "../config/app";
+import { appConfigure } from "../config/app";
 
 /**
  * Update user information
@@ -30,7 +30,7 @@ let updateUserPassword = async (id, passwordUpdatingData) => {
   }
 
   let newLocalUserInfo = Object.assign(currentUser.local, {
-    password: bcrypt.hashSync(passwordUpdatingData.newPassword, app.saltRounds)
+    password: bcrypt.hashSync(passwordUpdatingData.newPassword, appConfigure.saltRounds)
   });
 
   let updatingUserItem = {
@@ -41,7 +41,7 @@ let updateUserPassword = async (id, passwordUpdatingData) => {
   return UserModel.updateUser(id, updatingUserItem);
 };
 
-module.exports = {
+export const userService = {
   updateUser,
   updateUserPassword,
 };

@@ -1,17 +1,17 @@
 import multer from "multer";
-import { app } from "../config/app";
+import { appConfigure } from "../config/app";
 import { transErrors, transSuccess } from "../../lang/vi";
 import { v4 as uuidv4 } from "uuid";
-import { user } from "../services";
+import { userService } from "../services";
 import fsExtra from "fs-extra";
 import { validationResult } from "express-validator";
 
 let avatarStorageLocation = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, app.avatarDirectory);
+    callback(null, appConfigure.avatarDirectory);
   },
   filename: (req, file, callback) => {
-    let match = app.avatarType;
+    let match = appConfigure.avatarType;
     if (!match.includes(file.mimetype)) {
       return callback(transErrors.avatar_type_not_supported, null);
     }
@@ -23,7 +23,7 @@ let avatarStorageLocation = multer.diskStorage({
 
 let avatarUploadedFile = multer({
   storage: avatarStorageLocation,
-  limits: { fileSize: app.avatarLimitedSize },
+  limits: { fileSize: appConfigure.avatarLimitedSize },
 }).single("avatar");
 
 let updateAvatar = (req, res) => {
@@ -46,9 +46,9 @@ let updateAvatar = (req, res) => {
       };
 
       // Update user by id, return user before updating
-      let preUpdatedUser = await user.updateUser(req.user._id, updatingUserItem);
+      let preUpdatedUser = await userService.updateUser(req.user._id, updatingUserItem);
       // Remove old avatar
-      await fsExtra.remove(`${app.avatarDirectory}/${preUpdatedUser.avatar}`);
+      await fsExtra.remove(`${appConfigure.avatarDirectory}/${preUpdatedUser.avatar}`);
 
       let result = {
         message: transSuccess.avatar_updated_successfully,
@@ -74,7 +74,7 @@ let updateInfo = async (req, res) => {
     let updatingUserItem = Object.assign({ updatedAt: Date.now() }, req.body);
 
     // Update user by id
-    await user.updateUser(req.user._id, updatingUserItem);
+    await userService.updateUser(req.user._id, updatingUserItem);
 
     let result = {
       message: transSuccess.user_info_updated_successfully,
@@ -96,7 +96,7 @@ let updatePassword = async (req, res) => {
 
   try {
     // Update user by id
-    await user.updateUserPassword(req.user._id, req.body);
+    await userService.updateUserPassword(req.user._id, req.body);
 
     let result = {
       message: transSuccess.user_password_updated_successfully,
@@ -112,7 +112,7 @@ let updatePassword = async (req, res) => {
   }
 };
 
-module.exports = {
+export const userController = {
   updateAvatar,
   updateInfo,
   updatePassword,

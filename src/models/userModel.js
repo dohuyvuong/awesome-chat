@@ -78,4 +78,4 @@ UserSchema.methods = {
   },
 };
 
-module.exports = mongoose.model("user", UserSchema);
+export default UserModel = mongoose.model("user", UserSchema);

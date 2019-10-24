@@ -36,4 +36,4 @@ let sendMail = (mailTo, subject, data) => {
   return transporter.sendMail(options);
 };
 
-module.exports = sendMail;
+export default sendMail;

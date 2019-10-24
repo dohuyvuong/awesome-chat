@@ -1,6 +1,6 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth";
-import UserModel from "../../models/userModel";
+import { UserModel } from "../../models";
 import { transErrors, transSuccess } from "../../../lang/vi";
 
 let GoogleStrategy = passportGoogle.OAuth2Strategy;
@@ -12,7 +12,7 @@ let ggCallbackUrl = process.env.GG_CALLBACK_URL;
 /**
  * Valid user account type: Google
  */
-let initPassportGoogle = () => {
+let init = () => {
   passport.use(new GoogleStrategy({
     clientID: ggAppId,
     clientSecret: ggAppSecret,
@@ -62,4 +62,4 @@ let initPassportGoogle = () => {
   });
 };
 
-module.exports = initPassportGoogle;
+export const GooglePassport = { init };

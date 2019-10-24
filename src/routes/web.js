@@ -1,15 +1,13 @@
 import express from "express";
-import { home, auth, user } from "../controllers";
-import { authValid, userValid } from "../validations";
+import { homeController, authController, userController } from "../controllers";
+import { authValidation, userValidation } from "../validations";
 import passport from "passport";
-import initPassportLocal from "../controllers/passportController/local";
-import initPassportFacebook from "../controllers/passportController/facebook";
-import initPassportGoogle from "../controllers/passportController/google";
+import { FacebookPassport, GooglePassport, LocalPassport } from "../controllers/passportController";
 
 // Init all passport
-initPassportLocal();
-initPassportFacebook();
-initPassportGoogle();
+FacebookPassport.init();
+GooglePassport.init();
+LocalPassport.init();
 
 let router = express.Router();
 
@@ -18,34 +16,34 @@ let router = express.Router();
  * @param app from exactly express module
  */
 let initRoutes = (app) => {
-  router.get("/login-register", auth.checkNotLoggedIn, auth.getLoginRegister);
-  router.post("/register", auth.checkNotLoggedIn, authValid.register, auth.postRegister);
-  router.get("/verify", auth.checkNotLoggedIn, auth.verifyAccount);
-  router.post("/login", auth.checkNotLoggedIn, passport.authenticate("local", {
+  router.get("/login-register", authController.checkNotLoggedIn, authController.getLoginRegister);
+  router.post("/register", authController.checkNotLoggedIn, authValidation.register, authController.postRegister);
+  router.get("/verify", authController.checkNotLoggedIn, authController.verifyAccount);
+  router.post("/login", authController.checkNotLoggedIn, passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login-register",
     successFlash: true,
     failureFlash: true,
   }));
-  router.get("/auth/facebook", auth.checkNotLoggedIn, passport.authenticate("facebook", { scope: ["email"] }));
-  router.get("/auth/facebook/callback", auth.checkNotLoggedIn, passport.authenticate("facebook", {
+  router.get("/auth/facebook", authController.checkNotLoggedIn, passport.authenticate("facebook", { scope: ["email"] }));
+  router.get("/auth/facebook/callback", authController.checkNotLoggedIn, passport.authenticate("facebook", {
     successRedirect: "/",
     failureRedirect: "/login-register",
   }));
-  router.get("/auth/google", auth.checkNotLoggedIn, passport.authenticate("google", { scope: ["profile"] }));
-  router.get("/auth/google/callback", auth.checkNotLoggedIn, passport.authenticate("google", {
+  router.get("/auth/google", authController.checkNotLoggedIn, passport.authenticate("google", { scope: ["profile"] }));
+  router.get("/auth/google/callback", authController.checkNotLoggedIn, passport.authenticate("google", {
     successRedirect: "/",
     failureRedirect: "/login-register",
   }));
 
-  router.get("/", auth.checkLoggedIn, home.getHome);
-  router.get("/logout", auth.checkLoggedIn, auth.getLogout);
-  router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar);
-  router.put("/user/update-info", auth.checkLoggedIn, userValid.updateInfo, user.updateInfo);
-  router.put("/user/update-password", auth.checkLoggedIn, userValid.updatePassword, user.updatePassword);
+  router.get("/", authController.checkLoggedIn, homeController.getHome);
+  router.get("/logout", authController.checkLoggedIn, authController.getLogout);
+  router.put("/user/update-avatar", authController.checkLoggedIn, userController.updateAvatar);
+  router.put("/user/update-info", authController.checkLoggedIn, userValidation.updateInfo, userController.updateInfo);
+  router.put("/user/update-password", authController.checkLoggedIn, userValidation.updatePassword, userController.updatePassword);
 
 
   return app.use("/", router);
 };
 
-module.exports = initRoutes;
+export default initRoutes;

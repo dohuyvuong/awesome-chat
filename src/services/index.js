@@ -1,5 +1,2 @@
-import authService from "./authService";
-import userService from "./userService";
-
-export const auth = authService;
-export const user = userService;
+export * from "./authService";
+export * from "./userService";
