@@ -17,4 +17,4 @@ ContactSchema.statics = {
   },
 };
 
-module.exports = mongoose.model("contact", ContactSchema);
+export default mongoose.model("contact", ContactSchema);

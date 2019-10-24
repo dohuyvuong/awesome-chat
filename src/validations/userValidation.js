@@ -31,7 +31,7 @@ let updatePassword = [
     }),
 ];
 
-module.exports = {
+export const userValidation = {
   updateInfo,
   updatePassword,
 };

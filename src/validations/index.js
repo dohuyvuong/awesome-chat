@@ -1,5 +1,2 @@
-import authValidation from "./authValidation";
-import userValidation from "./userValidation";
-
-export const authValid = authValidation;
-export const userValid = userValidation;
+export * from "./authValidation";
+export * from "./userValidation";

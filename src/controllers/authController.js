@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { auth } from "../services";
+import { authService } from "../services";
 import { transSuccess, transNotify } from "../../lang/vi";
 
 let getLoginRegister = (req, res) => {
@@ -22,7 +22,7 @@ let postRegister = async (req, res) => {
   }
 
   try {
-    let successMsg = await auth.register(
+    let successMsg = await authService.register(
       req.body.email,
       req.body.gender,
       req.body.password,
@@ -49,7 +49,7 @@ let verifyAccount = async (req, res) => {
   let verifyToken = req.query.verifyToken;
 
   try {
-    let successMsg = await auth.verifyAccount(verifyToken);
+    let successMsg = await authService.verifyAccount(verifyToken);
 
     success.push(successMsg);
     req.flash("success", successMsg);
@@ -89,7 +89,7 @@ let checkNotLoggedIn = (req, res, next) => {
   next();
 };
 
-module.exports = {
+export const authController = {
   getLoginRegister,
   postRegister,
   verifyAccount,

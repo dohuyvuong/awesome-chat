@@ -1,6 +1,6 @@
 import passport from "passport";
 import passportFacebook from "passport-facebook";
-import UserModel from "../../models/userModel";
+import { UserModel } from "../../models";
 import { transErrors, transSuccess } from "../../../lang/vi";
 
 let FacebookStrategy = passportFacebook.Strategy;
@@ -12,7 +12,7 @@ let fbCallbackUrl = process.env.FB_CALLBACK_URL;
 /**
  * Valid user account type: Facebook
  */
-let initPassportFacebook = () => {
+let init = () => {
   passport.use(new FacebookStrategy({
     clientID: fbAppId,
     clientSecret: fbAppSecret,
@@ -64,4 +64,4 @@ let initPassportFacebook = () => {
   });
 };
 
-module.exports = initPassportFacebook;
+export const FacebookPassport = { init };
