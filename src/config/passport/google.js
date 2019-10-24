@@ -1,27 +1,26 @@
 import passport from "passport";
-import passportFacebook from "passport-facebook";
+import passportGoogle from "passport-google-oauth";
 import { UserModel } from "../../models";
 import { transErrors, transSuccess } from "../../../lang/vi";
 
-let FacebookStrategy = passportFacebook.Strategy;
+let GoogleStrategy = passportGoogle.OAuth2Strategy;
 
-let fbAppId = process.env.FB_APP_ID;
-let fbAppSecret = process.env.FB_APP_SECRET;
-let fbCallbackUrl = process.env.FB_CALLBACK_URL;
+let ggAppId = process.env.GG_APP_ID;
+let ggAppSecret = process.env.GG_APP_SECRET;
+let ggCallbackUrl = process.env.GG_CALLBACK_URL;
 
 /**
- * Valid user account type: Facebook
+ * Config GooglePassport
  */
 let init = () => {
-  passport.use(new FacebookStrategy({
-    clientID: fbAppId,
-    clientSecret: fbAppSecret,
-    callbackURL: fbCallbackUrl,
-    profileFields: ["email", "gender", "displayName"],
+  passport.use(new GoogleStrategy({
+    clientID: ggAppId,
+    clientSecret: ggAppSecret,
+    callbackURL: ggCallbackUrl,
     passReqToCallback: true,
   }, async (req, accessToken, refreshToken, profile, done) => {
     try {
-      let user = await UserModel.findByFacebookUid(profile.id);
+      let user = await UserModel.findByGoogleUid(profile.id);
 
       if (user) {
         return done(null, user, req.flash("success", transSuccess.login_successfully(user.username)));
@@ -31,7 +30,7 @@ let init = () => {
         username: profile.displayName,
         gender: profile.gender,
         local: { isActive: true },
-        facebook: {
+        google: {
           uid: profile.id,
           token: profile.accessToken,
           email: profile.emails ? profile.emails[0].value : null,
@@ -41,7 +40,6 @@ let init = () => {
 
       return done(null, newUser, req.flash("success", transSuccess.login_successfully(newUser.username)));
     } catch (error) {
-      console.log(error);
       return done(null, false, req.flash("errors", transErrors.server_error));
     }
   }));
@@ -64,4 +62,4 @@ let init = () => {
   });
 };
 
-export const FacebookPassport = { init };
+export const GooglePassport = { init };

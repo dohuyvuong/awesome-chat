@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import connectFlash from "connect-flash";
 import configSession from "./config/session";
 import passport from "passport";
+import { FacebookPassport, GooglePassport, LocalPassport } from "./config/passport";
 
 // Init app
 let app = express();
@@ -28,6 +29,9 @@ app.use(connectFlash());
 // Config passportjs
 app.use(passport.initialize());
 app.use(passport.session());
+FacebookPassport.init();
+GooglePassport.init();
+LocalPassport.init();
 
 // Init all routes
 initRoutes(app);

@@ -1,7 +1,13 @@
+import express from "express";
 import { validationResult } from "express-validator";
 import { authService } from "../services";
 import { transSuccess, transNotify } from "../../lang/vi";
 
+/**
+ * Return Response rendered Login-Register Page
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let getLoginRegister = (req, res) => {
   return res.render("auth/master", {
     errors: req.flash("errors"),
@@ -9,6 +15,11 @@ let getLoginRegister = (req, res) => {
   });
 };
 
+/**
+ * Register an account
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let postRegister = async (req, res) => {
   let errors = [];
   let success = [];
@@ -42,6 +53,11 @@ let postRegister = async (req, res) => {
   }
 };
 
+/**
+ * Verify account
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let verifyAccount = async (req, res) => {
   let errors = [];
   let success = [];
@@ -63,6 +79,11 @@ let verifyAccount = async (req, res) => {
   }
 };
 
+/**
+ * Logout
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let getLogout = (req, res) => {
   // Remove session passport user
   req.logout();
@@ -71,6 +92,12 @@ let getLogout = (req, res) => {
   return res.redirect("/login-register");
 };
 
+/**
+ * Check if the user is already logged in, otherwise login is required
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ * @param {express.NextFunction} next NextFunction
+ */
 let checkLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/login-register");
@@ -79,6 +106,12 @@ let checkLoggedIn = (req, res, next) => {
   next();
 };
 
+/**
+ * Check if the user is not logged in, otherwise redirect to Homepage
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ * @param {express.NextFunction} next NextFunction
+ */
 let checkNotLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     req.flash("success", transNotify.user_logging_in);

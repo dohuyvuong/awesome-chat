@@ -1,3 +1,4 @@
+import express from "express";
 import multer from "multer";
 import { appConfigure } from "../config/app";
 import { transErrors, transSuccess } from "../../lang/vi";
@@ -26,6 +27,11 @@ let avatarUploadedFile = multer({
   limits: { fileSize: appConfigure.avatarLimitedSize },
 }).single("avatar");
 
+/**
+ * Update user avatar
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let updateAvatar = (req, res) => {
   avatarUploadedFile(req, res, async (error) => {
     if (error) {
@@ -62,6 +68,11 @@ let updateAvatar = (req, res) => {
   });
 };
 
+/**
+ * Update user info
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let updateInfo = async (req, res) => {
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
@@ -86,6 +97,11 @@ let updateInfo = async (req, res) => {
   }
 };
 
+/**
+ * Update user password
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
 let updatePassword = async (req, res) => {
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {

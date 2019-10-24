@@ -6,7 +6,7 @@ import { transErrors, transSuccess } from "../../../lang/vi";
 let LocalStrategy = passportLocal.Strategy;
 
 /**
- * Valid user account type: local
+ * Config LocalPassport
  */
 let init = () => {
   passport.use(new LocalStrategy({

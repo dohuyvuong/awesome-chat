@@ -1,3 +1,4 @@
+import express from "express"
 import session from "express-session";
 import connectMongo from "connect-mongo";
 
@@ -13,7 +14,7 @@ let sessionStore = new MongoStore({
 
 /**
  * Config session for app
- * @param app from exactly express module
+ * @param {express.Express} app from exactly express module
  */
 let configSession = (app) => {
   app.use(
