@@ -2,18 +2,12 @@ import express from "express";
 import { homeController, authController, userController } from "../controllers";
 import { authValidation, userValidation } from "../validations";
 import passport from "passport";
-import { FacebookPassport, GooglePassport, LocalPassport } from "../controllers/passportController";
-
-// Init all passport
-FacebookPassport.init();
-GooglePassport.init();
-LocalPassport.init();
 
 let router = express.Router();
 
 /**
  * Init all routes
- * @param app from exactly express module
+ * @param {express.Express} app from exactly express module
  */
 let initRoutes = (app) => {
   router.get("/login-register", authController.checkNotLoggedIn, authController.getLoginRegister);

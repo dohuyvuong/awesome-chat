@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 import { appConfigure } from "../config/app";
 
 /**
- * Update user information
- * @param {userId} id
- * @param {UserItem} item
+ * Update user
+ * @param {String} id User Id
+ * @param {Object} item Updating User Object
  */
 let updateUser = (id, item) => {
   return UserModel.updateUser(id, item);
@@ -14,8 +14,8 @@ let updateUser = (id, item) => {
 
 /**
  * Update user password
- * @param {userId} id
- * @param {PasswordUpdatingData} passwordUpdatingData
+ * @param {String} id User Id
+ * @param {Object} passwordUpdatingData Password Data Object
  */
 let updateUserPassword = async (id, passwordUpdatingData) => {
   let currentUser = await UserModel.findUserById(id);

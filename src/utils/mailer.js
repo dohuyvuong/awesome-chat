@@ -2,6 +2,7 @@ import nodeMailer from "nodemailer";
 import ejs from "ejs";
 import fs from "fs";
 import path from "path";
+import { transMail } from "../../lang/vi";
 
 let adminName = process.env.MAIL_USER_NAME;
 let adminEmail = process.env.MAIL_USER;
@@ -9,7 +10,12 @@ let adminPassword = process.env.MAIL_PASSWORD;
 let mailHost = process.env.MAIL_HOST;
 let mailPort = process.env.MAIL_PORT;
 
-let sendMail = (mailTo, subject, data) => {
+/**
+ *
+ * @param {String} mailTo Recipient Email
+ * @param {Object} data Account Info
+ */
+let sendAccountActivationMail = (mailTo, data) => {
   let transporter = nodeMailer.createTransport({
     host: mailHost,
     port: mailPort,
@@ -29,11 +35,13 @@ let sendMail = (mailTo, subject, data) => {
   let options = {
     from: `"${adminName}" <${adminEmail}>`,
     to: mailTo,
-    subject: subject,
+    subject: transMail.mail_active_registration_subject,
     html: htmlContent,
   };
 
   return transporter.sendMail(options);
 };
 
-export default sendMail;
+export default {
+  sendAccountActivationMail,
+};

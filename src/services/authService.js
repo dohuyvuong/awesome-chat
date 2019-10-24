@@ -2,9 +2,17 @@ import { UserModel } from "../models";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import { transErrors, transSuccess, transMail } from "../../lang/vi";
-import sendMail from "../config/mailer";
+import mailer from "../utils/mailer";
 import { appConfigure } from "../config/app";
 
+/**
+ * Register an account
+ * @param {String} email Email
+ * @param {String} gender Gender
+ * @param {String} password Password
+ * @param {String} protocol Protocol
+ * @param {String} host Host
+ */
 let register = async (email, gender, password, protocol, host) => {
   let userByEmail = await UserModel.findByEmail(email);
   if (userByEmail) {
@@ -38,7 +46,7 @@ let register = async (email, gender, password, protocol, host) => {
         email: email,
         verifyLink: `${protocol}://${host}/verify?verifyToken=${user.local.verifyToken}`,
       };
-      await sendMail(email, transMail.mail_active_registration_subject, data);
+      await mailer.sendAccountActivationMail(email, data);
     } catch (error) {
       throw transMail.mail_active_registration_send_failed;
     }
@@ -53,6 +61,10 @@ let register = async (email, gender, password, protocol, host) => {
   }
 };
 
+/**
+ * Verify account
+ * @param {String} verifyToken Token
+ */
 let verifyAccount = async (verifyToken) => {
   let userByVerifyToken = await UserModel.findByVerifyToken(verifyToken);
 
