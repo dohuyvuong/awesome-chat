@@ -15,6 +15,15 @@ ContactSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
+
+  findByUserId(userId) {
+    return this.find({
+      $or: [
+        { "userId": userId },
+        { "contactId": userId },
+      ],
+    }).exec();
+  },
 };
 
 export default mongoose.model("contact", ContactSchema);
