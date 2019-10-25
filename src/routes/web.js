@@ -1,6 +1,6 @@
 import express from "express";
-import { homeController, authController, userController } from "../controllers";
-import { authValidation, userValidation } from "../validations";
+import { homeController, authController, userController, contactController } from "../controllers";
+import { authValidation, userValidation, contactValidation } from "../validations";
 import passport from "passport";
 
 let router = express.Router();
@@ -35,6 +35,7 @@ let initRoutes = (app) => {
   router.put("/user/update-avatar", authController.checkLoggedIn, userController.updateAvatar);
   router.put("/user/update-info", authController.checkLoggedIn, userValidation.updateInfo, userController.updateInfo);
   router.put("/user/update-password", authController.checkLoggedIn, userValidation.updatePassword, userController.updatePassword);
+  router.get("/contact/search", authController.checkLoggedIn, contactValidation.searchNewContact, contactController.searchNewContact);
 
 
   return app.use("/", router);
