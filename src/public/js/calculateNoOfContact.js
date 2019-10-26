@@ -1,17 +1,17 @@
-function increaseNoOfContact(className) {
-  let currentNoContact = +$(`${className} span`).text();
-  currentNoContact++;
+function increaseNoOfContact(selector) {
+  let currentNoOfContact = +$(`${selector} span`).text();
+  currentNoOfContact++;
 
-  $(`${className}`).html(`(<span>${currentNoContact}</span>)`);
+  $(`${selector}`).html(`(<span>${currentNoOfContact}</span>)`);
 }
 
-function decreaseNoOfContact(className) {
-  let currentNoContact = +$(`${className} span`).text();
-  currentNoContact--;
+function decreaseNoOfContact(selector) {
+  let currentNoOfContact = +$(`${selector} span`).text();
+  currentNoOfContact--;
 
-  if (currentNoContact === 0) {
-    $(`${className}`).html("");
+  if (currentNoOfContact <= 0) {
+    $(`${selector}`).html("");
   } else {
-    $(`${className}`).html(`(<span>${currentNoContact}</span>)`);
+    $(`${selector}`).html(`(<span>${currentNoOfContact}</span>)`);
   }
 }

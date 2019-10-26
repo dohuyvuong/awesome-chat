@@ -12,8 +12,18 @@ function removeRequestingContact() {
           $("#find-user").find(`div.user-add-new-contact[data-uid=${targetId}]`).css("display", "inline-block");
 
           decreaseNoOfContact(".count-request-contact-sent");
+
+          socket.emit("remove-requesting-contact", { contactId: targetId });
         }
       },
     });
   });
 }
+
+socket.on("response-remove-requesting-contact", function (user) {
+  $(".noti_content").find(`span[data-uid=${user.id}]`).remove();
+
+  decreaseNoOfContact(".count-request-contact-received");
+  decreaseNoOfNotification(".noti_contact_counter");
+  decreaseNoOfNotification(".noti_counter");
+});

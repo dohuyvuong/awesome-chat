@@ -8,10 +8,22 @@ function addContact() {
         $("#find-user").find(`div.user-remove-request-contact[data-uid=${targetId}]`).css("display", "inline-block");
 
         increaseNoOfContact(".count-request-contact-sent");
-        // Xử lý realtime
 
         socket.emit("add-new-contact", { contactId: targetId });
       }
     });
   });
 }
+
+socket.on("response-add-new-contact", function (user) {
+  let notification = `<span data-uid="${user.id}">
+                        <img class="avatar-small" src="images/users/${user.avatar}" alt="">
+                        <strong>${user.username}</strong> đã gửi cho bạn một lời mời kết bạn!
+                      </span>`;
+
+  $(".noti_content").prepend(notification);
+
+  increaseNoOfContact(".count-request-contact-received");
+  increaseNoOfNotification(".noti_contact_counter");
+  increaseNoOfNotification(".noti_counter");
+});
