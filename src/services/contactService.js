@@ -7,7 +7,7 @@ import _ from "lodash";
  * @param {String} currentUserId Current user id
  */
 let searchNewContact = async (keyword, currentUserId) => {
-  let exceptedUserIds = [];
+  let exceptedUserIds = [currentUserId];
 
   let contacts = await ContactModel.findByUserId(currentUserId);
   contacts.map(contact => {
@@ -21,6 +21,36 @@ let searchNewContact = async (keyword, currentUserId) => {
   return users;
 }
 
+/**
+ * Add new contact
+ * @param {String} currentUserId Current user id
+ * @param {String} contactId Current user id
+ */
+let addNewContact = async (currentUserId, contactId) => {
+  let existingContact = await ContactModel.findContact(currentUserId, contactId);
+  if (existingContact) {
+    return false;
+  }
+
+  let newContact = {
+    userId: currentUserId,
+    contactId: contactId,
+  };
+
+  return await ContactModel.createNew(newContact);
+}
+
+/**
+ * Remove requesting contact
+ * @param {String} currentUserId Current user id
+ * @param {String} contactId Current user id
+ */
+let removeRequestingContact = async (currentUserId, contactId) => {
+  return (await ContactModel.removeRequestingContact(currentUserId, contactId)).n > 0;
+}
+
 export const contactService = {
   searchNewContact,
+  addNewContact,
+  removeRequestingContact,
 };
