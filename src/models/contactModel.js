@@ -24,6 +24,34 @@ ContactSchema.statics = {
       ],
     }).exec();
   },
+
+  findContact(userId, contactId) {
+    return this.findOne({
+      $or: [
+        {
+          $and: [
+            { "userId": userId },
+            { "contactId": contactId },
+          ],
+        },
+        {
+          $and: [
+            { "userId": contactId },
+            { "contactId": userId },
+          ],
+        },
+      ],
+    }).exec();
+  },
+
+  removeRequestingContact(userId, contactId) {
+    return this.deleteOne({
+      $and: [
+        { "userId": userId },
+        { "contactId": contactId },
+      ],
+    }).exec();
+  }
 };
 
 export default mongoose.model("contact", ContactSchema);

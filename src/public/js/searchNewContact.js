@@ -1,6 +1,6 @@
 function findUsersToAddContact(element) {
   if (element.which === 13 || element.type === "click") {
-    $("#find-user .find-user-bottom ul.contactList").html("");
+    $("#find-user .contactList").html("");
 
     let keyword = $("#inp-search-new-contact").val().trim();
     let keywordRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ @.-]+$/);
@@ -18,7 +18,9 @@ function findUsersToAddContact(element) {
     }
 
     $.get(`/contact/search?keyword=${keyword}`, function (data) {
-      $("#find-user .find-user-bottom ul.contactList").html(data);
+      $("#find-user .contactList").html(data);
+      addContact(); // from js/addContact.js
+      removeRequestingContact(); // from js/removeRequestingContact.js
     });
   }
 }
