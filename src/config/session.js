@@ -19,8 +19,8 @@ let sessionStore = new MongoStore({
 let configSession = (app) => {
   app.use(
     session({
-      key: "express.sid",
-      secret: "mySecret",
+      key: process.env.SESSION_KEY,
+      secret: process.env.SESSION_SECRET,
       store: sessionStore,
       resave: true,
       saveUninitialized: false,
@@ -32,3 +32,6 @@ let configSession = (app) => {
 };
 
 export default configSession;
+export {
+  sessionStore
+};

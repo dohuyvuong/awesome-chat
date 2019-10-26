@@ -9,6 +9,8 @@ function addContact() {
 
         increaseNoOfContact(".count-request-contact-sent");
         // Xử lý realtime
+
+        socket.emit("add-new-contact", { contactId: targetId });
       }
     });
   });
