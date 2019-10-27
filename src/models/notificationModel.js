@@ -25,6 +25,15 @@ NotificationSchema.statics = {
     }).sort({ "createdAt": -1 }).limit(limit).exec();
   },
 
+  getNoOfUnreadNotifications(userId) {
+    return this.countDocuments({
+      $and:[
+        { "receiverId": userId },
+        { "isRead": false },
+      ],
+    }).exec();
+  },
+
   removeRequestingContactNotification(senderId, receiverId) {
     return this.deleteOne({
       $and: [
@@ -33,7 +42,7 @@ NotificationSchema.statics = {
         { "type": NOTIFICATION_TYPES.ADD_CONTACT },
       ],
     }).exec();
-  }
+  },
 };
 
 export {
