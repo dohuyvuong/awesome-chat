@@ -245,7 +245,7 @@ label:focus,
 
 #notifications {
   display: none;
-  min-width: 250px;
+  min-width: 300px;
   position: absolute;
   right: 17px !important;
   border: solid 1px rgba(100, 100, 100, .20);
@@ -293,7 +293,7 @@ label:focus,
 }
 
 .noti_counter {
-  display: none;
+  display: block;
   position: absolute;
   background: #E1141E;
   color: #FFF;
@@ -309,7 +309,7 @@ label:focus,
 
 .noti_content {
   position: relative;
-  height: 200px;
+  max-height: 300px;
   background-color: #fff;
   overflow: auto;
 }
@@ -317,8 +317,9 @@ label:focus,
 .noti_content>span {
   position: relative;
   display: block;
-  padding: 5px;
+  padding: 5px 10px;
   color: #333;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .seeAll {
@@ -1277,5 +1278,13 @@ label:focus,
 }
 
 .personal-info .alert {
+  display: none;
+}
+
+.noti-read-false {
+  background: #d2d8f3;
+}
+
+.display-none {
   display: none;
 }

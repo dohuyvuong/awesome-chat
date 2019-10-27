@@ -1,4 +1,5 @@
-import { UserModel, ContactModel } from "../models";
+import { UserModel, ContactModel, NotificationModel } from "../models";
+import { NOTIFICATION_TYPES } from "../models/notificationModel";
 import _ from "lodash";
 
 /**
@@ -32,12 +33,22 @@ let addNewContact = async (currentUserId, contactId) => {
     return false;
   }
 
-  let newContact = {
+  // Create new contact
+  let contactItem = {
     userId: currentUserId,
     contactId: contactId,
   };
+  let newContact = await ContactModel.createNew(contactItem);
 
-  return await ContactModel.createNew(newContact);
+  // Create new notification
+  let notificationItem = {
+    senderId: currentUserId,
+    receiverId: contactId,
+    type: NOTIFICATION_TYPES.ADD_CONTACT,
+  };
+  await NotificationModel.createNew(notificationItem);
+
+  return newContact ? true : false;
 }
 
 /**
@@ -46,7 +57,14 @@ let addNewContact = async (currentUserId, contactId) => {
  * @param {String} contactId Current user id
  */
 let removeRequestingContact = async (currentUserId, contactId) => {
-  return (await ContactModel.removeRequestingContact(currentUserId, contactId)).n > 0;
+  let result = await ContactModel.removeRequestingContact(currentUserId, contactId);
+  if (result.n === 0) {
+    return false;
+  }
+
+  await NotificationModel.removeRequestingContactNotification(currentUserId, contactId);
+
+  return true;
 }
 
 export const contactService = {

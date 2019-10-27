@@ -16,11 +16,12 @@ function addContact() {
 }
 
 socket.on("response-add-new-contact", function (user) {
-  let notification = `<span data-uid="${user.id}">
+  let notification = `<span data-uid="${user.id}" class="noti-read-false">
                         <img class="avatar-small" src="images/users/${user.avatar}" alt="">
                         <strong>${user.username}</strong> đã gửi cho bạn một lời mời kết bạn!
                       </span>`;
 
+  $(".no-notifications").remove();
   $(".noti_content").prepend(notification);
 
   increaseNoOfContact(".count-request-contact-received");

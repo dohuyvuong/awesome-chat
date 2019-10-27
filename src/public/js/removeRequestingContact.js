@@ -23,6 +23,10 @@ function removeRequestingContact() {
 socket.on("response-remove-requesting-contact", function (user) {
   $(".noti_content").find(`span[data-uid=${user.id}]`).remove();
 
+  if (!$(".noti_content").children().length) {
+    $(".noti_content").html(`<span class="no-notifications">There are no notifications!</span>`);
+  }
+
   decreaseNoOfContact(".count-request-contact-received");
   decreaseNoOfNotification(".noti_contact_counter");
   decreaseNoOfNotification(".noti_counter");
