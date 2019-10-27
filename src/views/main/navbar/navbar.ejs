@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="noti_Button" data-toggle="modal" title="Thông báo">
+                    <a href="javascript:void(0)" id="noti_Button" data-toggle="modal" title="Thông báo">
                         <i class="fa fa-globe"></i>
                         <div class="noti_counter<%- noOfUnreadNotifications ? '' : ' display-none' %>">
                             <% if (noOfUnreadNotifications) { %>
@@ -46,16 +46,25 @@
                         </div>
                         <div id="noti_Container">
                             <div id="notifications">
-                                <h3>Thông báo</h3>
+                                <div id="noti_header">
+                                    <div id="noti_header_title">Thông báo</div>
+                                    <div>
+                                        <a href="javascript:void(0)" id="mark-all-read">Đánh dấu tất cả là đã đọc</a>
+                                    </div>
+                                </div>
                                 <div class="noti_content">
                                     <% if (!notifications.length) { %>
-                                        <span class="no-notifications">There are no notifications!</span>
+                                        <div class="no-notifications">There are no notifications!</div>
                                     <% } %>
                                     <% notifications.forEach(function (notification) { %>
                                         <%- notification %>
                                     <% }); %>
                                 </div>
-                                <div class="seeAll"><a href="#">Xem tất cả</a></div>
+                                <div class="seeAll">
+                                    <a href="#notificationsModal" data-toggle="modal">
+                                        Xem tất cả
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </a>

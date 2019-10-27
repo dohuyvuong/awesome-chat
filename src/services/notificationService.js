@@ -10,18 +10,25 @@ import { NOTIFICATION_TYPES } from "../models/notificationModel";
 let getNotifications = async (currentUserId, limit = 10) => {
   let notifications = await NotificationModel.getByUserId(currentUserId, limit);
 
-  let notificationContents = await Promise.all(notifications.map(async (notification) => {
+  return await Promise.all(notifications.map(async (notification) => {
     let sender = await UserModel.findUserById(notification.senderId);
     return getNotificationContent(notification, sender);
   }));
-  let noOfUnreadNotification = notifications.filter(notification => !notification.isRead).length;
-
-  return {
-    notifications: notificationContents,
-    noOfUnreadNotifications: noOfUnreadNotification,
-  };
 };
 
+/**
+ * Get number of unread notifications by userId
+ * * @param {String} currentUserId Current user id
+ */
+let getNoOfUnreadNotifications = async (currentUserId) => {
+  return await NotificationModel.getNoOfUnreadNotifications(currentUserId);
+};
+
+/**
+ * Get notification content for notification record
+ * @param {NotificationModel} notification Notification
+ * @param {UserModel} sender Sender
+ */
 let getNotificationContent = (notification, sender) => {
   if (notification.type === NOTIFICATION_TYPES.ADD_CONTACT) {
     return renderTemplate("addd_new_contact_notification.html", {
@@ -39,4 +46,5 @@ let getNotificationContent = (notification, sender) => {
 
 export const notificationService = {
   getNotifications,
+  getNoOfUnreadNotifications,
 };

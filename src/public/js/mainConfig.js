@@ -75,9 +75,15 @@ function configNotification() {
     $('.noti_counter').fadeOut('slow');
     return false;
   });
-  $(document).click(function() {
-    $('#notifications').fadeOut('fast', 'linear');
-  });
+  // $(document).click(function() {
+  //   $('#notifications').fadeOut('fast', 'linear');
+  // });
+  window.onclick = function (event) {
+    notificationContainer = $("#noti_Container");
+    if (!notificationContainer.is(event.target) && notificationContainer.has(event.target).length === 0) {
+      $('#notifications').fadeOut('fast', 'linear');
+    }
+  }
 }
 
 function gridPhotos(layoutNumber) {

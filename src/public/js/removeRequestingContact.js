@@ -21,10 +21,15 @@ function removeRequestingContact() {
 }
 
 socket.on("response-remove-requesting-contact", function (user) {
-  $(".noti_content").find(`span[data-uid=${user.id}]`).remove();
+  $(".noti_content").find(`div[data-uid=${user.id}]`).remove();
+  $(".list-notifications").find(`li>div[data-uid=${user.id}]`).parent().remove();
 
   if (!$(".noti_content").children().length) {
-    $(".noti_content").html(`<span class="no-notifications">There are no notifications!</span>`);
+    $(".noti_content").html(`<div class="no-notifications">There are no notifications!</div>`);
+  }
+
+  if (!$(".list-notifications").children().length) {
+    $(".list-notifications").html(`<li><div class="no-notifications">There are no notifications!</div><li>`);
   }
 
   decreaseNoOfContact(".count-request-contact-received");

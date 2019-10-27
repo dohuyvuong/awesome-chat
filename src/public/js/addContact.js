@@ -16,13 +16,15 @@ function addContact() {
 }
 
 socket.on("response-add-new-contact", function (user) {
-  let notification = `<span data-uid="${user.id}" class="noti-read-false">
+  let notification = `<div data-uid="${user.id}" class="noti-read-false">
                         <img class="avatar-small" src="images/users/${user.avatar}" alt="">
                         <strong>${user.username}</strong> đã gửi cho bạn một lời mời kết bạn!
-                      </span>`;
+                      </div>`;
 
-  $(".no-notifications").remove();
+  $(".noti_content .no-notifications").remove();
   $(".noti_content").prepend(notification);
+  $(".list-notifications .no-notifications").parent().remove();
+  $(".list-notifications").prepend(`<li>${notification}</li>`)
 
   increaseNoOfContact(".count-request-contact-received");
   increaseNoOfNotification(".noti_contact_counter");
