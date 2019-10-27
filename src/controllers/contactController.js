@@ -38,9 +38,9 @@ let addNewContact = async (req, res) => {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
 
-    let newContact = await contactService.addNewContact(currentUserId, contactId);
+    let result = await contactService.addNewContact(currentUserId, contactId);
 
-    return res.status(200).send({ result: !!newContact });
+    return res.status(200).send({ result });
   } catch (error) {
     return res.status(500).send(transErrors.server_error);
   }

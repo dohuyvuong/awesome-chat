@@ -1,5 +1,5 @@
-<% if (users.length === 0) { %>
-    <div style="padding: 5px;">No result.</div>
+<% if (!users.length) { %>
+    <div style="padding: 5px 10px;">No results!</div>
 <% } %>
 
 <% users.map(user => { %>

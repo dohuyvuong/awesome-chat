@@ -2,8 +2,6 @@ function increaseNoOfNotification(selector) {
   let currentNoOfNotification = +$(`${selector}`).text();
   currentNoOfNotification++;
 
-  console.log(selector);
-
   $(`${selector}`).html(`${currentNoOfNotification}`).css("display", "block");
 }
 

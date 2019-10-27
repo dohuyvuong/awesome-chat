@@ -2,21 +2,41 @@ import mongoose from "mongoose";
 
 let Schema = mongoose.Schema;
 
+const NOTIFICATION_TYPES = {
+  ADD_CONTACT: "add_contact",
+};
+
 let NotificationSchema = new Schema({
-  sender: {
-    id: String,
-    username: String,
-    avatar: String,
-  },
-  receiver: {
-    id: String,
-    username: String,
-    avatar: String,
-  },
+  senderId: String,
+  receiverId: String,
   type: String,
-  content: String,
   isRead: { type: Boolean, default: false },
   createdAt: { type: Number, default: Date.now },
 });
 
+NotificationSchema.statics = {
+  createNew(item) {
+    return this.create(item);
+  },
+
+  getByUserId(userId, limit) {
+    return this.find({
+      "receiverId": userId,
+    }).sort({ "createdAt": -1 }).limit(limit).exec();
+  },
+
+  removeRequestingContactNotification(senderId, receiverId) {
+    return this.deleteOne({
+      $and: [
+        { "senderId": senderId },
+        { "receiverId": receiverId },
+        { "type": NOTIFICATION_TYPES.ADD_CONTACT },
+      ],
+    }).exec();
+  }
+};
+
+export {
+  NOTIFICATION_TYPES,
+};
 export default mongoose.model("notification", NotificationSchema);
