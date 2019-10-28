@@ -21,6 +21,7 @@ export const transErrors = {
   account_not_found: "Tài khoản này không tồn tại.",
   login_failed: "Tài khoản hoặc mật khẩu không chính xác!",
   server_error: "Có lỗi thuộc về server. Vui lòng liên hệ với chúng tôi và rất mong bạn thông cảm.",
+  bad_request: "Yêu cầu không hợp lệ!",
   avatar_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
   avatar_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
   password_incorrect: "Mật khẩu hiện tại không chính xác!",

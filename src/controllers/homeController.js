@@ -9,8 +9,10 @@ import { transErrors } from "../../lang/vi";
  */
 let getHome = async (req, res) => {
   try {
-    let notifications = await notificationService.getNotifications(req.user._id);
-    let noOfUnreadNotifications = await notificationService.getNoOfUnreadNotifications(req.user._id);
+    let currentUserId = req.user._id;
+
+    let notifications = await notificationService.getNotifications(currentUserId);
+    let noOfUnreadNotifications = await notificationService.getNoOfUnreadNotifications(currentUserId);
 
     return res.render("main/home/home", {
       notifications,

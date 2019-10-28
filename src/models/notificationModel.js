@@ -19,10 +19,10 @@ NotificationSchema.statics = {
     return this.create(item);
   },
 
-  getByUserId(userId, limit) {
+  getByUserId(userId, offset, limit) {
     return this.find({
       "receiverId": userId,
-    }).sort({ "createdAt": -1 }).limit(limit).exec();
+    }).sort({ "createdAt": -1 }).skip(offset).limit(limit).exec();
   },
 
   getNoOfUnreadNotifications(userId) {

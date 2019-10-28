@@ -1,5 +1,5 @@
 import express from "express";
-import { homeController, authController, userController, contactController } from "../controllers";
+import { homeController, authController, userController, contactController, notificationController } from "../controllers";
 import { authValidation, userValidation, contactValidation } from "../validations";
 import passport from "passport";
 
@@ -41,6 +41,7 @@ let initRoutes = (app) => {
   router.post("/contact/add", authController.checkLoggedIn, contactController.addNewContact);
   router.delete("/contact/remove-request", authController.checkLoggedIn, contactController.removeRequestingContact);
 
+  router.get("/notification", authController.checkLoggedIn, notificationController.getNotifications);
 
   return app.use("/", router);
 };
