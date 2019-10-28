@@ -5,10 +5,11 @@ import { NOTIFICATION_TYPES } from "../models/notificationModel";
 /**
  * Get notifications default 10 records
  * @param {String} currentUserId Current user id
- * @param {Number} limit Limit
+ * @param {Number} offset Offset default 0
+ * @param {Number} limit Limit default 10
  */
-let getNotifications = async (currentUserId, limit = 10) => {
-  let notifications = await NotificationModel.getByUserId(currentUserId, limit);
+let getNotifications = async (currentUserId, offset = 0, limit = 10) => {
+  let notifications = await NotificationModel.getByUserId(currentUserId, offset, limit);
 
   return await Promise.all(notifications.map(async (notification) => {
     let sender = await UserModel.findUserById(notification.senderId);
