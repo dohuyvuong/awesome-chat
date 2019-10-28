@@ -26,6 +26,15 @@ let getNoOfUnreadNotifications = async (currentUserId) => {
 };
 
 /**
+ *
+ * @param {String} currentUserId Current user id
+ * @param {Array} targetUserIds Sender ids
+ */
+let markNotificationsAsRead = async (currentUserId, targetUserIds) => {
+  return await NotificationModel.markNotificationsAsRead(currentUserId, targetUserIds);
+};
+
+/**
  * Get notification content for notification record
  * @param {NotificationModel} notification Notification
  * @param {UserModel} sender Sender
@@ -48,4 +57,5 @@ let getNotificationContent = (notification, sender) => {
 export const notificationService = {
   getNotifications,
   getNoOfUnreadNotifications,
+  markNotificationsAsRead,
 };

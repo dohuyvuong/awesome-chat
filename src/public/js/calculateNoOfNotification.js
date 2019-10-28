@@ -5,9 +5,9 @@ function increaseNoOfNotification(selector) {
   $(`${selector}`).html(`${currentNoOfNotification}`).css("display", "block");
 }
 
-function decreaseNoOfNotification(selector) {
+function decreaseNoOfNotification(selector, number) {
   let currentNoOfNotification = +$(`${selector}`).text();
-  currentNoOfNotification--;
+  currentNoOfNotification -= number;
 
   if (currentNoOfNotification <= 0) {
     $(`${selector}`).css("display", "none").html("");
