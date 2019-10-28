@@ -1284,7 +1284,7 @@ label:focus,
   cursor: unset;
 }
 
-#mark-all-read {
+#popup-mark-notifications-as-read {
   cursor: pointer !important;
 }
 

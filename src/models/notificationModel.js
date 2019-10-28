@@ -34,6 +34,15 @@ NotificationSchema.statics = {
     }).exec();
   },
 
+  markNotificationsAsRead(userId, targetUserIds) {
+    return this.updateMany({
+      $and: [
+        { "receiverId": userId },
+        { "senderId": { $in: targetUserIds } },
+      ],
+    }, { "isRead": true }).exec();
+  },
+
   removeRequestingContactNotification(senderId, receiverId) {
     return this.deleteOne({
       $and: [
