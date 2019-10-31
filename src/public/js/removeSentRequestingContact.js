@@ -15,7 +15,7 @@ function removeSentRequestingContact() {
 
           $("#request-contact-sent ul.contactList").find(`li[data-uid=${targetId}]`).remove();
           if (!$("#request-contact-sent ul.contactList").children().length) {
-            $("#request-contact-sent ul.contactList").html(`<div class="no-received-requesting-contacts">There are no sent requesting contacts!</div>`);
+            $("#request-contact-sent ul.contactList").html(`<div class="no-sent-requesting-contacts">There are no sent requesting contacts!</div>`);
           }
 
           socket.emit("remove-sent-requesting-contact", { contactId: targetId });
