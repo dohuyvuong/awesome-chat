@@ -1,14 +1,14 @@
 $(document).ready(function () {
   $("#link-read-more-notifications").click(function () {
     let offset = 0;
-    if (!$("#notificationsModal .list-notifications").find("li>#no-notifications").length) {
+    if (!$("#notificationsModal .list-notifications").find("li>.no-notifications").length) {
       offset = $("#notificationsModal .list-notifications").find("li").length;
     }
 
     $(".read-more-notifications").hide();
     $(".read-more-notifications-loader").show();
 
-    $.get(`/notification?offset=${offset}`, function (notifications) {
+    $.get(`/notification/get-notifications?offset=${offset}`, function (notifications) {
       $(".read-more-notifications-loader").hide();
 
       if (!notifications.length) {
