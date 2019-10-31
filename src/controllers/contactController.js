@@ -47,16 +47,16 @@ let addNewContact = async (req, res) => {
 }
 
 /**
- * Remove requesting contact
+ * Remove sent requesting contact
  * @param {express.Request} req Request
  * @param {express.Response} res Response
  */
-let removeRequestingContact = async (req, res) => {
+let removeSentRequestingContact = async (req, res) => {
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
 
-    let result = await contactService.removeRequestingContact(currentUserId, contactId);
+    let result = await contactService.removeSentRequestingContact(currentUserId, contactId);
 
     return res.status(200).send({ result });
   } catch (error) {
@@ -67,5 +67,5 @@ let removeRequestingContact = async (req, res) => {
 export const contactController = {
   searchNewContact,
   addNewContact,
-  removeRequestingContact,
+  removeSentRequestingContact,
 };

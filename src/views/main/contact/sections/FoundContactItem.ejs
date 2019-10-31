@@ -1,5 +1,5 @@
 <% if (!users.length) { %>
-    <div style="padding: 5px 10px;">No results!</div>
+    <div class="no-found-contacts">No results!</div>
 <% } %>
 
 <% users.map(user => { %>
@@ -15,7 +15,7 @@
             </div>
             <br>
             <div class="user-address">
-                <span>&nbsp <%= user.address %></span>
+                <span><%= user.address %></span>
             </div>
             <div class="user-add-new-contact" data-uid="<%= user._id %>">
                 Thêm vào danh sách liên lạc
