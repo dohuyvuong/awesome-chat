@@ -9,6 +9,10 @@ function addContact() {
 
         increaseNoOfContact(".count-request-contact-sent");
 
+        let newSentRequestingContactElement = $("#find-user").find(`ul li[data-uid=${targetId}]`).get(0).outerHTML;
+        $("#request-contact-sent .no-sent-requesting-contacts").remove();
+        $("#request-contact-sent ul.contactList").prepend(newSentRequestingContactElement);
+
         socket.emit("add-new-contact", { contactId: targetId });
       }
     });
@@ -29,4 +33,29 @@ socket.on("response-add-new-contact", function (user) {
   increaseNoOfContact(".count-request-contact-received");
   increaseNoOfNotification(".noti_contact_counter");
   increaseNoOfNotification(".noti_counter");
+
+  let newReceivedRequestingContactElement = `<li class="_contactList" data-uid="${user.id}">
+                                                <div class="contactPanel">
+                                                    <div class="user-avatar">
+                                                        <img src="images/users/${user.avatar}" alt="">
+                                                    </div>
+                                                    <div class="user-name">
+                                                        <p>
+                                                            ${user.username}
+                                                        </p>
+                                                    </div>
+                                                    <br>
+                                                    <div class="user-address">
+                                                        <span>${user.address ? user.address : ""}</span>
+                                                    </div>
+                                                    <div class="user-acccept-contact-received" data-uid="${user._id}">
+                                                        Chấp nhận
+                                                    </div>
+                                                    <div class="user-reject-request-contact-received action-danger" data-uid="${user._id}">
+                                                        Xóa yêu cầu
+                                                    </div>
+                                                </div>
+                                            </li>`;
+  $("#request-contact-received ul.contactList .no-received-requesting-contacts").remove();
+  $("#request-contact-received ul.contactList").prepend(newReceivedRequestingContactElement);
 });

@@ -282,7 +282,7 @@ label:focus,
 }
 
 .noti_contact_counter {
-  display: none;
+  display: block;
   position: absolute;
   background: #E1141E;
   color: #FFF;
@@ -1312,7 +1312,7 @@ label:focus,
   margin: 10px auto;
 }
 
-.read-more-notifications {
+.read-more-notifications, .read-more-contacts, .read-more-sent-req-contacts, .read-more-received-req-contacts {
   text-align: center;
   width: 90%;
   margin: 10px auto;
@@ -1412,7 +1412,7 @@ label:focus,
   }
 }
 
-.read-more-notifications-loader {
+.read-more-notifications-loader, .read-more-contacts-loader, .read-more-sent-req-contacts-loader, .read-more-received-req-contacts-loader {
   text-align: center;
   display: none;
 }
@@ -1470,4 +1470,13 @@ label:focus,
   100% {
     transform: translate(19px, 0);
   }
+}
+
+.no-found-contacts, .no-contacts, .no-sent-requesting-contacts, .no-received-requesting-contacts {
+  padding: 5px 10px;
+  color: #a2a2a2;
+}
+
+.nav-tabs > li > a {
+  margin-right: 0px;
 }

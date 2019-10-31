@@ -20,7 +20,7 @@ function findUsersToAddContact(element) {
     $.get(`/contact/search?keyword=${keyword}`, function (data) {
       $("#find-user .contactList").html(data);
       addContact(); // from js/addContact.js
-      removeRequestingContact(); // from js/removeRequestingContact.js
+      removeSentRequestingContact(); // from js/removeSentRequestingContact.js
     });
   }
 }

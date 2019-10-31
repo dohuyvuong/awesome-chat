@@ -43,7 +43,7 @@ NotificationSchema.statics = {
     }, { "isRead": true }).exec();
   },
 
-  removeRequestingContactNotification(senderId, receiverId) {
+  removeSentRequestingContactNotification(senderId, receiverId) {
     return this.deleteOne({
       $and: [
         { "senderId": senderId },
