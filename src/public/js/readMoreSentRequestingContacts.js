@@ -33,13 +33,15 @@ $(document).ready(function () {
                                   <div class="user-address">
                                       <span>${user.address ? user.address : ""}</span>
                                   </div>
-                                  <div class="user-remove-request-sent action-danger" data-uid="${user._id}">
+                                  <div class="user-remove-sent-requesting-contact action-danger display-important" data-uid="${user._id}">
                                       Hủy yêu cầu
                                   </div>
                               </div>
                           </li>`;
         $("#request-contact-sent ul.contactList").append(userElement);
       });
+
+      handleRemoveSentRequestingContact(); // from js/handleRemoveSentRequestingContact.js
 
       $(".read-more-sent-req-contacts").show();
     });

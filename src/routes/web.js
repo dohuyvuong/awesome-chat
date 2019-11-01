@@ -39,7 +39,7 @@ let initRoutes = (app) => {
 
   router.get("/contact/search", authController.checkLoggedIn, contactValidation.searchNewContact, contactController.searchNewContact);
   router.post("/contact/add", authController.checkLoggedIn, contactController.addNewContact);
-  router.delete("/contact/remove-request", authController.checkLoggedIn, contactController.removeSentRequestingContact);
+  router.delete("/contact/remove-sent-requesting-contact", authController.checkLoggedIn, contactController.removeSentRequestingContact);
   router.get("/contact/get-contacts-as-users", authController.checkLoggedIn, contactController.getContactsAsUsers);
   router.get("/contact/get-sent-requesting-contacts-as-users", authController.checkLoggedIn, contactController.getSentRequestingContactsAsUsers);
   router.get("/contact/get-received-requesting-contacts-as-users", authController.checkLoggedIn, contactController.getReceivedRequestingContactsAsUsers);

@@ -193,12 +193,15 @@ label:focus,
   margin: 10px 0px 0px 60px;
 }
 
+.contactPanel .user-address span {
+  display: inline-block;
+}
+
 .contactPanel .user-add-new-contact,
 .contactPanel .user-talk,
 .contactPanel .user-remove-contact,
-.contactPanel .user-remove-request-contact,
+.contactPanel .user-remove-sent-requesting-contact,
 .contactPanel .user-acccept-contact-received,
-.contactPanel .user-remove-request-sent,
 .contactPanel .user-reject-request-contact-received {
   box-sizing: border-box;
   display: inline-flex;
@@ -228,7 +231,7 @@ label:focus,
   margin: 10px 0px 5px 2px;
 }
 
-.contactPanel .user-remove-request-contact {
+.contactPanel .user-remove-sent-requesting-contact {
   display: none;
 }
 
@@ -1479,4 +1482,8 @@ label:focus,
 
 .nav-tabs > li > a {
   margin-right: 0px;
+}
+
+.display-important {
+  display: inline-block !important;
 }
