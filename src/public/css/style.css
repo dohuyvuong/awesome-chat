@@ -201,8 +201,8 @@ label:focus,
 .contactPanel .user-talk,
 .contactPanel .user-remove-contact,
 .contactPanel .user-remove-sent-requesting-contact,
-.contactPanel .user-acccept-contact-received,
-.contactPanel .user-reject-request-contact-received {
+.contactPanel .user-accept-received-requesting-contact,
+.contactPanel .user-reject-received-requesting-contact {
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;

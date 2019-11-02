@@ -50,14 +50,15 @@ socket.on("response-add-new-contact", function (user) {
                                                     <div class="user-address">
                                                         <span>${user.address ? user.address : ""}</span>
                                                     </div>
-                                                    <div class="user-acccept-contact-received" data-uid="${user._id}">
+                                                    <div class="user-accept-received-requesting-contact" data-uid="${user.id}">
                                                         Chấp nhận
                                                     </div>
-                                                    <div class="user-reject-request-contact-received action-danger" data-uid="${user._id}">
+                                                    <div class="user-reject-received-requesting-contact action-danger" data-uid="${user.id}">
                                                         Xóa yêu cầu
                                                     </div>
                                                 </div>
                                             </li>`;
   $("#request-contact-received ul.contactList .no-received-requesting-contacts").remove();
   $("#request-contact-received ul.contactList").prepend(newReceivedRequestingContactElement);
+  handleRejectReceivedRequestingContact();
 });
