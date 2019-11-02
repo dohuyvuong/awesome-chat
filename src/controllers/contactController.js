@@ -65,6 +65,24 @@ let removeSentRequestingContact = async (req, res) => {
 }
 
 /**
+ * Reject received requesting contact
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let rejectReceivedRequestingContact = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let contactId = req.body.uid;
+
+    let result = await contactService.rejectReceivedRequestingContact(currentUserId, contactId);
+
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(500).send(transErrors.server_error);
+  }
+}
+
+/**
  * Get contacts as users
  * @param {express.Request} req Request
  * @param {express.Response} res Response
@@ -137,6 +155,7 @@ export const contactController = {
   searchNewContact,
   addNewContact,
   removeSentRequestingContact,
+  rejectReceivedRequestingContact,
   getContactsAsUsers,
   getSentRequestingContactsAsUsers,
   getReceivedRequestingContactsAsUsers,

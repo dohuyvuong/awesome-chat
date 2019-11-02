@@ -116,7 +116,17 @@ ContactSchema.statics = {
         { "status": false },
       ],
     }).exec();
-  }
+  },
+
+  rejectReceivedRequestingContact(userId, contactId) {
+    return this.deleteOne({
+      $and: [
+        { "userId": contactId },
+        { "contactId": userId },
+        { "status": false },
+      ],
+    }).exec();
+  },
 };
 
 export default mongoose.model("contact", ContactSchema);
