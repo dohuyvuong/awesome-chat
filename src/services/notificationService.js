@@ -41,7 +41,20 @@ let markNotificationsAsRead = async (currentUserId, targetUserIds) => {
  */
 let getNotificationContent = (notification, sender) => {
   if (notification.type === NOTIFICATION_TYPES.ADD_CONTACT) {
-    return renderTemplate("addd_new_contact_notification.html", {
+    return renderTemplate("add_new_contact_notification.html", {
+      user: {
+        _id: sender._id,
+        username: sender.username,
+        avatar: sender.avatar,
+      },
+      notification: {
+        isRead: notification.isRead,
+      },
+    });
+  }
+
+  if (notification.type === NOTIFICATION_TYPES.ACCEPT_CONTACT) {
+    return renderTemplate("accept_contact_notification.html", {
       user: {
         _id: sender._id,
         username: sender.username,

@@ -11,8 +11,8 @@ let listenAddNewContact = (io, socket) => {
     let currentUser = {
       id: socket.request.user._id,
       username: socket.request.user.username,
-      address: socket.request.user.address,
-      avatar: socket.request.user.avatar ? socket.request.user.avatar : "",
+      avatar: socket.request.user.avatar,
+      address: socket.request.user.address ? socket.request.user.address : "",
     };
 
     if (clients[data.contactId]) {

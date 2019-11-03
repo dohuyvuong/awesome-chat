@@ -4,6 +4,7 @@ let Schema = mongoose.Schema;
 
 const NOTIFICATION_TYPES = {
   ADD_CONTACT: "add_contact",
+  ACCEPT_CONTACT: "accept_contact",
 };
 
 let NotificationSchema = new Schema({
