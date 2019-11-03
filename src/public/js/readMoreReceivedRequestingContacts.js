@@ -44,6 +44,7 @@ $(document).ready(function () {
         $("#request-contact-received ul.contactList").append(userElement);
       });
       handleRejectReceivedRequestingContact();
+      handleAcceptReceivedRequestingContact();
 
       $(".read-more-received-req-contacts").show();
     });

@@ -79,6 +79,25 @@ let rejectReceivedRequestingContact = async (currentUserId, contactId) => {
 };
 
 /**
+ * Accept received requesting contact
+ * @param {String} currentUserId Current user id
+ * @param {String} contactId Current user id
+ */
+let acceptReceivedRequestingContact = async (currentUserId, contactId) => {
+  let result = await ContactModel.acceptReceivedRequestingContact(currentUserId, contactId);
+
+  // Create new notification
+  let notificationItem = {
+    senderId: currentUserId,
+    receiverId: contactId,
+    type: NOTIFICATION_TYPES.ACCEPT_CONTACT,
+  };
+  await NotificationModel.createNew(notificationItem);
+
+  return result.nModified > 0;
+};
+
+/**
  * Get contacts as users default 10 records
  * @param {String} currentUserId Current user id
  * @param {Number} offset Offset default 0
@@ -154,6 +173,7 @@ export const contactService = {
   addNewContact,
   removeSentRequestingContact,
   rejectReceivedRequestingContact,
+  acceptReceivedRequestingContact,
   getContactsAsUsers,
   getNoOfContacts,
   getSentRequestingContactsAsUsers,

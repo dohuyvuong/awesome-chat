@@ -127,6 +127,16 @@ ContactSchema.statics = {
       ],
     }).exec();
   },
+
+  acceptReceivedRequestingContact(userId, contactId) {
+    return this.updateOne({
+      $and: [
+        { "userId": contactId },
+        { "contactId": userId },
+        { "status": false },
+      ],
+    }, { "status": true }).exec();
+  },
 };
 
 export default mongoose.model("contact", ContactSchema);

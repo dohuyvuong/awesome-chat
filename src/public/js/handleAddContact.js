@@ -61,4 +61,5 @@ socket.on("response-add-new-contact", function (user) {
   $("#request-contact-received ul.contactList .no-received-requesting-contacts").remove();
   $("#request-contact-received ul.contactList").prepend(newReceivedRequestingContactElement);
   handleRejectReceivedRequestingContact();
+  handleAcceptReceivedRequestingContact();
 });
