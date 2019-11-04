@@ -2,6 +2,7 @@ import listenAddNewContact from "./addNewContact";
 import listenRemoveSentRequestingContact from "./removeSentRequestingContact";
 import listenRejectReceivedRequestingContact from "./rejectReceivedRequestingContact"
 import listenAcceptReceivedRequestingContact from "./acceptReceivedRequestingContact";
+import listenRemoveContact from "./removeContact";
 
 /**
  * Handle all contact events
@@ -13,6 +14,7 @@ let listenContactEvent = (io, socket) => {
   listenRemoveSentRequestingContact(io, socket);
   listenRejectReceivedRequestingContact(io, socket);
   listenAcceptReceivedRequestingContact(io, socket);
+  listenRemoveContact(io, socket);
 };
 
 export default {

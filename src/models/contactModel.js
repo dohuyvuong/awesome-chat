@@ -137,6 +137,27 @@ ContactSchema.statics = {
       ],
     }, { "status": true }).exec();
   },
+
+  removeContact(userId, contactId) {
+    return this.deleteOne({
+      $or: [
+        {
+          $and: [
+            { "userId": userId },
+            { "contactId": contactId },
+            { "status": true },
+          ],
+        },
+        {
+          $and: [
+            { "userId": contactId },
+            { "contactId": userId },
+            { "status": true },
+          ],
+        },
+      ],
+    }).exec();
+  },
 };
 
 export default mongoose.model("contact", ContactSchema);

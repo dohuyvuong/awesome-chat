@@ -16,9 +16,9 @@ $(document).ready(function () {
         return;
       }
 
-      contactsAsUsers.forEach(user => {
-        $("#contacts .no-contacts").remove();
+      $("#contacts .no-contacts").remove();
 
+      contactsAsUsers.forEach(user => {
         let userElement = `<li class="_contactList" data-uid="${user._id}">
                               <div class="contactPanel">
                                   <div class="user-avatar">
@@ -43,6 +43,7 @@ $(document).ready(function () {
                           </li>`;
         $("#contacts ul.contactList").append(userElement);
       });
+      handleRemoveContact();
 
       $(".read-more-contacts").show();
     });
