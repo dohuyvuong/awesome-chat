@@ -98,6 +98,17 @@ let acceptReceivedRequestingContact = async (currentUserId, contactId) => {
 };
 
 /**
+ * Remove contact
+ * @param {String} currentUserId Current user id
+ * @param {String} contactId Current user id
+ */
+let removeContact = async (currentUserId, contactId) => {
+  let result = await ContactModel.removeContact(currentUserId, contactId);
+
+  return result.n > 0;
+};
+
+/**
  * Get contacts as users default 10 records
  * @param {String} currentUserId Current user id
  * @param {Number} offset Offset default 0
@@ -174,6 +185,7 @@ export const contactService = {
   removeSentRequestingContact,
   rejectReceivedRequestingContact,
   acceptReceivedRequestingContact,
+  removeContact,
   getContactsAsUsers,
   getNoOfContacts,
   getSentRequestingContactsAsUsers,

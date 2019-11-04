@@ -25,6 +25,7 @@ function handleAcceptReceivedRequestingContact() {
 
           // handle chat
           // handle remove contact
+          handleRemoveContact();
 
           increaseNoOfContact(".count-contacts");
 
@@ -86,6 +87,7 @@ socket.on("response-accept-received-requesting-contact", function (user) {
   `;
   $("#contacts ul.contactList").find(".no-contacts").remove();
   $("#contacts ul.contactList").prepend(newContactElement);
+  handleRemoveContact();
 
   $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
   if (!$("#request-contact-sent ul.contactList").children().length) {

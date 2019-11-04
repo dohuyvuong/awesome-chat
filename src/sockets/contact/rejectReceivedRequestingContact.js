@@ -2,7 +2,7 @@ import socketIO from "socket.io";
 import clients from "../clients";
 
 /**
- * Handle reject-received-requesting-contact event and notify to receiver
+ * Handle reject-received-requesting-contact event
  * @param {socketIO.Server} io from Socket.IO library
  * @param {socketIO.Socket} socket Socket
  */
