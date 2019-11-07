@@ -1,5 +1,5 @@
 function handleRemoveContact() {
-  $(".user-remove-contact").bind("click", function () {
+  $(".user-remove-contact").unbind("click").bind("click", function () {
     let targetId = $(this).data("uid");
     let username = $(this).parent().find("div.user-name p").text();
 
@@ -27,6 +27,8 @@ function handleRemoveContact() {
 
             $("#contacts ul.contactList").find(`li[data-uid=${targetId}]`).remove();
 
+            displayAddActionAndRemoveOthers(targetId);
+
             if (!$("#contacts ul.contactList").children().length) {
               $("#contacts ul.contactList").html(`<div class="no-contacts">There are no contacts!</div>`);
             }
@@ -43,6 +45,8 @@ socket.on("response-remove-contact", function (user) {
   decreaseNoOfContact(".count-contacts");
 
   $("#contacts ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+
+  displayAddActionAndRemoveOthers(user.id);
 
   if (!$("#contacts ul.contactList").children().length) {
     $("#contacts ul.contactList").html(`<div class="no-contacts">There are no contacts!</div>`);

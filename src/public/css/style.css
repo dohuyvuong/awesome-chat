@@ -231,10 +231,6 @@ label:focus,
   margin: 10px 0px 5px 2px;
 }
 
-.contactPanel .user-remove-sent-requesting-contact {
-  display: none;
-}
-
 .contactPanel .action-danger {
   border-color: #ff7675;
   background-color: #ff7675;

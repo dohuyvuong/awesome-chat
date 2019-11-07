@@ -1,5 +1,5 @@
 function handleAcceptReceivedRequestingContact() {
-  $(".user-accept-received-requesting-contact").bind("click", function () {
+  $(".user-accept-received-requesting-contact").unbind("click").bind("click", function () {
     let targetId = $(this).data("uid");
 
     $.ajax({
@@ -10,6 +10,7 @@ function handleAcceptReceivedRequestingContact() {
         if (data.result) {
           decreaseNoOfContact(".count-request-contact-received");
           decreaseNoOfNotification(".noti_contact_counter", 1);
+          increaseNoOfContact(".count-contacts");
 
           let targetElement = $("#request-contact-received ul.contactList").find(`li[data-uid=${targetId}]`);
           $(targetElement).find("div.user-accept-received-requesting-contact").remove();
@@ -23,11 +24,7 @@ function handleAcceptReceivedRequestingContact() {
           $("#contacts ul.contactList").find(".no-contacts").remove();
           $("#contacts ul.contactList").prepend(targetElement);
 
-          // handle chat
-          // handle remove contact
-          handleRemoveContact();
-
-          increaseNoOfContact(".count-contacts");
+          displayChatAndRemoveActionsAndRemoveOthers(targetId);
 
           // $("#request-contact-received ul.contactList").find(`li[data-uid=${targetId}]`).remove();
           if (!$("#request-contact-received ul.contactList").children().length) {
@@ -53,13 +50,11 @@ socket.on("response-accept-received-requesting-contact", function (user) {
   $(".list-notifications").prepend(`<li>${notification}</li>`);
 
   increaseNoOfContact(".count-contacts");
+  decreaseNoOfContact(".count-request-contact-sent");
   decreaseNoOfNotification(".noti_contact_counter", 1);
   increaseNoOfNotification(".noti_counter");
 
-  $("#find-user ul.contactList").find(`li[data-uid=${user.id}]`).remove();
-
   $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
-  decreaseNoOfContact(".count-request-contact-sent");
 
   let newContactElement = `
       <li class="_contactList" data-uid="${user.id}">
@@ -87,7 +82,8 @@ socket.on("response-accept-received-requesting-contact", function (user) {
   `;
   $("#contacts ul.contactList").find(".no-contacts").remove();
   $("#contacts ul.contactList").prepend(newContactElement);
-  handleRemoveContact();
+
+  displayChatAndRemoveActionsAndRemoveOthers(user.id);
 
   $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
   if (!$("#request-contact-sent ul.contactList").children().length) {
