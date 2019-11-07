@@ -33,7 +33,7 @@ $(document).ready(function () {
                                   <div class="user-address">
                                       <span>${user.address ? user.address : ""}</span>
                                   </div>
-                                  <div class="user-remove-sent-requesting-contact action-danger display-important" data-uid="${user._id}">
+                                  <div class="user-remove-sent-requesting-contact action-danger" data-uid="${user._id}">
                                       Hủy yêu cầu
                                   </div>
                               </div>

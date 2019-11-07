@@ -1,5 +1,5 @@
 function handleRemoveSentRequestingContact() {
-  $(".user-remove-sent-requesting-contact").bind("click", function () {
+  $(".user-remove-sent-requesting-contact").unbind("click").bind("click", function () {
     let targetId = $(this).data("uid");
 
     $.ajax({
@@ -8,12 +8,12 @@ function handleRemoveSentRequestingContact() {
       data: { uid: targetId },
       success: function (data) {
         if (data.result) {
-          $("#find-user").find(`div.user-remove-sent-requesting-contact[data-uid=${targetId}]`).hide();
-          $("#find-user").find(`div.user-add-new-contact[data-uid=${targetId}]`).css("display", "inline-block");
-
           decreaseNoOfContact(".count-request-contact-sent");
 
           $("#request-contact-sent ul.contactList").find(`li[data-uid=${targetId}]`).remove();
+
+          displayAddActionAndRemoveOthers(targetId);
+
           if (!$("#request-contact-sent ul.contactList").children().length) {
             $("#request-contact-sent ul.contactList").html(`<div class="no-sent-requesting-contacts">There are no sent requesting contacts!</div>`);
           }
@@ -42,6 +42,9 @@ socket.on("response-remove-sent-requesting-contact", function (user) {
   decreaseNoOfNotification(".noti_counter", 1);
 
   $("#request-contact-received ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+
+  displayAddActionAndRemoveOthers(user.id);
+
   if (!$("#request-contact-received ul.contactList").children().length) {
     $("#request-contact-received ul.contactList").html(`<div class="no-received-requesting-contacts">There are no received requesting contacts!</div>`);
   }

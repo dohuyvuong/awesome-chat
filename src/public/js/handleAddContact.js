@@ -1,19 +1,16 @@
 function handleAddContact() {
-  $(".user-add-new-contact").bind("click", function () {
+  $(".user-add-new-contact").unbind("click").bind("click", function () {
     let targetId = $(this).data("uid");
 
     $.post("/contact/add", { uid: targetId }, function (data) {
       if (data.result) {
-        $("#find-user").find(`div.user-add-new-contact[data-uid=${targetId}]`).hide();
-        $("#find-user").find(`div.user-remove-sent-requesting-contact[data-uid=${targetId}]`).css("display", "inline-block");
-
         increaseNoOfContact(".count-request-contact-sent");
 
         let newSentRequestingContactElement = $("#find-user").find(`ul li[data-uid=${targetId}]`).get(0).outerHTML;
         $("#request-contact-sent .no-sent-requesting-contacts").remove();
         $("#request-contact-sent ul.contactList").prepend(newSentRequestingContactElement);
 
-        handleRemoveSentRequestingContact();
+        displayCancelActionAndRemoveOthers(targetId);
 
         socket.emit("add-new-contact", { contactId: targetId });
       }
@@ -60,6 +57,6 @@ socket.on("response-add-new-contact", function (user) {
                                             </li>`;
   $("#request-contact-received ul.contactList .no-received-requesting-contacts").remove();
   $("#request-contact-received ul.contactList").prepend(newReceivedRequestingContactElement);
-  handleRejectReceivedRequestingContact();
-  handleAcceptReceivedRequestingContact();
+
+  displayAcceptAndRejectActionsAndRemoveOthers(user.id);
 });
