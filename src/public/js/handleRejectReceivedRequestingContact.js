@@ -29,9 +29,9 @@ function handleRejectReceivedRequestingContact() {
 socket.on("response-reject-received-requesting-contact", function (user) {
   decreaseNoOfContact(".count-request-contact-sent");
 
-  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user._id}]`).remove();
 
-  displayAddActionAndRemoveOthers(user.id);
+  displayAddActionAndRemoveOthers(user._id);
 
   if (!$("#request-contact-sent ul.contactList").children().length) {
     $("#request-contact-sent ul.contactList").html(`<div class="no-sent-requesting-contacts">There are no sent requesting contacts!</div>`);

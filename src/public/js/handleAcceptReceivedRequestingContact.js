@@ -39,7 +39,7 @@ function handleAcceptReceivedRequestingContact() {
 }
 
 socket.on("response-accept-received-requesting-contact", function (user) {
-  let notification = `<div data-uid="${user.id}" class="noti-read-false">
+  let notification = `<div data-uid="${user._id}" class="noti-read-false">
                         <img class="avatar-small" src="images/users/${user.avatar}" alt="">
                         <strong>${user.username}</strong> đã chấp nhận lời mời kết bạn của bạn!
                       </div>`;
@@ -54,10 +54,10 @@ socket.on("response-accept-received-requesting-contact", function (user) {
   decreaseNoOfNotification(".noti_contact_counter", 1);
   increaseNoOfNotification(".noti_counter");
 
-  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user._id}]`).remove();
 
   let newContactElement = `
-      <li class="_contactList" data-uid="${user.id}">
+      <li class="_contactList" data-uid="${user._id}">
         <div class="contactPanel">
             <div class="user-avatar">
                 <img src="images/users/${user.avatar}" alt="">
@@ -71,10 +71,10 @@ socket.on("response-accept-received-requesting-contact", function (user) {
             <div class="user-address">
                 <span>${user.address}</span>
             </div>
-            <div class="user-talk" data-uid="${user.id}">
+            <div class="user-talk" data-uid="${user._id}">
                 Trò chuyện
             </div>
-            <div class="user-remove-contact action-danger" data-uid="${user.id}">
+            <div class="user-remove-contact action-danger" data-uid="${user._id}">
                 Xóa liên hệ
             </div>
         </div>
@@ -83,9 +83,9 @@ socket.on("response-accept-received-requesting-contact", function (user) {
   $("#contacts ul.contactList").find(".no-contacts").remove();
   $("#contacts ul.contactList").prepend(newContactElement);
 
-  displayChatAndRemoveActionsAndRemoveOthers(user.id);
+  displayChatAndRemoveActionsAndRemoveOthers(user._id);
 
-  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+  $("#request-contact-sent ul.contactList").find(`li[data-uid=${user._id}]`).remove();
   if (!$("#request-contact-sent ul.contactList").children().length) {
     $("#request-contact-sent ul.contactList").html(`<div class="no-sent-requesting-contacts">There are no sent requesting contacts!</div>`);
   }
