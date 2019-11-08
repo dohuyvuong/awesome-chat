@@ -9,7 +9,7 @@ import clients from "../clients";
 let listenAddNewContact = (io, socket) => {
   socket.on("add-new-contact", (data) => {
     let currentUser = {
-      id: socket.request.user._id,
+      _id: socket.request.user._id,
       username: socket.request.user.username,
       avatar: socket.request.user.avatar,
       address: socket.request.user.address ? socket.request.user.address : "",

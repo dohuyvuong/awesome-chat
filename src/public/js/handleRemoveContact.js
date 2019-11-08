@@ -44,9 +44,9 @@ function handleRemoveContact() {
 socket.on("response-remove-contact", function (user) {
   decreaseNoOfContact(".count-contacts");
 
-  $("#contacts ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+  $("#contacts ul.contactList").find(`li[data-uid=${user._id}]`).remove();
 
-  displayAddActionAndRemoveOthers(user.id);
+  displayAddActionAndRemoveOthers(user._id);
 
   if (!$("#contacts ul.contactList").children().length) {
     $("#contacts ul.contactList").html(`<div class="no-contacts">There are no contacts!</div>`);

@@ -19,7 +19,7 @@ function handleAddContact() {
 }
 
 socket.on("response-add-new-contact", function (user) {
-  let notification = `<div data-uid="${user.id}" class="noti-read-false">
+  let notification = `<div data-uid="${user._id}" class="noti-read-false">
                         <img class="avatar-small" src="images/users/${user.avatar}" alt="">
                         <strong>${user.username}</strong> đã gửi cho bạn một lời mời kết bạn!
                       </div>`;
@@ -33,7 +33,7 @@ socket.on("response-add-new-contact", function (user) {
   increaseNoOfNotification(".noti_contact_counter");
   increaseNoOfNotification(".noti_counter");
 
-  let newReceivedRequestingContactElement = `<li class="_contactList" data-uid="${user.id}">
+  let newReceivedRequestingContactElement = `<li class="_contactList" data-uid="${user._id}">
                                                 <div class="contactPanel">
                                                     <div class="user-avatar">
                                                         <img src="images/users/${user.avatar}" alt="">
@@ -47,10 +47,10 @@ socket.on("response-add-new-contact", function (user) {
                                                     <div class="user-address">
                                                         <span>${user.address ? user.address : ""}</span>
                                                     </div>
-                                                    <div class="user-accept-received-requesting-contact" data-uid="${user.id}">
+                                                    <div class="user-accept-received-requesting-contact" data-uid="${user._id}">
                                                         Chấp nhận
                                                     </div>
-                                                    <div class="user-reject-received-requesting-contact action-danger" data-uid="${user.id}">
+                                                    <div class="user-reject-received-requesting-contact action-danger" data-uid="${user._id}">
                                                         Xóa yêu cầu
                                                     </div>
                                                 </div>
@@ -58,5 +58,5 @@ socket.on("response-add-new-contact", function (user) {
   $("#request-contact-received ul.contactList .no-received-requesting-contacts").remove();
   $("#request-contact-received ul.contactList").prepend(newReceivedRequestingContactElement);
 
-  displayAcceptAndRejectActionsAndRemoveOthers(user.id);
+  displayAcceptAndRejectActionsAndRemoveOthers(user._id);
 });

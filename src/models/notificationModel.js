@@ -51,7 +51,7 @@ NotificationSchema.statics = {
         { "receiverId": receiverId },
         { "type": NOTIFICATION_TYPES.ADD_CONTACT },
       ],
-    }).exec();
+    }).sort({ "createdAt": -1 }).exec();
   },
 };
 

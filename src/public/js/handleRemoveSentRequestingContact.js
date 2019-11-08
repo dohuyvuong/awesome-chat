@@ -26,8 +26,8 @@ function handleRemoveSentRequestingContact() {
 }
 
 socket.on("response-remove-sent-requesting-contact", function (user) {
-  $(".noti_content").find(`div[data-uid=${user.id}]`).remove();
-  $(".list-notifications").find(`li>div[data-uid=${user.id}]`).parent().remove();
+  $(".noti_content").find(`div[data-uid=${user._id}]`)[0].remove();
+  $(".list-notifications").find(`li>div[data-uid=${user._id}]`).parent()[0].remove();
 
   if (!$(".noti_content").children().length) {
     $(".noti_content").html(`<div class="no-notifications">There are no notifications!</div>`);
@@ -41,9 +41,9 @@ socket.on("response-remove-sent-requesting-contact", function (user) {
   decreaseNoOfNotification(".noti_contact_counter", 1);
   decreaseNoOfNotification(".noti_counter", 1);
 
-  $("#request-contact-received ul.contactList").find(`li[data-uid=${user.id}]`).remove();
+  $("#request-contact-received ul.contactList").find(`li[data-uid=${user._id}]`).remove();
 
-  displayAddActionAndRemoveOthers(user.id);
+  displayAddActionAndRemoveOthers(user._id);
 
   if (!$("#request-contact-received ul.contactList").children().length) {
     $("#request-contact-received ul.contactList").html(`<div class="no-received-requesting-contacts">There are no received requesting contacts!</div>`);
