@@ -1,6 +1,7 @@
 import express from "express";
-import { notificationService, contactService } from "../services";
+import { notificationService, contactService, conversationService } from "../services";
 import { transErrors } from "../../lang/vi";
+import clientUtil from "../utils/clientUtil";
 
 /**
  * Return Response rendered Homepage
@@ -27,7 +28,12 @@ let getHome = async (req, res) => {
     let receivedRequestingContactsAsUsers = await contactService.getReceivedRequestingContactsAsUsers(currentUserId);
     let noOfReceivedRequestingContacts = await contactService.getNoOfReceivedRequestingContacts(currentUserId);
 
+    let conversations = await conversationService.getConversations(currentUserId);
+    let groupConversations = conversations.filter(conversation => conversation.userAmount > 2);
+    let personalConversations = conversations.filter(conversation => conversation.userAmount === 2);
+
     return res.render("main/home/home", {
+      clientUtil,
       notifications,
       noOfUnreadNotifications,
       contactsAsUsers,
@@ -36,6 +42,9 @@ let getHome = async (req, res) => {
       noOfSentRequestingContacts,
       receivedRequestingContactsAsUsers,
       noOfReceivedRequestingContacts,
+      conversations,
+      groupConversations,
+      personalConversations,
       errors: req.flash("errors"),
       success: req.flash("success"),
       user: req.user,
