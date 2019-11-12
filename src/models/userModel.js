@@ -102,7 +102,18 @@ UserSchema.statics = {
             { "google.email": { "$regex": new RegExp(keyword, "i") } },
           ],
         },
-      ]
+      ],
+    }, {
+      _id: 1,
+      username: 1,
+      address: 1,
+      avatar: 1,
+    }).exec();
+  },
+
+  findByIds(userIds) {
+    return this.find({
+      "_id": { $in: userIds },
     }, {
       _id: 1,
       username: 1,

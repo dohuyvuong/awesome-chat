@@ -55,7 +55,7 @@ ContactSchema.statics = {
         },
         { "status": true },
       ],
-    }).sort({ "createdAt": -1 }).skip(offset).limit(limit).exec();
+    }).sort({ "updatedAt": -1 }).skip(offset).limit(limit).exec();
   },
 
   getNoOfContacts(userId) {
@@ -135,7 +135,10 @@ ContactSchema.statics = {
         { "contactId": userId },
         { "status": false },
       ],
-    }, { "status": true }).exec();
+    }, {
+      "status": true,
+      "updatedAt": Date.now(),
+    }).exec();
   },
 
   removeContact(userId, contactId) {
