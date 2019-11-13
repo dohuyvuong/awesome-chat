@@ -41,7 +41,7 @@ app.use(cookieParser());
 // Config passportjs
 app.use(passport.initialize());
 app.use(passport.session());
-initPassport();
+initPassport(passport);
 
 // Init all routes
 initRoutes(app);

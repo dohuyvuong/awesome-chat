@@ -10,15 +10,15 @@ function nineScrollLeft() {
   });
 }
 
-function nineScrollRight() {
-  $('.right .chat').niceScroll({
+function nineScrollRight(conversationId) {
+  $(`.right .chat[data-chat=${conversationId}]`).niceScroll({
     smoothscroll: true,
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
     cursorwidth: '7px',
     scrollspeed: 50
   });
-  $('.right .chat').scrollTop($('.right .chat')[0].scrollHeight);
+  $(`.right .chat[data-chat=${conversationId}]`).scrollTop($(`.right .chat[data-chat=${conversationId}]`)[0].scrollHeight);
 }
 
 function enableEmojioneArea(chatId) {
@@ -162,6 +162,8 @@ function handleChangeScreenChat() {
     $(this).find("li").addClass("active");
 
     $(this).tab("show");
+
+    nineScrollRight($(this).find("li").data("chat"));
   });
 }
 
@@ -174,7 +176,6 @@ $(document).ready(function() {
 
   // Cấu hình thanh cuộn
   nineScrollLeft();
-  nineScrollRight();
 
   // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
   enableEmojioneArea("17071995");

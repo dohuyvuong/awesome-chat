@@ -45,13 +45,13 @@
                                         <span>Update user info success example.</span><br>
                                     </div>
 
-                                    <% if (user.local.email) { %>
+                                    <% if (user.local && user.local.email) { %>
                                         <h3>Local account.</h3>
                                     <% } %>
-                                    <% if (user.facebook.uid) { %>
+                                    <% if (user.facebook && user.facebook.uid) { %>
                                         <h3>Facebook account.</h3>
                                     <% } %>
-                                    <% if (user.google.uid) { %>
+                                    <% if (user.google && user.google.uid) { %>
                                         <h3>Google account.</h3>
                                     <% } %>
 
@@ -62,10 +62,10 @@
                                             <% if (user.local.email) { %>
                                                 <div class="form-control" disabled><%= user.local.email %></div>
                                             <% } %>
-                                            <% if (user.facebook.email) { %>
+                                            <% if (user.facebook && user.facebook.email) { %>
                                                 <div class="form-control" disabled><%= user.facebook.email %></div>
                                             <% } %>
-                                            <% if (user.google.email) { %>
+                                            <% if (user.google && user.google.email) { %>
                                                 <div class="form-control" disabled><%= user.google.email %></div>
                                             <% } %>
                                         </div>
