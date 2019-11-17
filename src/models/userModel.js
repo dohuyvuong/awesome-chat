@@ -29,40 +29,32 @@ let UserSchema = new Schema({
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: null },
   deletedAt: { type: Number, default: null },
-}/**, {
+}, {
   toJSON: {
     transform: (doc, ret, options) => {
-      ret.id = ret._id;
       if (ret.local) {
         delete ret.local.password
         delete ret.local.verifyToken;
       };
       if (ret.facebook) delete ret.facebook.token;
       if (ret.google) delete ret.google.token;
-      if (!ret.address) {
-        ret.address = "";
-      }
 
       return ret;
     },
   },
   toObject: {
     transform: (doc, ret, options) => {
-      ret.id = ret._id;
       if (ret.local) {
         delete ret.local.password
         delete ret.local.verifyToken;
       };
       if (ret.facebook) delete ret.facebook.token;
       if (ret.google) delete ret.google.token;
-      if (!ret.address) {
-        ret.address = "";
-      }
 
       return ret;
     },
   },
-}**/);
+});
 
 UserSchema.statics = {
   createNew(item) {
