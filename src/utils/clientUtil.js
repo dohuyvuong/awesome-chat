@@ -31,9 +31,9 @@ let getLastMessageAsPreview = (messages) => {
         return messages[messages.length - 1].text;
         break;
       case "image":
-        return "[Hình ảnh]";
+        return "<i>[Hình ảnh]</i>";
       case "file":
-        return "[Tệp tin]";
+        return "<i>[Tệp tin]</i>";
       default:
         break;
     }
