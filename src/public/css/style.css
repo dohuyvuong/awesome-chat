@@ -1041,10 +1041,9 @@ label:focus,
 
 .right .bubble .message-content:before {
   position: absolute;
-  top: 19px;
   display: block;
-  width: 8px;
-  height: 6px;
+  width: 10px;
+  height: 8px;
   content: '\00a0';
   -webkit-transform: rotate(29deg) skew(-35deg);
   transform: rotate(29deg) skew(-35deg);
@@ -1061,8 +1060,8 @@ label:focus,
 }
 
 .right .bubble.you .message-content:before {
-  top: 35px;
-  left: -4px;
+  top: 10px;
+  left: -5px;
   background-color: #d3e3ef;
 }
 
@@ -1089,6 +1088,7 @@ label:focus,
 }
 
 .right .bubble.me .message-content {
+  position: relative;
   background-color: #2ECC71;
   word-wrap: break-word;
   font-size: 16px;
@@ -1099,6 +1099,7 @@ label:focus,
 }
 
 .right .bubble.you .message-content {
+  position: relative;
   background-color: #d3e3ef;
   word-wrap: break-word;
   font-size: 16px;
@@ -1109,8 +1110,8 @@ label:focus,
 }
 
 .right .bubble.me .message-content:before {
-  top: 35px;
-  right: -4px;
+  top: 10px;
+  right: -5px;
   background-color: #2ECC71;
 }
 

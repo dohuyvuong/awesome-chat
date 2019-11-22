@@ -23,7 +23,7 @@
                                     <div class="name">
                                         <span class="group-chat-name">Group:</span> <%= conversation.name %>
                                     </div>
-                                    <div class="preview"><% if (conversation.messages.length > 0) { %> <%= conversation.messages[0].text %> <% }  %></div>
+                                    <div class="preview"><%- clientUtil.getLastMessageAsPreview(conversation.messages) %></div>
                                     <div class="time"><%= conversation.updatedAtText %></div>
                                 </li>
                             </a>
@@ -37,7 +37,7 @@
                                     <div class="name">
                                             <%= conversation.name %>
                                     </div>
-                                    <div class="preview"><% if (conversation.messages.length > 0) { %> <%= conversation.messages[0].text %> <% }  %></div>
+                                    <div class="preview"><%- clientUtil.getLastMessageAsPreview(conversation.messages) %></div>
                                     <div class="time"><%= conversation.updatedAtText %></div>
                                 </li>
                             </a>
@@ -57,7 +57,7 @@
                                 <div class="name">
                                         <%= conversation.name %>
                                 </div>
-                                <div class="preview"><% if (conversation.messages.length > 0) { %> <%= conversation.messages[0].text %> <% }  %></div>
+                                <div class="preview"><%- clientUtil.getLastMessageAsPreview(conversation.messages) %></div>
                                 <div class="time"><%= conversation.updatedAtText %></div>
                             </li>
                         </a>
@@ -76,7 +76,7 @@
                                 <div class="name">
                                     <span class="group-chat-name">Group:</span> <%= conversation.name %>
                                 </div>
-                                <div class="preview"><% if (conversation.messages.length > 0) { %> <%= conversation.messages[0].text %> <% }  %></div>
+                                <div class="preview"><%- clientUtil.getLastMessageAsPreview(conversation.messages) %></div>
                                 <div class="time"><%= conversation.updatedAtText %></div>
                             </li>
                         </a>

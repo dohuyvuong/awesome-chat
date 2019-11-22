@@ -20,8 +20,31 @@ let getMessageTooltip = (currentUserId, message, sender) => {
             ', ' + dateUtil.convertTimeAsNumberToText(message.createdAt)
 };
 
+/**
+ * Get Last message to preview on conversation
+ * @param {Array} messages List of messages
+ */
+let getLastMessageAsPreview = (messages) => {
+  if (messages.length > 0) {
+    switch (messages[messages.length - 1].messageType) {
+      case "text":
+        return messages[messages.length - 1].text;
+        break;
+      case "image":
+        return "[Hình ảnh]";
+      case "file":
+        return "[Tệp tin]";
+      default:
+        break;
+    }
+  }
+
+  return "";
+};
+
 export default {
   convertBufferToBase64,
-  diffAsText: dateUtil.diffAsText,
+  timeToNowAsText: dateUtil.timeToNowAsText,
   getMessageTooltip,
+  getLastMessageAsPreview,
 };

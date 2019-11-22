@@ -34,7 +34,7 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
   let conversations = (await ConversationModel.getConversations(currentUserId, offset, limit)).map(async conversation => {
     conversation = conversation.toObject();
 
-    conversation.updatedAtText = dateUtil.diffAsText(conversation.updatedAt);
+    conversation.updatedAtText = dateUtil.timeToNowAsText(conversation.updatedAt);
     conversation.messages = await MessageModel.getByConversationId(conversation._id);
     conversation.messages.forEach(async message => {
       message.sender = await UserModel.findUserById(message.senderId);
