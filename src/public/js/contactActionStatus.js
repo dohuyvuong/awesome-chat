@@ -91,15 +91,28 @@ function removeAllAction(targetId) {
 
   // Remove contacts-tab
   let contactsTargetElement = $("#contacts ul.contactList").find(`li[data-uid=${targetId}]`);
+  contactsTargetElement.find("div.user-add-new-contact").remove();
   contactsTargetElement.find("div.user-talk").remove();
   contactsTargetElement.find("div.user-remove-contact").remove();
+  contactsTargetElement.find("div.user-remove-sent-requesting-contact").remove();
+  contactsTargetElement.find("div.user-accept-received-requesting-contact").remove();
+  contactsTargetElement.find("div.user-reject-received-requesting-contact").remove();
 
   // Remove request-contact-sent-tab
   let requestContactSentTargetElement = $("#request-contact-sent ul.contactList").find(`li[data-uid=${targetId}]`);
+  requestContactSentTargetElement.find("div.user-add-new-contact").remove();
+  requestContactSentTargetElement.find("div.user-talk").remove();
+  requestContactSentTargetElement.find("div.user-remove-contact").remove();
   requestContactSentTargetElement.find("div.user-remove-sent-requesting-contact").remove();
+  requestContactSentTargetElement.find("div.user-accept-received-requesting-contact").remove();
+  requestContactSentTargetElement.find("div.user-reject-received-requesting-contact").remove();
 
   // Remove request-contact-received-tab
   let requestContactReceivedTargetElement = $("#request-contact-received ul.contactList").find(`li[data-uid=${targetId}]`);
+  requestContactReceivedTargetElement.find("div.user-add-new-contact").remove();
+  requestContactReceivedTargetElement.find("div.user-talk").remove();
+  requestContactReceivedTargetElement.find("div.user-remove-contact").remove();
+  requestContactReceivedTargetElement.find("div.user-remove-sent-requesting-contact").remove();
   requestContactReceivedTargetElement.find("div.user-accept-received-requesting-contact").remove();
   requestContactReceivedTargetElement.find("div.user-reject-received-requesting-contact").remove();
 }
