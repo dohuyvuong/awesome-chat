@@ -1,5 +1,5 @@
 function handleAcceptReceivedRequestingContact() {
-  $(".user-accept-received-requesting-contact").unbind("click").bind("click", function () {
+  $(".user-accept-received-requesting-contact").off("click").on("click", function () {
     let targetId = $(this).data("uid");
 
     $.ajax({

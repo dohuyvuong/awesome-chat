@@ -32,7 +32,7 @@ function callLogout() {
 function updateUserInfo() {
   initCurrentUserData();
 
-  $("#input-change-avatar").bind("change", function() {
+  $("#input-change-avatar").on("change", function() {
     let fileData = $(this).prop("files")[0];
     if (fileData == null) {
       resetImageData();
@@ -84,7 +84,7 @@ function updateUserInfo() {
     }
   });
 
-  $("#input-change-username").bind("change", function() {
+  $("#input-change-username").on("change", function() {
     let username = $(this).val();
     let usernameRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/);
 
@@ -99,7 +99,7 @@ function updateUserInfo() {
     updatingUserInfo.username = username;
   });
 
-  $("#input-change-gender-male").bind("click", function() {
+  $("#input-change-gender-male").on("click", function() {
     let gender = $(this).val();
 
     if (gender != "male") {
@@ -113,7 +113,7 @@ function updateUserInfo() {
     updatingUserInfo.gender = gender;
   });
 
-  $("#input-change-gender-female").bind("click", function() {
+  $("#input-change-gender-female").on("click", function() {
     let gender = $(this).val();
 
     if (gender != "female") {
@@ -127,7 +127,7 @@ function updateUserInfo() {
     updatingUserInfo.gender = gender;
   });
 
-  $("#input-change-address").bind("change", function() {
+  $("#input-change-address").on("change", function() {
     let address = $(this).val();
     let addressRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ,\- ]+$/);
 
@@ -142,7 +142,7 @@ function updateUserInfo() {
     updatingUserInfo.address = address;
   });
 
-  $("#input-change-phone").bind("change", function() {
+  $("#input-change-phone").on("change", function() {
     let phone = $(this).val();
     let phoneRegex = new RegExp(/^(0)[1-9]{1}[0-9]{8,9}$/);
 
@@ -157,7 +157,7 @@ function updateUserInfo() {
     updatingUserInfo.phone = phone;
   });
 
-  $("#input-btn-update-user").bind("click", function() {
+  $("#input-btn-update-user").on("click", function() {
     resetAlert();
 
     if ($.isEmptyObject(updatingUserInfo) && !updatingUserAvatar) {
@@ -173,13 +173,13 @@ function updateUserInfo() {
     }
   });
 
-  $("#input-btn-cancel-update-user").bind("click", function() {
+  $("#input-btn-cancel-update-user").on("click", function() {
     resetAlert();
     resetImageData();
     resetUserInfoData();
   });
 
-  $("#input-change-current-password").bind("change", function() {
+  $("#input-change-current-password").on("change", function() {
     let currentPassword = $(this).val();
     let passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/);
 
@@ -194,7 +194,7 @@ function updateUserInfo() {
     updatingUserPassword.currentPassword = currentPassword;
   });
 
-  $("#input-change-new-password").bind("change", function() {
+  $("#input-change-new-password").on("change", function() {
     let newPassword = $(this).val();
     let passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/);
 
@@ -216,7 +216,7 @@ function updateUserInfo() {
     updatingUserPassword.newPassword = newPassword;
   });
 
-  $("#input-change-confirm-new-password").bind("change", function() {
+  $("#input-change-confirm-new-password").on("change", function() {
     let confirmNewPassword = $(this).val();
 
     if (confirmNewPassword !== updatingUserPassword.newPassword) {
@@ -230,7 +230,7 @@ function updateUserInfo() {
     updatingUserPassword.confirmNewPassword = confirmNewPassword;
   });
 
-  $("#input-btn-update-user-password").bind("click", function() {
+  $("#input-btn-update-user-password").on("click", function() {
     resetAlert();
 
     if (!(updatingUserPassword.currentPassword && updatingUserPassword.newPassword && updatingUserPassword.confirmNewPassword)) {
@@ -257,7 +257,7 @@ function updateUserInfo() {
     });
   });
 
-  $("#input-btn-cancel-update-user-password").bind("click", function() {
+  $("#input-btn-cancel-update-user-password").on("click", function() {
     resetAlert();
     resetUserPasswordData();
   });

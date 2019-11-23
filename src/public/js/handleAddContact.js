@@ -1,5 +1,5 @@
 function handleAddContact() {
-  $(".user-add-new-contact").unbind("click").bind("click", function () {
+  $(".user-add-new-contact").off("click").on("click", function () {
     let targetId = $(this).data("uid");
 
     $.post("/contact/add", { uid: targetId }, function (data) {

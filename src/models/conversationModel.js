@@ -38,10 +38,27 @@ ConversationSchema.statics = {
     return this.findOne({
       "members": {
         $elemMatch: {
-          "userId" : { $in: userIds },
+          "userId": { $in: userIds },
         },
         $size: userIds.length,
       },
+    }).exec();
+  },
+
+  checkUserInConversation(userId, conversationId) {
+    return this.findOne({
+      $and: [
+        {
+          "_id": conversationId
+        },
+        {
+          "members": {
+            $elemMatch: {
+              "userId": userId,
+            },
+          }
+        },
+      ],
     }).exec();
   },
 

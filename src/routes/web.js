@@ -1,6 +1,6 @@
 import express from "express";
-import { homeController, authController, userController, contactController, notificationController } from "../controllers";
-import { authValidation, userValidation, contactValidation } from "../validations";
+import { homeController, authController, userController, contactController, notificationController, messageController } from "../controllers";
+import { authValidation, userValidation, contactValidation, messageValidation } from "../validations";
 import passport from "passport";
 
 let router = express.Router();
@@ -49,6 +49,8 @@ let initRoutes = (app) => {
 
   router.get("/notification/get-notifications", authController.checkLoggedIn, notificationController.getNotifications);
   router.put("/notification/mark-notifications-as-read", authController.checkLoggedIn, notificationController.markNotificationsAsRead);
+
+  router.post("/message/add-new-message-text", authController.checkLoggedIn, messageValidation.checkMessageText, messageController.addNewMessageText);
 
   return app.use("/", router);
 };

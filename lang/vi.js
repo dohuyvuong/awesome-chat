@@ -9,6 +9,7 @@ export const transValidation = {
   address_invalid: "Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!",
   phone_invalid: "Số điện thoại bắt đầu bắng số 0, và có độ dài từ 10 đến 11 số!",
   keyword_search_new_contact: "Từ khoá tìm kiếm có độ dài từ 2 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -",
+  message_text_invalid: "Tin nhắn chứa ít nhất 1 kí tự và không được vượt quá 1000 kí tự!",
 };
 
 export const transErrors = {
@@ -25,6 +26,7 @@ export const transErrors = {
   avatar_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
   avatar_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
   password_incorrect: "Mật khẩu hiện tại không chính xác!",
+  message_user_not_in_conversation: "Bạn không ở trong cuộc trò chuyện!",
 };
 
 export const transSuccess = {

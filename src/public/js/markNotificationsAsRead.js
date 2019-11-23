@@ -16,7 +16,7 @@ function markNotificationsAsRead(targetUserIds) {
 }
 
 $(document).ready(function () {
-  $("#popup-mark-notifications-as-read").bind("click", function () {
+  $("#popup-mark-notifications-as-read").on("click", function () {
     let targetUserIds = [];
 
     $(".noti_content").find(".noti-read-false").each(function (index, notification) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
     markNotificationsAsRead(targetUserIds);
   });
 
-  $("#modal-mark-notifications-as-read").bind("click", function () {
+  $("#modal-mark-notifications-as-read").on("click", function () {
     let targetUserIds = [];
 
     $(".list-notifications").find(".noti-read-false").each(function (index, notification) {
