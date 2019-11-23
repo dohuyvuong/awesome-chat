@@ -1,5 +1,5 @@
 function handleRemoveSentRequestingContact() {
-  $(".user-remove-sent-requesting-contact").unbind("click").bind("click", function () {
+  $(".user-remove-sent-requesting-contact").off("click").on("click", function () {
     let targetId = $(this).data("uid");
 
     $.ajax({

@@ -21,8 +21,8 @@ function nineScrollRight(conversationId) {
   $(`.right .chat[data-chat=${conversationId}]`).scrollTop($(`.right .chat[data-chat=${conversationId}]`)[0].scrollHeight);
 }
 
-function enableEmojioneArea(chatId) {
-  $('.write-chat[data-chat="' + chatId + '"]').emojioneArea({
+function enableEmojioneArea(conversationId) {
+  $(`#write-chat-${conversationId}`).emojioneArea({
     standalone: false,
     pickerPosition: 'top',
     filtersPosition: 'bottom',
@@ -34,11 +34,14 @@ function enableEmojioneArea(chatId) {
     shortnames: false,
     events: {
       keyup: function(editor, event) {
-        $('.write-chat').val(this.getText());
+        $(`#write-chat-${conversationId}`).val(this.getText());
+      },
+      focus: function () {
+        handleWriteChat(conversationId);
       }
     },
   });
-  $('.icon-chat').bind('click', function(event) {
+  $('.icon-chat').on('click', function(event) {
     event.preventDefault();
     $('.emojionearea-button').click();
     $('.emojionearea-editor').focus();
@@ -87,7 +90,7 @@ function configNotification() {
 }
 
 function gridPhotos(layoutNumber) {
-  $(".show-images").unbind("click").bind("click", function () {
+  $(".show-images").off("click").on("click", function () {
     let imageModalId = $(this).attr("href");
 
     let countRows = Math.ceil($(`${imageModalId}`).find("div.all-images>img").length / layoutNumber);
@@ -113,7 +116,7 @@ function gridPhotos(layoutNumber) {
 }
 
 function addFriendsToGroup() {
-  $('ul#group-chat-friends').find('div.add-user').bind('click', function() {
+  $('ul#group-chat-friends').find('div.add-user').on('click', function() {
     let uid = $(this).data('uid');
     $(this).remove();
     let html = $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').html();
@@ -130,7 +133,7 @@ function addFriendsToGroup() {
 }
 
 function cancelCreateGroup() {
-  $('#cancel-group-chat').bind('click', function() {
+  $('#cancel-group-chat').on('click', function() {
     $('#groupChatModal .list-user-added').hide();
     if ($('ul#friends-added>li').length) {
       $('ul#friends-added>li').each(function(index) {
@@ -148,7 +151,7 @@ function flashMasterNotify() {
 }
 
 function handleChangeTypeChat() {
-  $("#select-type-chat").bind("change", function () {
+  $("#select-type-chat").on("change", function () {
     let selectedOption = $("option:selected", this);
     selectedOption.tab("show");
 
@@ -161,13 +164,16 @@ function handleChangeTypeChat() {
 }
 
 function handleChangeScreenChat() {
-  $(".room-chat").unbind("click").bind("click", function () {
+  $(".room-chat").off("click").on("click", function () {
     $(".room-chat").find("li").removeClass("active");
     $(this).find("li").addClass("active");
 
     $(this).tab("show");
 
     nineScrollRight($(this).find("li").data("chat"));
+
+    // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
+    enableEmojioneArea($(this).find("li").data("chat"));
   });
 }
 
@@ -180,9 +186,6 @@ $(document).ready(function() {
 
   // Cấu hình thanh cuộn
   nineScrollLeft();
-
-  // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
-  enableEmojioneArea("17071995");
 
   // Icon loading khi chạy ajax
   ajaxLoading();

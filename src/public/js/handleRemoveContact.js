@@ -1,5 +1,5 @@
 function handleRemoveContact() {
-  $(".user-remove-contact").unbind("click").bind("click", function () {
+  $(".user-remove-contact").off("click").on("click", function () {
     let targetId = $(this).data("uid");
     let username = $(this).parent().find("div.user-name p").text();
 

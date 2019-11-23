@@ -26,6 +26,6 @@ function findUsersToAddContact(element) {
 }
 
 $(document).ready(function () {
-  $("#inp-search-new-contact").bind("keypress", findUsersToAddContact);
-  $("#btn-search-new-contact").bind("click", findUsersToAddContact);
+  $("#inp-search-new-contact").on("keypress", findUsersToAddContact);
+  $("#btn-search-new-contact").on("click", findUsersToAddContact);
 });
