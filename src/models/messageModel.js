@@ -31,7 +31,7 @@ MessageSchema.statics = {
   getByConversationId(conversationId, offset, limit) {
     return this.find({
       "conversationId": conversationId,
-    }).sort({ "createdAt": 1 }).skip(offset).limit(limit).exec();
+    }).sort({ "createdAt": -1 }).skip(offset).limit(limit).exec();
   },
 
   // getLatestConversations(offset, limit) {

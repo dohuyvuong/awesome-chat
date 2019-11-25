@@ -3,28 +3,33 @@
         <% conversations.forEach(function (conversation, index) { %>
             <div class="right tab-pane" data-chat="<%= conversation._id %>" id="to_<%= conversation._id %>">
                 <div class="top">
-                    <span>To: <span class="name"><%= conversation.name %></span>
-                    </span>
-                    <span class="chat-menu-right">
-                        <a href="#attachs-modal-<%= conversation._id %>" class="show-attachs" data-toggle="modal">
-                            Tệp đính kèm
-                            <i class="fa fa-paperclip"></i>
-                        </a>
-                    </span>
-                    <span class="chat-menu-right">
-                        <a href="javascript:void(0)">&nbsp;</a>
-                    </span>
-                    <span class="chat-menu-right">
-                        <a href="#images-modal-<%= conversation._id %>" class="show-images" data-toggle="modal">
-                            Hình ảnh
-                            <i class="fa fa-photo"></i>
-                        </a>
-                    </span>
+                    <div class="conversation-bar-left">To: <div class="name">
+                        <% if (conversation.conversationType == "group") {%>
+                            <a href="#conversation-users-modal-<%= conversation._id %>" class="show-conversation-users" data-toggle="modal"><%= conversation.name %></a>
+                        <% } else { %>
+                            <%= conversation.name %>
+                        <% } %>
+                    </div>
+                    </div>
+                    <div class="conversation-bar-right">
+                        <div class="chat-menu-right">
+                            <a href="#attachs-modal-<%= conversation._id %>" class="show-attachs" data-toggle="modal">
+                                Tệp đính kèm
+                                <i class="fa fa-paperclip"></i>
+                            </a>
+                        </div>
+                        <div class="chat-menu-right">
+                            <a href="#images-modal-<%= conversation._id %>" class="show-images" data-toggle="modal">
+                                Hình ảnh
+                                <i class="fa fa-photo"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="content-chat">
                     <div class="chat" data-chat="<%= conversation._id %>">
                         <% conversation.messages.forEach(function (message) { %>
-                            <div class="bubble
+                            <div class="bubble convert-emoji
                                 <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %>
                                 <% if (message.messageType == 'image') { %> bubble-image-file <% } %>
                                 <% if (message.messageType == 'file') { %> bubble-image-file <% } %>"

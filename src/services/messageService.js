@@ -1,4 +1,4 @@
-import { MessageModel, ConversationModel } from "../models";
+import { MessageModel, ConversationModel, UserModel } from "../models";
 import { transErrors } from "../../lang/vi";
 
 /**
@@ -8,6 +8,9 @@ import { transErrors } from "../../lang/vi";
 let addNewMessage = async (messageItem) => {
   let message = await MessageModel.createNew(messageItem);
   await ConversationModel.updateAfterAddedNewMessage(message.conversationId, message.createdAt);
+
+  message = message.toObject();
+  message.sender = await UserModel.findUserById(message.senderId);
 
   return message;
 };
