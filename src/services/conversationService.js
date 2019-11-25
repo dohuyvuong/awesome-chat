@@ -1,6 +1,7 @@
 import { MessageModel, ConversationModel, UserModel } from "../models";
 import { CONVERSATION_TYPES } from "../models/conversationModel";
 import dateUtil from "../utils/dateUtil";
+import _ from "lodash";
 
 /**
  * Create new conversation
@@ -35,7 +36,8 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
     conversation = conversation.toObject();
 
     conversation.updatedAtText = dateUtil.timeToNowAsText(conversation.updatedAt);
-    conversation.messages = await MessageModel.getByConversationId(conversation._id);
+    let conversationMessages = await MessageModel.getByConversationId(conversation._id);
+    conversation.messages = _.reverse(conversationMessages);
     conversation.messages.forEach(async message => {
       message.sender = await UserModel.findUserById(message.senderId);
     });

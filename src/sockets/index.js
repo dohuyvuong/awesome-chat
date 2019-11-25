@@ -1,6 +1,7 @@
 import socketIO from "socket.io";
 import clients from "./clients";
 import contactListener from "./contact";
+import chatListener from "./chat";
 
 /**
  * Init sockets
@@ -28,6 +29,7 @@ let initSockets = (io) => {
 
     // Handle all events
     contactListener.listenContactEvent(io, socket);
+    chatListener.listenChatEvent(io, socket);
   });
 };
 

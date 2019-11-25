@@ -24,6 +24,10 @@ ConversationSchema.statics = {
     return this.create(item);
   },
 
+  findConversationById(id) {
+    return this.findById(id).exec();
+  },
+
   getConversations(userId, offest, limit) {
     return this.find({
       "members": {
@@ -49,7 +53,7 @@ ConversationSchema.statics = {
     return this.findOne({
       $and: [
         {
-          "_id": conversationId
+          "_id": conversationId,
         },
         {
           "members": {
