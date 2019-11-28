@@ -51,6 +51,7 @@ let initRoutes = (app) => {
   router.put("/notification/mark-notifications-as-read", authController.checkLoggedIn, notificationController.markNotificationsAsRead);
 
   router.post("/message/add-new-message-text", authController.checkLoggedIn, messageValidation.checkMessageText, messageController.addNewMessageText);
+  router.post("/message/add-new-message-image", authController.checkLoggedIn, messageController.addNewMessageImage);
 
   return app.use("/", router);
 };

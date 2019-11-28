@@ -37,7 +37,7 @@ function enableEmojioneArea(conversationId) {
         $(`#write-chat-${conversationId}`).val(this.getText());
       },
       focus: function () {
-        handleWriteChat(conversationId);
+        handleChatText(conversationId);
       }
     },
   });
@@ -93,8 +93,11 @@ function gridPhotos(layoutNumber) {
   $(".show-images").off("click").on("click", function () {
     let imageModalId = $(this).attr("href");
 
+    let allImages = $(`${imageModalId}`).find(".modal-body").html();
+
     let countRows = Math.ceil($(`${imageModalId}`).find("div.all-images>img").length / layoutNumber);
     let layoutStr = new Array(countRows).fill(layoutNumber).join("");
+
     $(`${imageModalId}`).find("div.all-images").photosetGrid({
       highresLinks: true,
       rel: "withhearts-gallery",
@@ -111,6 +114,10 @@ function gridPhotos(layoutNumber) {
           maxWidth: "90%"
         });
       }
+    });
+
+    $(`${imageModalId}`).on("hidden.bs.modal", function () {
+      $(this).find(".modal-body").html(allImages);
     });
   });
 }
@@ -176,6 +183,7 @@ function handleChangeScreenChat() {
 
     // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
     enableEmojioneArea($(this).find("li").data("chat"));
+    handleChatText(conversationId);
   });
 }
 

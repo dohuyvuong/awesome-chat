@@ -1,5 +1,7 @@
 import { MessageModel, ConversationModel, UserModel } from "../models";
 import { transErrors } from "../../lang/vi";
+import { MESSAGE_TYPES } from "../models/messageModel";
+import fsExtra from "fs-extra";
 
 /**
  * Add a new message
@@ -37,6 +39,38 @@ let addNewMessageText = async (senderId, conversationId, text) => {
   return await addNewMessage(newMessage);
 };
 
+/**
+ * Add a new message image to conversation
+ * @param {String} senderId
+ * @param {String} conversationId
+ * @param {File} file
+ */
+let addNewMessageImage = async (senderId, conversationId, file) => {
+  let conversation = await ConversationModel.checkUserInConversation(senderId, conversationId);
+
+  if (!conversation) {
+    throw transErrors.message_user_not_in_conversation;
+  }
+
+  let imageBuffer = await fsExtra.readFile(file.path);
+  let imageContentType = file.mimetype;
+  let imageName = file.originalname;
+
+  let newMessage = {
+    senderId,
+    conversationId,
+    messageType: MESSAGE_TYPES.IMAGE,
+    file: {
+      data: imageBuffer,
+      contentType: imageContentType,
+      fileName: imageName,
+    },
+  };
+
+  return await addNewMessage(newMessage);
+};
+
 export const messageService = {
   addNewMessageText,
+  addNewMessageImage,
 };

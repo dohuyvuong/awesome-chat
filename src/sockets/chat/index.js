@@ -1,4 +1,5 @@
 import listenChatMessageText from "./addNewMessageText";
+import listenChatMessageImage from "./addNewMessageImage";
 
 /**
  * Handle all message events
@@ -7,6 +8,7 @@ import listenChatMessageText from "./addNewMessageText";
  */
 let listenChatEvent = (io, socket) => {
   listenChatMessageText(io, socket);
+  listenChatMessageImage(io, socket);
 };
 
 export default {

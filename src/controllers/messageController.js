@@ -2,9 +2,32 @@ import express from "express";
 import { validationResult } from "express-validator";
 import { transErrors } from "../../lang/vi";
 import { messageService } from "../services";
+import multer from "multer";
+import { appConfigure } from "../config/app";
+import fsExtra from "fs-extra";
+
+let messageImageStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, appConfigure.messageImageDirectory);
+  },
+  filename: (req, file, callback) => {
+    let match = appConfigure.messageImageType;
+    if (!match.includes(file.mimetype)) {
+      return callback(transErrors.message_image_type_not_supported, null);
+    }
+
+    let messageImageFileName = `${Date.now()}-${file.originalname}`;
+    callback(null, messageImageFileName);
+  },
+});
+
+let messageImageUploadedFile = multer({
+  storage: messageImageStorage,
+  limits: { fileSize: appConfigure.messageImageLimitedSize },
+}).single("my-image-chat");
 
 /**
- * Get notifications
+ * Add new message text
  * @param {express.Request} req Request
  * @param {express.Response} res Response
  */
@@ -31,6 +54,46 @@ let addNewMessageText = async (req, res) => {
   }
 };
 
+/**
+ * Add new message image
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let addNewMessageImage = async (req, res) => {
+  messageImageUploadedFile(req, res, async (error) => {
+    if (error) {
+      if (error.code && error.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).send(transErrors.message_image_size_too_large);
+      }
+      if (error === transErrors.message_image_type_not_supported) {
+        return res.status(400).send(error);
+      }
+
+      return res.status(500).send(transErrors.server_error);
+    }
+
+    try {
+      let currentUserId = req.user._id;
+      let conversationId = req.body.conversationId;
+      let file = req.file;
+
+      let result = await messageService.addNewMessageImage(currentUserId, conversationId, file);
+
+      // Remove image from storage
+      await fsExtra.remove(`${appConfigure.messageImageDirectory}/${file.filename}`);
+
+      return res.status(200).send(result);
+    } catch (error) {
+      if (error == transErrors.message_user_not_in_conversation) {
+        return res.status(400).send(error);
+      }
+
+      return res.status(500).send(transErrors.server_error);
+    }
+  });
+};
+
 export const messageController = {
   addNewMessageText,
+  addNewMessageImage,
 };
