@@ -1,4 +1,4 @@
-function handleWriteChat(conversationId) {
+function handleChatText(conversationId) {
   $(".emojionearea").off("keyup").on("keyup", function (element) {
     if (element.which === 13) {
       let text = $(`#write-chat-${conversationId}`).val();
