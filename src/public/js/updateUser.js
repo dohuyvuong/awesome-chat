@@ -51,7 +51,7 @@ function updateUserInfo() {
       return false;
     }
     if (fileData.size > limit) {
-      alertify.notify("Ảnh upload tối đa cho phép là 1 MB!", "error", 5);
+      alertify.notify("Ảnh tải lên tối đa cho phép là 1 MB!", "error", 5);
       $(this).val(null);
       resetImageData();
 

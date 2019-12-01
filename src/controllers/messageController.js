@@ -8,6 +8,10 @@ import fsExtra from "fs-extra";
 
 let messageImageStorage = multer.diskStorage({
   destination: (req, file, callback) => {
+    if (!fsExtra.existsSync(appConfigure.messageImageDirectory)){
+      fsExtra.mkdirSync(appConfigure.messageImageDirectory);
+    }
+
     callback(null, appConfigure.messageImageDirectory);
   },
   filename: (req, file, callback) => {
@@ -25,6 +29,25 @@ let messageImageUploadedFile = multer({
   storage: messageImageStorage,
   limits: { fileSize: appConfigure.messageImageLimitedSize },
 }).single("my-image-chat");
+
+let messageAttachmentStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    if (!fsExtra.existsSync(appConfigure.messageAttachmentDirectory)){
+      fsExtra.mkdirSync(appConfigure.messageAttachmentDirectory);
+    }
+
+    callback(null, appConfigure.messageAttachmentDirectory);
+  },
+  filename: (req, file, callback) => {
+    let messageAttachmentFileName = `${Date.now()}-${file.originalname}`;
+    callback(null, messageAttachmentFileName);
+  },
+});
+
+let messageAttachmentUploadedFile = multer({
+  storage: messageAttachmentStorage,
+  limits: { fileSize: appConfigure.messageAttachmentLimitedSize },
+}).single("my-attach-chat");
 
 /**
  * Add new message text
@@ -93,7 +116,44 @@ let addNewMessageImage = async (req, res) => {
   });
 };
 
+/**
+ * Add new message attachment
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let addNewMessageAttachment = async (req, res) => {
+  messageAttachmentUploadedFile(req, res, async (error) => {
+    if (error) {
+      if (error.code && error.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).send(transErrors.message_attachment_size_too_large);
+      }
+
+      return res.status(500).send(transErrors.server_error);
+    }
+
+    try {
+      let currentUserId = req.user._id;
+      let conversationId = req.body.conversationId;
+      let file = req.file;
+
+      let result = await messageService.addNewMessageAttachment(currentUserId, conversationId, file);
+
+      // Remove file from storage
+      await fsExtra.remove(`${appConfigure.messageAttachmentDirectory}/${file.filename}`);
+
+      return res.status(200).send(result);
+    } catch (error) {
+      if (error == transErrors.message_user_not_in_conversation) {
+        return res.status(400).send(error);
+      }
+
+      return res.status(500).send(transErrors.server_error);
+    }
+  });
+};
+
 export const messageController = {
   addNewMessageText,
   addNewMessageImage,
+  addNewMessageAttachment,
 };

@@ -70,7 +70,39 @@ let addNewMessageImage = async (senderId, conversationId, file) => {
   return await addNewMessage(newMessage);
 };
 
+/**
+ * Add a new message attachment to conversation
+ * @param {String} senderId
+ * @param {String} conversationId
+ * @param {File} file
+ */
+let addNewMessageAttachment = async (senderId, conversationId, file) => {
+  let conversation = await ConversationModel.checkUserInConversation(senderId, conversationId);
+
+  if (!conversation) {
+    throw transErrors.message_user_not_in_conversation;
+  }
+
+  let fileBuffer = await fsExtra.readFile(file.path);
+  let fileContentType = file.mimetype;
+  let fileName = file.originalname;
+
+  let newMessage = {
+    senderId,
+    conversationId,
+    messageType: MESSAGE_TYPES.FILE,
+    file: {
+      data: fileBuffer,
+      contentType: fileContentType,
+      fileName: fileName,
+    },
+  };
+
+  return await addNewMessage(newMessage);
+};
+
 export const messageService = {
   addNewMessageText,
   addNewMessageImage,
+  addNewMessageAttachment,
 };

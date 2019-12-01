@@ -52,6 +52,7 @@ let initRoutes = (app) => {
 
   router.post("/message/add-new-message-text", authController.checkLoggedIn, messageValidation.checkMessageText, messageController.addNewMessageText);
   router.post("/message/add-new-message-image", authController.checkLoggedIn, messageController.addNewMessageImage);
+  router.post("/message/add-new-message-attachment", authController.checkLoggedIn, messageController.addNewMessageAttachment);
 
   return app.use("/", router);
 };
