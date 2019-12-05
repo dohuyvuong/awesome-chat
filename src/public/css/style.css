@@ -1079,12 +1079,16 @@ label:focus,
   position: absolute;
   top: 25px;
   left: -35px;
+  border-radius: 50%;
+  border: 1px solid #b2bec3;
 }
 
 .right .bubble.me .avatar-small {
   position: absolute;
   top: 25px;
   right: -35px;
+  border-radius: 50%;
+  border: 1px solid #b2bec3;
 }
 
 .right .bubble.me .message-content {
@@ -1523,4 +1527,23 @@ label:focus,
 
 .chat-menu-right + .chat-menu-right {
   margin-left: 20px;
+}
+
+.calling {
+  animation: shake 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-5deg); }
+  20% { transform:  rotate(-10deg); }
+  30% { transform: rotate(-5deg); }
+  40% { transform:  rotate(0deg); }
+  50% { transform:  rotate(5deg); }
+  60% { transform:  rotate(10deg); }
+  70% { transform: rotate(5deg); }
+  80% { transform: rotate(0deg); }
+  90% { transform: rotate(-2deg); }
+  100% { transform:  rotate(2deg); }
 }
