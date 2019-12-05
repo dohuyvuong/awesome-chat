@@ -1,30 +1,25 @@
-function handleChatImage(conversationId) {
-  $(`#image-chat-${conversationId}`).off("change").on("change", function () {
+function handleChatAttachment(conversationId) {
+  $(`#attach-chat-${conversationId}`).off("change").on("change", function () {
     let fileData = $(this).prop("files")[0];
     if (fileData == null) {
       return false;
     }
 
-    let match = ["image/png", "image/jpg", "image/jpeg"];
+    $(this).val(null);
+
     let limit = 1048576; // 1048576 B = 1 MB
 
-    if ($.inArray(fileData.type, match) === -1) {
-      alertify.notify("Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.", "error", 5);
-      $(this).val(null);
-      return false;
-    }
     if (fileData.size > limit) {
       alertify.notify("Ảnh tải lên tối đa cho phép là 1 MB!", "error", 5);
-      $(this).val(null);
       return false;
     }
 
     let messageFormData = new FormData();
-    messageFormData.append("my-image-chat", fileData);
+    messageFormData.append("my-attach-chat", fileData);
     messageFormData.append("conversationId", conversationId);
 
     $.ajax({
-      url: "/message/add-new-message-image",
+      url: "/message/add-new-message-attachment",
       type: "post",
       cache: false,
       contentType: false,
@@ -37,7 +32,9 @@ function handleChatImage(conversationId) {
                                   <img src="images/users/${message.sender.avatar}" class="avatar-small">
                                       <div class="message-tooltip">${getMessageTooltip(message)}</div>
                                       <div class="message-content">
-                                          <img src="data:${message.file.contentType}; base64, ${message.file.data}" class="show-image-chat">
+                                          <a href="data:${message.file.contentType}; base64, ${message.file.data}" download="${message.file.fileName}">
+                                              ${message.file.fileName}
+                                          </a>
                                       </div>
                               </div>`;
 
@@ -57,19 +54,23 @@ function handleChatImage(conversationId) {
         $("#group-chat .people").prepend(conversationInGroup);
 
         // Preview message and timing
-        $(`.left .people li[data-chat=${conversationId}]`).find(".preview").html("<i>[Hình ảnh]</i>");
+        $(`.left .people li[data-chat=${conversationId}]`).find(".preview").html("<i>[Tệp tin]</i>");
         $(`.left .people li[data-chat=${conversationId}]`).find(".time").text(timeToNowAsText(message));
 
         // Scroll to bottom of conversation
         nineScrollRight(conversationId);
 
-        // Add image to image-modal
-        $(`#images-modal-${conversationId}`).find(".all-images").append(
-          `<img src="data:${message.file.contentType}; base64, ${message.file.data}">`
+        // Add attachment to attach-modal
+        $(`#attachs-modal-${conversationId}`).find(".list-attachs").append(
+          `<li>
+              <a href="data:${message.file.contentType}; base64, ${message.file.data}" download="${message.file.fileName}">
+                  ${message.file.fileName}
+              </a>
+          </li>`
         );
 
         // Real-time
-        socket.emit("chat-message-image", {
+        socket.emit("chat-message-attachment", {
           conversationId,
           message,
         });
@@ -81,14 +82,16 @@ function handleChatImage(conversationId) {
   });
 }
 
-socket.on("response-chat-message-image", function ({ conversation, sender, message }) {
+socket.on("response-chat-message-attachment", function ({ conversation, sender, message }) {
   let newMessageHTML = `<div class="bubble convert-emoji you bubble-image-file"
                             data-toggle="tooltip" title="${getMessageTooltip(message, sender)}"
                             data-mess-id="${message._id}">
                             <img src="images/users/${sender.avatar}" class="avatar-small">
                                 <div class="message-tooltip">${getMessageTooltip(message, sender)}</div>
                                 <div class="message-content">
-                                    <img src="data:${message.file.contentType}; base64, ${message.file.data}" class="show-image-chat">
+                                    <a href="data:${message.file.contentType}; base64, ${message.file.data}" download="${message.file.fileName}">
+                                        ${message.file.fileName}
+                                    </a>
                                 </div>
                         </div>`;
 
@@ -108,11 +111,15 @@ socket.on("response-chat-message-image", function ({ conversation, sender, messa
   $("#group-chat .people").prepend(conversationInGroup);
 
   // Preview message and timing
-  $(`.left .people li[data-chat=${conversation._id}]`).find(".preview").html("<i>[Hình ảnh]</i>");
+  $(`.left .people li[data-chat=${conversation._id}]`).find(".preview").html("<i>[Tệp tin]</i>");
   $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
 
-  // Add image to image-modal
-  $(`#images-modal-${conversationId}`).find(".all-images").append(
-    `<img src="data:${message.file.contentType}; base64, ${message.file.data}">`
+  // Add attachment to attach-modal
+  $(`#attachs-modal-${conversationId}`).find(".list-attachs").append(
+    `<li>
+        <a href="data:${message.file.contentType}; base64, ${message.file.data}" download="${message.file.fileName}">
+            ${message.file.fileName}
+        </a>
+    </li>`
   );
 });

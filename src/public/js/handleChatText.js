@@ -90,7 +90,4 @@ socket.on("response-chat-message-text", function ({ conversation, sender, messag
         // Preview message and timing
         $(`.left .people li[data-chat=${conversation._id}]`).find(".preview").html(emojione.toImage(message.text));
         $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
-
-        // Scroll to bottom of conversation
-        nineScrollRight(conversation._id);
 });

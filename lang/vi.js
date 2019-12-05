@@ -24,11 +24,12 @@ export const transErrors = {
   server_error: "Có lỗi thuộc về server. Vui lòng liên hệ với chúng tôi và rất mong bạn thông cảm.",
   bad_request: "Yêu cầu không hợp lệ!",
   avatar_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
-  avatar_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
+  avatar_size_too_large: "Ảnh tải lên tối đa cho phép là 1 MB!",
   password_incorrect: "Mật khẩu hiện tại không chính xác!",
   message_user_not_in_conversation: "Bạn không ở trong cuộc trò chuyện!",
   message_image_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
-  message_image_size_too_large: "Ảnh upload tối đa cho phép là 1 MB!",
+  message_image_size_too_large: "Ảnh tải lên tối đa cho phép là 1 MB!",
+  message_attachment_size_too_large: "Tệp tin tải lên tối đa cho phép là 1 MB!",
 };
 
 export const transSuccess = {

@@ -183,7 +183,8 @@ function handleChangeScreenChat() {
 
     // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
     enableEmojioneArea($(this).find("li").data("chat"));
-    handleChatText(conversationId);
+    handleChatImage(conversationId);
+    handleChatAttachment(conversationId);
   });
 }
 
