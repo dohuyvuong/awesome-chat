@@ -38,9 +38,10 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
     conversation.updatedAtText = dateUtil.timeToNowAsText(conversation.updatedAt);
     let conversationMessages = await MessageModel.getByConversationId(conversation._id);
     conversation.messages = _.reverse(conversationMessages);
-    conversation.messages.forEach(async message => {
+    for (let i = 0; i < conversation.messages.length; i++) {
+      const message = conversation.messages[i];
       message.sender = await UserModel.findUserById(message.senderId);
-    });
+    }
     conversation.users = await UserModel.findByIds(conversation.members.map(member => member.userId));
     if (conversation.members.length === 2) {
       let otherUserId = conversation.members.filter(member => member.userId != currentUserId)[0].userId;

@@ -82,6 +82,8 @@ function handleChatImage(conversationId) {
 }
 
 socket.on("response-chat-message-image", function ({ conversation, sender, message }) {
+  soundManager.playNewMessageSound();
+
   let newMessageHTML = `<div class="bubble convert-emoji you bubble-image-file"
                             data-toggle="tooltip" title="${getMessageTooltip(message, sender)}"
                             data-mess-id="${message._id}">
