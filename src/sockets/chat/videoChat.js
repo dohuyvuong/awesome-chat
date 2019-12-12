@@ -19,99 +19,76 @@ let listenVideoCall = (io, socket) => {
     let conversation = await ConversationModel.findConversationById(conversationId);
     let isOnline = false;
 
-    conversation.members.forEach(member => {
+    for (let i = 0; i < conversation.members.length; i++) {
+      const member = conversation.members[i];
+
       if (member.userId != currentUser._id && clients[member.userId]) {
-        clients[member.userId].forEach(async socketId => {
-          if (!isOnline) {
-            isOnline = true;
-          }
+        for (let j = 0; j < clients[member.userId].length; j++) {
+          const socketId = clients[member.userId][j];
 
           let receiver = await UserModel.findUserById(member.userId);
-          io.sockets.connected[socketId].emit("video-call-server-request-receiver-peer-id", {
+
+          if (!isOnline) {
+            isOnline = true;
+            socket.emit("video-call-server-response-request-call-to-caller", {
+              conversation,
+              caller: currentUser,
+              receiver,
+            });
+          }
+
+          io.sockets.connected[socketId].emit("video-call-server-request-call-to-receiver", {
+            callerSocketId: socket.id,
             conversation,
             caller: currentUser,
             receiver,
           });
-        });
+        }
       }
-    });
+    }
 
     if (!isOnline) {
       socket.emit("response-video-call-offline");
     }
   });
 
-  socket.on("video-call-receiver-provide-receiver-peer-id-to-server", async ({ conversation, caller, receiver, receiverPeerId }) => {
-    if (clients[caller._id]) {
-      clients[caller._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-provide-receiver-peer-id-to-caller", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
-      });
-    }
-  });
-
-  socket.on("video-call-caller-request-call-to-server", async ({ conversation, caller, receiver, receiverPeerId }) => {
+  socket.on("video-call-caller-cancel-request-call-to-server", async ({ conversation, caller, receiver }) => {
     if (clients[receiver._id]) {
       clients[receiver._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-request-call-to-receiver", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
+        io.sockets.connected[socketId].emit("video-call-server-cancel-request-call-to-receiver");
       });
     }
   });
 
-  socket.on("video-call-caller-cancel-request-call-to-server", async ({ conversation, caller, receiver, receiverPeerId }) => {
+  socket.on("video-call-receiver-reject-request-call-to-server", async ({ callerSocketId, conversation, caller, receiver }) => {
+    if (io.sockets.connected[callerSocketId]) {
+      io.sockets.connected[callerSocketId].emit("video-call-server-reject-call-to-caller", {
+        conversation,
+        caller,
+        receiver,
+      });
+    }
+
     if (clients[receiver._id]) {
       clients[receiver._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-cancel-request-call-to-receiver", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
+        io.sockets.connected[socketId].emit("video-call-server-reject-call-to-receiver");
       });
     }
   });
 
-  socket.on("video-call-receiver-reject-request-call-to-server", async ({ conversation, caller, receiver, receiverPeerId }) => {
-    if (clients[caller._id]) {
-      clients[caller._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-reject-call-to-caller", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
+  socket.on("video-call-receiver-accept-request-call-to-server", async ({ callerSocketId, conversation, caller, receiver, receiverPeerId }) => {
+    if (io.sockets.connected[callerSocketId]) {
+      io.sockets.connected[callerSocketId].emit("video-call-server-accept-call-to-caller", {
+        conversation,
+        caller,
+        receiver,
+        receiverPeerId,
       });
     }
-  });
 
-  socket.on("video-call-receiver-accept-request-call-to-server", async ({ conversation, caller, receiver, receiverPeerId }) => {
-    if (clients[caller._id]) {
-      clients[caller._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-accept-call-to-caller", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
-      });
-    }
     if (clients[receiver._id]) {
       clients[receiver._id].forEach(socketId => {
-        io.sockets.connected[socketId].emit("video-call-server-accept-call-to-receiver", {
-          conversation,
-          caller,
-          receiver,
-          receiverPeerId,
-        });
+        io.sockets.connected[socketId].emit("video-call-server-accept-call-to-receiver");
       });
     }
   });
