@@ -62,6 +62,8 @@ function handleChatText(conversationId) {
 }
 
 socket.on("response-chat-message-text", function ({ conversation, sender, message }) {
+  soundManager.playNewMessageSound();
+
   let newMessageHTML = `<div class="bubble convert-emoji you"
                             data-toggle="tooltip" title="${getMessageTooltip(message, sender)}"
                             data-mess-id="${message._id}">
@@ -72,22 +74,22 @@ socket.on("response-chat-message-text", function ({ conversation, sender, messag
                                 </div>
                         </div>`;
 
-        // Add message to conversation
-        $(".right .content-chat").find(`.chat[data-chat=${conversation._id}]`).append(newMessageHTML);
+  // Add message to conversation
+  $(".right .content-chat").find(`.chat[data-chat=${conversation._id}]`).append(newMessageHTML);
 
-        // Move conversation to top - all conversations
-        let conversationInAll = $("#all-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
-        $("#all-chat .people").prepend(conversationInAll);
+  // Move conversation to top - all conversations
+  let conversationInAll = $("#all-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
+  $("#all-chat .people").prepend(conversationInAll);
 
-        // Move conversation to top - personal conversation
-        let conversationInPersonal = $("#personal-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
-        $("#personal-chat .people").prepend(conversationInPersonal);
+  // Move conversation to top - personal conversation
+  let conversationInPersonal = $("#personal-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
+  $("#personal-chat .people").prepend(conversationInPersonal);
 
-        // Move conversation to top - group conversation
-        let conversationInGroup = $("#group-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
-        $("#group-chat .people").prepend(conversationInGroup);
+  // Move conversation to top - group conversation
+  let conversationInGroup = $("#group-chat .people").find(`li[data-chat=${conversation._id}]`).parent();
+  $("#group-chat .people").prepend(conversationInGroup);
 
-        // Preview message and timing
-        $(`.left .people li[data-chat=${conversation._id}]`).find(".preview").html(emojione.toImage(message.text));
-        $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
+  // Preview message and timing
+  $(`.left .people li[data-chat=${conversation._id}]`).find(".preview").html(emojione.toImage(message.text));
+  $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
 });
