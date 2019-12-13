@@ -1547,3 +1547,19 @@ label:focus,
   90% { transform: rotate(-2deg); }
   100% { transform:  rotate(2deg); }
 }
+
+#streamModal video::-webkit-media-controls-panel {
+  background-color: white;
+}
+
+#streamModal video::-webkit-media-controls {
+  filter: hue-rotate(0deg) brightness(1);
+}
+
+#streamModal video::-webkit-media-controls-play-button {
+  display: none;
+}
+
+#streamModal video::-webkit-media-controls-timeline {
+  display: none;
+}
