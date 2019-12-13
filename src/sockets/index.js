@@ -2,6 +2,8 @@ import socketIO from "socket.io";
 import clients from "./clients";
 import contactListener from "./contact";
 import chatListener from "./chat";
+import statusListener from "./status";
+import { handleOnlineOffline } from "./status/handleOnlineOffline";
 
 /**
  * Init sockets
@@ -16,6 +18,7 @@ let initSockets = (io) => {
       clients[currentUserId].push(socket.id);
     } else {
       clients[currentUserId] = [ socket.id ];
+      handleOnlineOffline.emitContactOnline(io, socket);
     }
 
     // Handle client disconnects
@@ -24,12 +27,14 @@ let initSockets = (io) => {
 
       if (!clients[currentUserId].length) {
         delete clients[currentUserId];
+        handleOnlineOffline.emitContactOffline(io, socket);
       }
     });
 
     // Handle all events
     contactListener.listenContactEvent(io, socket);
     chatListener.listenChatEvent(io, socket);
+    statusListener.listenStatusEvent(io, socket);
   });
 };
 
