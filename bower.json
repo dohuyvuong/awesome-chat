@@ -1,6 +1,6 @@
 {
   "name": "awesome-chat",
-  "homepage": "",
+  "homepage": "https://github.com/dohuyvuong/awesome-chat-third-party-libraries.git#readme",
   "authors": [],
   "description": "Manage frontend libraries.",
   "main": "src/server.js",
