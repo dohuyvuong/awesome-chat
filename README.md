@@ -20,5 +20,9 @@ Hướng dẫn cài đặt
   ````
 
   ````
+  source sh/env.original.sh
+  ````
+
+  ````
   npm start
   ````
