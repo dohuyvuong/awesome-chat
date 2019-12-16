@@ -53,7 +53,7 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
         let joinedNames = conversation.users.filter(user => currentUserId.toString() != user._id.toString()).map(user => user.username).join(", ");
         conversation.name = joinedNames;
       }
-      conversation.avatar = "group-avatar-trungquandev.png";
+      conversation.avatar = "group-avatar-default.png";
     }
 
     return conversation;
