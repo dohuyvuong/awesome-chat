@@ -17,7 +17,7 @@ let searchNewContact = async (keyword, currentUserId) => {
   });
   exceptedUserIds = _.uniq(exceptedUserIds);
 
-  let users = await UserModel.findExceptedById(keyword, exceptedUserIds);
+  let users = await UserModel.findByKeywordAndExceptedIds(keyword, exceptedUserIds);
 
   return users;
 };
@@ -179,6 +179,27 @@ let getNoOfReceivedRequestingContacts = async (currentUserId) => {
   return await ContactModel.getNoOfReceivedRequestingContacts(currentUserId);
 };
 
+/**
+ * Find users to add to new group chat
+ * @param {String} keyword Keyword to find users to add to new group chat
+ * @param {String} currentUserId Current user id
+ */
+let findContact = async (keyword, currentUserId) => {
+  let userIds = [currentUserId];
+
+  let contacts = await ContactModel.findByUserId(currentUserId);
+  contacts.map(contact => {
+    userIds.push(contact.userId);
+    userIds.push(contact.contactId);
+  });
+  userIds = _.uniq(userIds);
+  userIds = userIds.filter(userId => userId != currentUserId);
+
+  let users = await UserModel.findByKeywordAndIds(keyword, userIds);
+
+  return users;
+};
+
 export const contactService = {
   searchNewContact,
   addNewContact,
@@ -192,4 +213,5 @@ export const contactService = {
   getNoOfSentRequestingContacts,
   getReceivedRequestingContactsAsUsers,
   getNoOfReceivedRequestingContacts,
+  findContact,
 };
