@@ -9,6 +9,7 @@ export const transValidation = {
   address_invalid: "Địa chỉ có độ dài từ 3 đến 100 kí tự, và ngoài các dấu [ <strong>, -</strong> ] không được phép chứa các kí tự đặc biệt khác!",
   phone_invalid: "Số điện thoại bắt đầu bắng số 0, và có độ dài từ 10 đến 11 số!",
   keyword_search_new_contact: "Từ khoá tìm kiếm có độ dài từ 2 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -",
+  keyword_find_contact: "Từ khoá tìm kiếm có độ dài từ 2 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -",
   message_text_invalid: "Tin nhắn chứa ít nhất 1 kí tự và không được vượt quá 1000 kí tự!",
 };
 

@@ -22,7 +22,7 @@ let searchNewContact = async (req, res) => {
 
     let users = await contactService.searchNewContact(keyword, currentUserId);
 
-    return res.render("main/contact/sections/foundContactItem", { users });
+    return res.render("main/contact/sections/foundUsersToAddNewContact", { users });
   } catch (error) {
     return res.status(500).send(transErrors.server_error);
   }
@@ -187,6 +187,31 @@ let getReceivedRequestingContactsAsUsers = async (req, res) => {
   }
 }
 
+/**
+ * Find users to add to group chat
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let findContact = async (req, res) => {
+  let validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    let errors = validationErrors.errors.map(error => error.msg);
+
+    return res.status(400).send(errors);
+  }
+
+  try {
+    let currentUserId = req.user._id;
+    let keyword = req.query.keyword;
+
+    let users = await contactService.findContact(keyword, currentUserId);
+
+    return res.render("main/groupChat/sections/foundUsersToAddToNewGroupChat", { users });
+  } catch (error) {
+    return res.status(500).send(transErrors.server_error);
+  }
+}
+
 export const contactController = {
   searchNewContact,
   addNewContact,
@@ -197,4 +222,5 @@ export const contactController = {
   getContactsAsUsers,
   getSentRequestingContactsAsUsers,
   getReceivedRequestingContactsAsUsers,
+  findContact,
 };

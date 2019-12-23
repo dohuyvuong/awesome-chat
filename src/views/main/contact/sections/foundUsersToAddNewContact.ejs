@@ -1,0 +1,42 @@
+<% if (!users.length) { %>
+    <div class="no-found-contacts">No results!</div>
+<% } %>
+
+<% users.map(user => { %>
+    <li class="_contactList" data-uid="<%= user._id %>">
+        <div class="contactPanel">
+            <div class="user-avatar">
+                <img src="images/users/<%= user.avatar %>" alt="">
+            </div>
+            <div class="user-name">
+                <p>
+                    <%= user.username %>
+                </p>
+            </div>
+            <br>
+            <div class="user-address">
+                <span><%= user.address %></span>
+            </div>
+            <div class="user-add-new-contact" data-uid="<%= user._id %>">
+                Thêm vào danh sách liên lạc
+            </div>
+            <!--
+                <div class="user-talk" data-uid="<%= user._id %>">
+                    Trò chuyện
+                </div>
+                <div class="user-remove-contact action-danger" data-uid="<%= user._id %>">
+                    Xóa liên hệ
+                </div>
+                <div class="user-remove-sent-requesting-contact action-danger" data-uid="<%= user._id %>">
+                    Hủy yêu cầu
+                </div>
+                <div class="user-accept-received-requesting-contact" data-uid="<%= user._id %>">
+                    Chấp nhận
+                </div>
+                <div class="user-reject-received-requesting-contact action-danger" data-uid="<%= user._id %>">
+                    Xóa yêu cầu
+                </div>
+            -->
+        </div>
+    </li>
+<% }); %>

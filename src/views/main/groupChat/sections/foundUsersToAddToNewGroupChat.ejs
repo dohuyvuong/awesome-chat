@@ -1,0 +1,27 @@
+<% if (!users.length) { %>
+    <div class="no-found-contacts">No results!</div>
+<% } %>
+
+<% users.map(user => { %>
+    <div data-uid="<%= user._id %>">
+        <li data-uid="<%= user._id %>">
+            <div class="contactPanel">
+                <div class="user-avatar">
+                    <img src="images/users/<%= user.avatar %>" alt="">
+                </div>
+                <div class="user-name">
+                    <p>
+                        <%= user.username %>
+                    </p>
+                </div>
+                <br>
+                <div class="user-address">
+                    <span><%= user.address %></span>
+                </div>
+                <div class="add-user" data-uid="<%= user._id %>">
+                    Thêm vào nhóm
+                </div>
+            </div>
+        </li>
+    </div>
+<% }); %>

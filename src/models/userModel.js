@@ -81,10 +81,32 @@ UserSchema.statics = {
     return this.findOne({ "local.verifyToken": verifyToken }).exec();
   },
 
-  findExceptedById(keyword, exceptedUserIds) {
+  findByKeywordAndExceptedIds(keyword, exceptedUserIds) {
     return this.find({
       $and: [
         { "_id": { $nin: exceptedUserIds } },
+        { "local.isActive": true },
+        {
+          $or: [
+            { "username": { "$regex": new RegExp(keyword, "i") } },
+            { "local.email": { "$regex": new RegExp(keyword, "i") } },
+            { "facebook.email": { "$regex": new RegExp(keyword, "i") } },
+            { "google.email": { "$regex": new RegExp(keyword, "i") } },
+          ],
+        },
+      ],
+    }, {
+      _id: 1,
+      username: 1,
+      address: 1,
+      avatar: 1,
+    }).exec();
+  },
+
+  findByKeywordAndIds(keyword, userIds) {
+    return this.find({
+      $and: [
+        { "_id": { $in: userIds } },
         { "local.isActive": true },
         {
           $or: [
