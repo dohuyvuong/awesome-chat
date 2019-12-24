@@ -4,3 +4,4 @@ export * from "./userController";
 export * from "./contactController";
 export * from "./notificationController";
 export * from "./messageController";
+export * from "./conversationController";

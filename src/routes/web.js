@@ -1,6 +1,6 @@
 import express from "express";
-import { homeController, authController, userController, contactController, notificationController, messageController } from "../controllers";
-import { authValidation, userValidation, contactValidation, messageValidation } from "../validations";
+import { homeController, authController, userController, contactController, notificationController, messageController, conversationController } from "../controllers";
+import { authValidation, userValidation, contactValidation, messageValidation, groupChatValidation } from "../validations";
 import passport from "passport";
 
 let router = express.Router();
@@ -54,6 +54,9 @@ let initRoutes = (app) => {
   router.post("/message/add-new-message-text", authController.checkLoggedIn, messageValidation.checkMessageText, messageController.addNewMessageText);
   router.post("/message/add-new-message-image", authController.checkLoggedIn, messageController.addNewMessageImage);
   router.post("/message/add-new-message-attachment", authController.checkLoggedIn, messageController.addNewMessageAttachment);
+
+  router.post("/conversation/add-new-personal", authController.checkLoggedIn, conversationController.addNewPersonalConversation);
+  router.post("/conversation/add-new-group", authController.checkLoggedIn, groupChatValidation.validateAddNewGroupChat, conversationController.addNewGroupConversation);
 
   return app.use("/", router);
 };

@@ -16,7 +16,7 @@ function handleAddFriendsToGroup() {
 }
 
 function handleCancelCreateGroup() {
-  $("#cancel-group-chat").on("click", function() {
+  $("#btn-cancel-group-chat").on("click", function() {
     $("#groupChatModal .list-user-added").hide();
     if ($("ul#friends-added>li").length) {
       $("ul#friends-added>li").each(function(index) {
@@ -49,14 +49,58 @@ function findFriends(element) {
       $("ul#group-chat-friends").html(data);
       // Thêm người dùng vào danh sách liệt kê trước khi tạo nhóm trò chuyện
       handleAddFriendsToGroup();
-      // Action hủy việc tạo nhóm trò chuyện
+      // Lắng nghe tạo nhóm trò chuyện
+      handleCreateGroupChat();
+      // Lắng nghe hủy việc tạo nhóm trò chuyện
       handleCancelCreateGroup();
     });
   }
 }
 
-function createGroupChat() {
+function handleCreateGroupChat() {
+  $("#btn-create-group-chat").off("click").on("click", function () {
+    let friendsAddedList = $("ul#friends-added").find("li");
+    if (friendsAddedList.length < 2) {
+      alertify.notify("Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!", "error", 5);
+      return false;
+    }
 
+    let groupChatName = $("#input-name-group-chat").val();
+    let groupChatNameRegex = new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ @.-]+$/);
+    if (groupChatName.length < 3 || groupChatName.length > 50 || !groupChatNameRegex.test(groupChatName)) {
+      alertify.notify("Tên Nhóm trò chuyện có độ dài từ 3 đến 50 kí tự và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -!", "error", 5);
+      return false;
+    }
+
+    let userIds = [];
+    friendsAddedList.each(function (index, item) {
+      userIds.push($(item).data("uid"));
+    });
+
+    Swal.fire({
+      title: `Bạn có chắc chắn muốn tạo Nhóm trò chuyện <span style="color: #2ECC71; display: contents;">${groupChatName}</span>?`,
+      type: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#2ECC71",
+      cancelButtonColor: "#FF7675",
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Huỷ"
+    }).then((result) => {
+      if (!result.value) {
+        return false;
+      }
+
+      $.post("/conversation/add-new-group", {
+        userIds,
+        name: groupChatName,
+      }, function (data) {
+        console.log(data);
+      })
+      .fail(function (response) {
+        alertify.notify(response.responseText, "error", 5);
+      });
+    });
+  });
 }
 
 $(document).ready(function () {
