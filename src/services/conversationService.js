@@ -2,26 +2,34 @@ import { MessageModel, ConversationModel, UserModel } from "../models";
 import { CONVERSATION_TYPES } from "../models/conversationModel";
 import dateUtil from "../utils/dateUtil";
 import _ from "lodash";
+import { transErrors } from "../../lang/vi";
 
 /**
  * Create new conversation
  * @param {Array} userIds list of userId
  */
 let createNewConversation = async (userIds, name, creatorId) => {
-  if (userIds.length === 2) {
-    return await ConversationModel.createNew({
-      members: userIds.map(userId => {
-        return { userId };
-      }),
-    });
+  let members = [];
+  for (let i = 0; i < userIds.length; i++) {
+    const userId = userIds[i];
+    members.push({ "userId": userId });
+  }
+
+  if (members.length === 2) {
+    let conversation = await ConversationModel.getConversation(userIds);
+    if (conversation) {
+      throw transErrors.personal_chat_add_new_existed;
+    }
+
+    return await ConversationModel.createNew({ members });
   }
 
   return await ConversationModel.createNew({
     name,
     conversationType: CONVERSATION_TYPES.GROUP,
     creatorId,
-    members: userIds.map(userId => { userId }),
-    userAmount: userIds.length,
+    members,
+    userAmount: members.length,
   });
 };
 
