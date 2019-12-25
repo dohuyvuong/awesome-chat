@@ -20,9 +20,13 @@ let handleGetOnline = (io, socket) => {
     let contactsAsUsers = await contactService.getContactsAsUsers(currentUser._id, 0, 0);
     let onlineUserIds = contactsAsUsers.filter(user => clients[user._id]).map(user => user._id);
 
-    let conversationIds = (await Promise.all(onlineUserIds.map(async userId => {
-      return await ConversationModel.getConversation([currentUser._id.toString(), userId.toString()]);
-    }))).map(conversation => conversation._id);
+    let conversationIds = [];
+    await Promise.all(onlineUserIds.map(async userId => {
+      let conversation = await ConversationModel.getConversation([currentUser._id.toString(), userId.toString()]);
+      if (conversation) {
+        conversationIds.push(conversation._id);
+      }
+    }));
 
     if (clients[currentUser._id]) {
       clients[currentUser._id].forEach(socketId => {
@@ -42,7 +46,9 @@ let emitContactOnline = async (io, socket) => {
   uerIds.forEach(userId => {
     clients[userId].forEach(async socketId => {
       let conversation = await ConversationModel.getConversation([currentUserId, userId.toString()]);
-      io.sockets.connected[socketId].emit("contact-online", { conversationId: conversation._id });
+      if (conversation) {
+        io.sockets.connected[socketId].emit("contact-online", { conversationId: conversation._id });
+      }
     });
   });
 };
@@ -57,7 +63,9 @@ let emitContactOffline = async (io, socket) => {
   userIds.forEach(userId => {
     clients[userId].forEach(async socketId => {
       let conversation = await ConversationModel.getConversation([currentUserId, userId.toString()]);
-      io.sockets.connected[socketId].emit("contact-offline", { conversationId: conversation._id });
+      if (conversation) {
+        io.sockets.connected[socketId].emit("contact-offline", { conversationId: conversation._id });
+      }
     });
   });
 };

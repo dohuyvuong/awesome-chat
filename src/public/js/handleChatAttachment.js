@@ -117,7 +117,7 @@ socket.on("response-chat-message-attachment", function ({ conversation, sender, 
   $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
 
   // Add attachment to attach-modal
-  $(`#attachs-modal-${conversationId}`).find(".list-attachs").append(
+  $(`#attachs-modal-${conversation._id}`).find(".list-attachs").append(
     `<li>
         <a href="data:${message.file.contentType}; base64, ${message.file.data}" download="${message.file.fileName}">
             ${message.file.fileName}

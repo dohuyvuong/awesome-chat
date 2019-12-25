@@ -3,6 +3,7 @@ import clients from "./clients";
 import contactListener from "./contact";
 import chatListener from "./chat";
 import statusListener from "./status";
+import conversationListener from "./conversation";
 import { handleOnlineOffline } from "./status/handleOnlineOffline";
 
 /**
@@ -35,6 +36,7 @@ let initSockets = (io) => {
     contactListener.listenContactEvent(io, socket);
     chatListener.listenChatEvent(io, socket);
     statusListener.listenStatusEvent(io, socket);
+    conversationListener.listenConversationEvent(io, socket);
   });
 };
 

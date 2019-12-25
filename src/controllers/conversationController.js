@@ -16,25 +16,26 @@ let addNewPersonalConversation = async (req, res) => {
   }
 
   try {
-    let currentUserId = req.user._id;
+    let currentUserId = req.user._id.toString();
     let userId = req.body.userId;
 
-    let userIds = [];
-    userIds.push(userId);
-    userIds.push(currentUserId.toString());
-    userIds = _.uniq(userIds);
-
-    if (userIds.length < 2) {
-      return res.status(400).send(transErrors.personal_chat_add_new_invalid_size);
+    if (userId == currentUserId) {
+      return res.status(400).send(transErrors.conversation_personal_add_new_invalid_size);
     }
 
-    let result = await conversationService.createNewConversation(userIds);
+    let result = await conversationService.createNewPersonalConversation(currentUserId, userId);
 
     return res.status(200).send(result);
   } catch (error) {
-    if (error === transErrors.personal_chat_add_new_existed) {
+    if (error === transErrors.conversation_add_new_user_is_not_contact) {
       return res.status(400).send(error);
     }
+
+    if (error === transErrors.conversation_personal_add_new_existed) {
+      return res.status(400).send(error);
+    }
+
+    console.log(error);
 
     return res.status(500).send(transErrors.server_error);
   }
@@ -52,21 +53,26 @@ let addNewGroupConversation = async (req, res) => {
   }
 
   try {
-    let currentUserId = req.user._id;
+    let currentUserId = req.user._id.toString();
     let userIds = req.body.userIds;
     let name = req.body.name;
 
-    userIds.push(currentUserId.toString());
+    userIds.push(currentUserId);
     userIds = _.uniq(userIds);
+    userIds = userIds.filter(userId => userId != currentUserId);
 
-    if (userIds.length < 3) {
-      return res.status(400).send(transErrors.group_chat_add_new_invalid_size);
+    if (userIds.length < 2) {
+      return res.status(400).send(transErrors.conversation_group_add_new_invalid_size);
     }
 
-    let result = await conversationService.createNewConversation(userIds, name, currentUserId);
+    let result = await conversationService.createNewGroupConversation(currentUserId, userIds, name);
 
     return res.status(200).send(result);
   } catch (error) {
+    if (error === transErrors.conversation_add_new_user_is_not_contact) {
+      return res.status(400).send(error);
+    }
+
     return res.status(500).send(transErrors.server_error);
   }
 };
