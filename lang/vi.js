@@ -11,8 +11,8 @@ export const transValidation = {
   keyword_search_new_contact: "Từ khoá tìm kiếm có độ dài từ 2 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -",
   keyword_find_contact: "Từ khoá tìm kiếm có độ dài từ 2 đến 30 kí tự, và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -",
   message_text_invalid: "Tin nhắn chứa ít nhất 1 kí tự và không được vượt quá 1000 kí tự!",
-  group_chat_add_new_invalid_size: "Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!",
-  group_chat_add_new_invalid_name: "Tên Nhóm trò chuyện có độ dài từ 3 đến 50 kí tự và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -!",
+  conversation_group_add_new_invalid_size: "Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!",
+  conversation_group_add_new_invalid_name: "Tên Nhóm trò chuyện có độ dài từ 3 đến 50 kí tự và không được phép chứa các kí tự đặc biệt ngoại trừ @ . -!",
 };
 
 export const transErrors = {
@@ -33,9 +33,10 @@ export const transErrors = {
   message_image_type_not_supported: "Kiểu file không hợp lệ, chỉ cho phép các loại file jpg, jpeg, png.",
   message_image_size_too_large: "Ảnh tải lên tối đa cho phép là 1 MB!",
   message_attachment_size_too_large: "Tệp tin tải lên tối đa cho phép là 1 MB!",
-  personal_chat_add_new_invalid_size: "Cuộc trò chuyện cá nhân có và chỉ có 2 người bao gồm bạn!",
-  personal_chat_add_new_existed: "Đã tồn tại cuộc trò chuyện cá nhân giữa hai người!",
-  group_chat_add_new_invalid_size: "Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!",
+  conversation_add_new_user_is_not_contact: "Bạn đang tạo cuộc trò chuyện với người hiện không phải là bạn bè!",
+  conversation_personal_add_new_invalid_size: "Cuộc trò chuyện cá nhân có và chỉ có 2 người bao gồm bạn!",
+  conversation_personal_add_new_existed: "Đã tồn tại cuộc trò chuyện cá nhân giữa hai người!",
+  conversation_group_add_new_invalid_size: "Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!",
 };
 
 export const transSuccess = {

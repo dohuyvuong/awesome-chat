@@ -1,33 +1,61 @@
-import { MessageModel, ConversationModel, UserModel } from "../models";
+import { MessageModel, ConversationModel, UserModel, ContactModel } from "../models";
 import { CONVERSATION_TYPES } from "../models/conversationModel";
 import dateUtil from "../utils/dateUtil";
 import _ from "lodash";
 import { transErrors } from "../../lang/vi";
 
 /**
- * Create new conversation
- * @param {Array} userIds list of userId
+ * Create new personal conversation
+ * @param {String} currentUserId Current user id
+ * @param {String} userId target user id
  */
-let createNewConversation = async (userIds, name, creatorId) => {
-  let members = [];
+let createNewPersonalConversation = async (currentUserId, userId) => {
+  let user = await UserModel.findUserById(userId);
+
+  let contact = await ContactModel.findContact(currentUserId, userId);
+  if (!contact) {
+    throw transErrors.conversation_add_new_user_is_not_contact;
+  }
+
+  let conversation = await ConversationModel.getConversation([currentUserId, userId]);
+  if (conversation) {
+    throw transErrors.conversation_personal_add_new_existed;
+  }
+
+  let members = [
+    { "userId": currentUserId },
+    { "userId": userId },
+  ];
+
+  return await ConversationModel.createNew({
+    name: user.username,
+    members,
+    avatar: user.avatar,
+  });
+};
+
+/**
+ * Create new group conversation
+ * @param {String} currentUserId Current user id
+ * @param {Array} userIds Target user ids
+ * @param {String} name Name of group conversation
+ */
+let createNewGroupConversation = async (currentUserId, userIds, name) => {
   for (let i = 0; i < userIds.length; i++) {
     const userId = userIds[i];
-    members.push({ "userId": userId });
+    let contact = await ContactModel.findContact(currentUserId, userId);
+      if (!contact) {
+        throw transErrors.conversation_add_new_user_is_not_contact;
+      }
   }
 
-  if (members.length === 2) {
-    let conversation = await ConversationModel.getConversation(userIds);
-    if (conversation) {
-      throw transErrors.personal_chat_add_new_existed;
-    }
-
-    return await ConversationModel.createNew({ members });
-  }
+  let members = userIds.map(userId => ( { "userId": userId } ));
+  members.push({ "userId": currentUserId });
 
   return await ConversationModel.createNew({
     name,
     conversationType: CONVERSATION_TYPES.GROUP,
-    creatorId,
+    creatorId: currentUserId,
     members,
     userAmount: members.length,
   });
@@ -51,17 +79,9 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
       message.sender = await UserModel.findUserById(message.senderId);
     }
     conversation.users = await UserModel.findByIds(conversation.members.map(member => member.userId));
-    if (conversation.members.length === 2) {
-      let otherUserId = conversation.members.filter(member => member.userId != currentUserId)[0].userId;
-      let otherUser = await UserModel.findUserById(otherUserId);
-      conversation.name = otherUser.username;
-      conversation.avatar = otherUser.avatar;
-    } else {
-      if (!conversation.name) {
-        let joinedNames = conversation.users.filter(user => currentUserId.toString() != user._id.toString()).map(user => user.username).join(", ");
-        conversation.name = joinedNames;
-      }
-      conversation.avatar = "group-avatar-default.png";
+    if (!conversation.name) {
+      let joinedNames = conversation.users.filter(user => currentUserId.toString() != user._id.toString()).map(user => user.username).join(", ");
+      conversation.name = joinedNames;
     }
 
     return conversation;
@@ -71,6 +91,7 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
 };
 
 export const conversationService = {
-  createNewConversation,
+  createNewPersonalConversation,
+  createNewGroupConversation,
   getConversations,
 };

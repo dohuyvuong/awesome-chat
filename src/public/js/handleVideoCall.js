@@ -119,7 +119,6 @@ $(document).ready(function () {
         $("#btn-cancel-call").off("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
-
           soundManager.playDisconnectedSound();
 
           // Step 4: Caller cancel video call
@@ -142,7 +141,6 @@ $(document).ready(function () {
         socket.on("video-call-server-reject-call-to-caller", function ({ conversation, caller, receiver }) {
           Swal.close();
           clearInterval(timerInterval);
-
           soundManager.playDisconnectedSound();
 
           Swal.fire({
@@ -158,6 +156,7 @@ $(document).ready(function () {
       },
       onClose: () => {
         clearInterval(timerInterval);
+        soundManager.playDisconnectedSound();
       }
     }).then((result) => {
       return false;
@@ -183,7 +182,6 @@ $(document).ready(function () {
         $("#btn-reject-call").off("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
-
           soundManager.playDisconnectedSound();
 
           // Step 7
@@ -198,6 +196,7 @@ $(document).ready(function () {
         $("#btn-accept-call").off("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
+          soundManager.playDisconnectedSound();
 
           // Step 10
           socket.emit("video-call-receiver-accept-request-call-to-server", {
@@ -221,7 +220,6 @@ $(document).ready(function () {
         socket.on("video-call-server-cancel-request-call-to-receiver", function () {
           Swal.close();
           clearInterval(timerInterval);
-
           soundManager.playDisconnectedSound();
         });
 
@@ -229,12 +227,12 @@ $(document).ready(function () {
         socket.on("video-call-server-reject-call-to-receiver", function () {
           Swal.close();
           clearInterval(timerInterval);
-
           soundManager.playDisconnectedSound();
         });
       },
       onClose: () => {
         clearInterval(timerInterval);
+        soundManager.playDisconnectedSound();
       }
     }).then((result) => {
       return false;
@@ -245,7 +243,6 @@ $(document).ready(function () {
   socket.on("video-call-server-accept-call-to-caller", function ({ conversation, caller, receiver, receiverPeerId }) {
     Swal.close();
     clearInterval(timerInterval);
-
     soundManager.playConnectedSound();
 
     let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
@@ -301,7 +298,6 @@ $(document).ready(function () {
   socket.on("video-call-server-accept-call-to-receiver", function () {
     Swal.close();
     clearInterval(timerInterval);
-
     soundManager.playConnectedSound();
   });
 });

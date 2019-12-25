@@ -114,7 +114,7 @@ socket.on("response-chat-message-image", function ({ conversation, sender, messa
   $(`.left .people li[data-chat=${conversation._id}]`).find(".time").text(timeToNowAsText(message));
 
   // Add image to image-modal
-  $(`#images-modal-${conversationId}`).find(".all-images").append(
+  $(`#images-modal-${conversation._id}`).find(".all-images").append(
     `<img src="data:${message.file.contentType}; base64, ${message.file.data}">`
   );
 });

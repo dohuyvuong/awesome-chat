@@ -93,8 +93,120 @@ function handleCreateGroupChat() {
       $.post("/conversation/add-new-group", {
         userIds,
         name: groupChatName,
-      }, function (data) {
-        console.log(data);
+      }, function (conversation) {
+        // Step 1: hide modal
+        $("#input-name-group-chat").val("");
+        $("#btn-cancel-group-chat").click();
+        $("#groupChatModal").modal("hide");
+
+        // Step 2: add to leftside section
+        let newLeftSideConversation = `
+          <a href="#uid_${conversation._id}" class="room-chat" data-target="#to_${conversation._id}">
+              <li class="person group-chat" data-chat="${conversation._id}">
+                  <div class="left-avatar">
+                      <!-- <div class="dot"></div> -->
+                      <img src="images/users/${conversation.avatar}" alt="">
+                  </div>
+                  <div class="name">
+                      <span class="group-chat-name">Group:</span> ${conversation.name}
+                  </div>
+                  <div class="preview convert-emoji"></div>
+                  <div class="time">vài giây trước</div>
+              </li>
+          </a>
+        `;
+        $("#all-chat").find("ul").prepend(newLeftSideConversation);
+        $("#group-chat").find("ul").prepend(newLeftSideConversation);
+
+        // Step 3: add to rightside section
+        let newRightSideConversation = `
+          <div class="right tab-pane" data-chat="${conversation._id}" id="to_${conversation._id}">
+              <div class="top">
+                  <div class="conversation-bar-left">To: <div class="name">
+                      <a href="#conversation-users-modal-${conversation._id}" class="show-conversation-users" data-toggle="modal">${conversation.name}</a>
+                  </div>
+                  </div>
+                  <div class="conversation-bar-right">
+                      <div class="chat-menu-right">
+                          <a href="#attachs-modal-${conversation._id}" class="show-attachs" data-toggle="modal">
+                              Tệp đính kèm
+                              <i class="fa fa-paperclip"></i>
+                          </a>
+                      </div>
+                      <div class="chat-menu-right">
+                          <a href="#images-modal-${conversation._id}" class="show-images" data-toggle="modal">
+                              Hình ảnh
+                              <i class="fa fa-photo"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+              <div class="content-chat">
+                  <div class="chat" data-chat="${conversation._id}"></div>
+              </div>
+              <div class="write" data-chat="${conversation._id}">
+                  <input type="text" id="write-chat-${conversation._id}" class="write-chat" data-chat="${conversation._id}">
+                  <div class="icons">
+                      <a href="#" class="icon-chat" data-chat="${conversation._id}"><i class="fa fa-smile-o"></i></a>
+                      <label for="image-chat-${conversation._id}">
+                          <input type="file" id="image-chat-${conversation._id}" name="my-image-chat" class="image-chat" data-chat="${conversation._id}">
+                          <i class="fa fa-photo"></i>
+                      </label>
+                      <label for="attach-chat-${conversation._id}">
+                          <input type="file" id="attach-chat-${conversation._id}" name="my-attach-chat" class="attach-chat" data-chat="${conversation._id}">
+                          <i class="fa fa-paperclip"></i>
+                      </label>
+                      <a href="javascript:void(0)" class="video-chat-group">
+                          <i class="fa fa-video-camera"></i>
+                      </a>
+                  </div>
+              </div>
+          </div>
+        `;
+        $("#screen-chat").prepend(newRightSideConversation);
+        handleChangeScreenChat();
+
+        // Step 4: add image modal
+        let imageModal = `
+          <div class="modal fade" id="images-modal-${conversation._id}" role="dialog">
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Hình ảnh trong cuộc trò chuyện.</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="all-images" style="visibility: hidden;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        `;
+        $("body").append(imageModal);
+        gridPhotos(5);
+
+        // Step 5: add file modal
+        let attachmentModal = `
+          <div class="modal fade" id="attachs-modal-${conversation._id}" role="dialog">
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Tệp đính kèm trong cuộc trò chuyện.</h4>
+                      </div>
+                      <div class="modal-body">
+                          <ul class="list-attachs"></ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        `;
+        $("body").append(attachmentModal);
+
+        // Step 6: Emit new group conversation was created
+        socket.emit("conversation-add-new-group", {
+          conversationId: conversation._id,
+        });
       })
       .fail(function (response) {
         alertify.notify(response.responseText, "error", 5);
@@ -106,4 +218,110 @@ function handleCreateGroupChat() {
 $(document).ready(function () {
   $("#input-find-friends-to-add-group-chat").on("keypress", findFriends);
   $("#btn-find-friends-to-add-group-chat").on("click", findFriends);
+
+  socket.on("response-conversation-add-new-group", function ({ conversation }) {
+    // Step 1: add to leftside section
+    let newLeftSideConversation = `
+      <a href="#uid_${conversation._id}" class="room-chat" data-target="#to_${conversation._id}">
+          <li class="person group-chat" data-chat="${conversation._id}">
+              <div class="left-avatar">
+                  <!-- <div class="dot"></div> -->
+                  <img src="images/users/${conversation.avatar}" alt="">
+              </div>
+              <div class="name">
+                  <span class="group-chat-name">Group:</span> ${conversation.name}
+              </div>
+              <div class="preview convert-emoji"></div>
+              <div class="time">vài giây trước</div>
+          </li>
+      </a>
+    `;
+    $("#all-chat").find("ul").prepend(newLeftSideConversation);
+    $("#group-chat").find("ul").prepend(newLeftSideConversation);
+
+    // Step 2: add to rightside section
+    let newRightSideConversation = `
+      <div class="right tab-pane" data-chat="${conversation._id}" id="to_${conversation._id}">
+          <div class="top">
+              <div class="conversation-bar-left">To: <div class="name">
+                  <a href="#conversation-users-modal-${conversation._id}" class="show-conversation-users" data-toggle="modal">${conversation.name}</a>
+              </div>
+              </div>
+              <div class="conversation-bar-right">
+                  <div class="chat-menu-right">
+                      <a href="#attachs-modal-${conversation._id}" class="show-attachs" data-toggle="modal">
+                          Tệp đính kèm
+                          <i class="fa fa-paperclip"></i>
+                      </a>
+                  </div>
+                  <div class="chat-menu-right">
+                      <a href="#images-modal-${conversation._id}" class="show-images" data-toggle="modal">
+                          Hình ảnh
+                          <i class="fa fa-photo"></i>
+                      </a>
+                  </div>
+              </div>
+          </div>
+          <div class="content-chat">
+              <div class="chat" data-chat="${conversation._id}"></div>
+          </div>
+          <div class="write" data-chat="${conversation._id}">
+              <input type="text" id="write-chat-${conversation._id}" class="write-chat" data-chat="${conversation._id}">
+              <div class="icons">
+                  <a href="#" class="icon-chat" data-chat="${conversation._id}"><i class="fa fa-smile-o"></i></a>
+                  <label for="image-chat-${conversation._id}">
+                      <input type="file" id="image-chat-${conversation._id}" name="my-image-chat" class="image-chat" data-chat="${conversation._id}">
+                      <i class="fa fa-photo"></i>
+                  </label>
+                  <label for="attach-chat-${conversation._id}">
+                      <input type="file" id="attach-chat-${conversation._id}" name="my-attach-chat" class="attach-chat" data-chat="${conversation._id}">
+                      <i class="fa fa-paperclip"></i>
+                  </label>
+                  <a href="javascript:void(0)" class="video-chat-group">
+                      <i class="fa fa-video-camera"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+    `;
+    $("#screen-chat").prepend(newRightSideConversation);
+    handleChangeScreenChat();
+
+    // Step 3: add image modal
+    let imageModal = `
+      <div class="modal fade" id="images-modal-${conversation._id}" role="dialog">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Hình ảnh trong cuộc trò chuyện.</h4>
+                  </div>
+                  <div class="modal-body">
+                      <div class="all-images" style="visibility: hidden;"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    `;
+    $("body").append(imageModal);
+    gridPhotos(5);
+
+    // Step 4: add file modal
+    let attachmentModal = `
+      <div class="modal fade" id="attachs-modal-${conversation._id}" role="dialog">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Tệp đính kèm trong cuộc trò chuyện.</h4>
+                  </div>
+                  <div class="modal-body">
+                      <ul class="list-attachs"></ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+    `;
+    $("body").append(attachmentModal);
+  });
 });

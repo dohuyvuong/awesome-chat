@@ -7,13 +7,20 @@ const CONVERSATION_TYPES = {
   PERSONAL: "personal",
 };
 
+let ConversationMemberSchema = new Schema({
+  userId: String,
+}, {
+  _id: false,
+});
+
 let ConversationSchema = new Schema({
   name: { type: String, default: null },
   conversationType: { type: String, default: CONVERSATION_TYPES.PERSONAL },
   creatorId: { type: String, default: null },
-  members: [{ userId: String }],
+  members: [ ConversationMemberSchema ],
   userAmount: { type: Number, default: 2, min: 2, max: 100 },
   messageAmount: { type: Number, default: 0 },
+  avatar: { type: String, default: "group-avatar-default.png" },
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
   deletedAt: { type: Number, default: null },
@@ -39,11 +46,11 @@ ConversationSchema.statics = {
   },
 
   getConversation(userIds) {
+    let members = userIds.map(userId => ({ "userId": userId }));
+
     return this.findOne({
       "members": {
-        $elemMatch: {
-          "userId": { $in: userIds },
-        },
+        $all: members,
         $size: userIds.length,
       },
     }).exec();
