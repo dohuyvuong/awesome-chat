@@ -33,7 +33,47 @@ function handleRemoveContact() {
               $("#contacts ul.contactList").html(`<div class="no-contacts">There are no contacts!</div>`);
             }
 
-            socket.emit("remove-contact", { contactId: targetId });
+            $.ajax({
+              url: "/conversation/remove-personal",
+              type: "delete",
+              data: {
+                userId: targetId,
+              },
+              success: function (conversationId) {
+                // Step 1: remove to leftside section
+                let removingLeftSideConversation = $(`a[href="#uid_${conversationId}"]`);
+                if (removingLeftSideConversation) {
+                  removingLeftSideConversation.remove();
+                }
+
+                // Step 2: remove to rightside section
+                let removingRightSideConversation = $(`#to_${conversationId}`);
+                if (removingRightSideConversation) {
+                  removingRightSideConversation.remove();
+                }
+
+                // Step 3: add image modal
+                let imageModal = $(`#images-modal-${conversationId}`);
+                if (imageModal) {
+                  imageModal.remove();
+                }
+
+                // Step 4: add file modal
+                let attachmentModal = $(`attachs-modal-${conversationId}`);
+                if (attachmentModal) {
+                  attachmentModal.remove();
+                }
+
+                // Step 5
+                socket.emit("remove-contact", {
+                  contactId: targetId,
+                  conversationId,
+                });
+              },
+              error: function(error) {
+                alertify.notify(error.responseText, "error", 5);
+              },
+            });
           }
         },
       });
@@ -41,7 +81,7 @@ function handleRemoveContact() {
   });
 }
 
-socket.on("response-remove-contact", function (user) {
+socket.on("response-remove-contact", function ({ user, conversationId }) {
   decreaseNoOfContact(".count-contacts");
 
   $("#contacts ul.contactList").find(`li[data-uid=${user._id}]`).remove();
@@ -50,6 +90,30 @@ socket.on("response-remove-contact", function (user) {
 
   if (!$("#contacts ul.contactList").children().length) {
     $("#contacts ul.contactList").html(`<div class="no-contacts">There are no contacts!</div>`);
+  }
+
+  // Step 1: remove to leftside section
+  let removingLeftSideConversation = $(`a[href="#uid_${conversationId}"]`);
+  if (removingLeftSideConversation) {
+    removingLeftSideConversation.remove();
+  }
+
+  // Step 2: remove to rightside section
+  let removingRightSideConversation = $(`#to_${conversationId}`);
+  if (removingRightSideConversation) {
+    removingRightSideConversation.remove();
+  }
+
+  // Step 3: add image modal
+  let imageModal = $(`#images-modal-${conversationId}`);
+  if (imageModal) {
+    imageModal.remove();
+  }
+
+  // Step 4: add file modal
+  let attachmentModal = $(`attachs-modal-${conversationId}`);
+  if (attachmentModal) {
+    attachmentModal.remove();
   }
 });
 

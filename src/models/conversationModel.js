@@ -73,12 +73,31 @@ ConversationSchema.statics = {
     }).exec();
   },
 
+  updateTime(conversationId, addedTime) {
+    return this.updateOne({
+      "_id": conversationId,
+    }, {
+      "updatedAt": addedTime,
+    }).exec();
+  },
+
   updateAfterAddedNewMessage(conversationId, addedTime) {
     return this.updateOne({
       "_id": conversationId,
     }, {
       $inc: { "messageAmount": 1 },
       "updatedAt": addedTime,
+    }).exec();
+  },
+
+  removePersonalConversation(userIds) {
+    let members = userIds.map(userId => ({ "userId": userId }));
+
+    return this.deleteOne({
+      "members": {
+        $all: members,
+        $size: userIds.length,
+      },
     }).exec();
   },
 };

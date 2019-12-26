@@ -37,6 +37,7 @@ export const transErrors = {
   conversation_personal_add_new_invalid_size: "Cuộc trò chuyện cá nhân có và chỉ có 2 người bao gồm bạn!",
   conversation_personal_add_new_existed: "Đã tồn tại cuộc trò chuyện cá nhân giữa hai người!",
   conversation_group_add_new_invalid_size: "Nhóm trò chuyện có tối thiểu 3 người bao gồm bạn!",
+  user_not_found: "Không tìm thấy người dùng!",
 };
 
 export const transSuccess = {
