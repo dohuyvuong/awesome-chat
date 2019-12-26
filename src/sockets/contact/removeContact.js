@@ -1,5 +1,7 @@
 import socketIO from "socket.io";
 import clients from "../clients";
+import { UserModel, ConversationModel } from "../../models";
+import { handleOnlineOffline } from "../status/handleOnlineOffline";
 
 /**
  * Handle remove-contact event
@@ -7,7 +9,7 @@ import clients from "../clients";
  * @param {socketIO.Socket} socket Socket
  */
 let listenRemoveContact = (io, socket) => {
-  socket.on("remove-contact", (data) => {
+  socket.on("remove-contact", async ({ contactId, conversationId }) => {
     let currentUser = {
       _id: socket.request.user._id,
       username: socket.request.user.username,
@@ -15,9 +17,14 @@ let listenRemoveContact = (io, socket) => {
       address: socket.request.user.address ? socket.request.user.address : "",
     };
 
-    if (clients[data.contactId]) {
-      clients[data.contactId].forEach(socketId => {
-        io.sockets.connected[socketId].emit("response-remove-contact", currentUser);
+    handleOnlineOffline.emitContactOnline(io, socket);
+    if (clients[contactId]) {
+      clients[contactId].forEach(socketId => {
+        handleOnlineOffline.emitContactOnline(io, io.sockets.connected[socketId]);
+        io.sockets.connected[socketId].emit("response-remove-contact", {
+          user: currentUser,
+          conversationId,
+        });
       });
     }
   });

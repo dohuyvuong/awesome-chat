@@ -9,7 +9,7 @@ import fsExtra from "fs-extra";
 let messageImageStorage = multer.diskStorage({
   destination: (req, file, callback) => {
     if (!fsExtra.existsSync(appConfigure.messageImageDirectory)){
-      fsExtra.mkdirSync(appConfigure.messageImageDirectory);
+      fsExtra.mkdirSync(appConfigure.messageImageDirectory, { recursive: true });
     }
 
     callback(null, appConfigure.messageImageDirectory);
@@ -33,7 +33,7 @@ let messageImageUploadedFile = multer({
 let messageAttachmentStorage = multer.diskStorage({
   destination: (req, file, callback) => {
     if (!fsExtra.existsSync(appConfigure.messageAttachmentDirectory)){
-      fsExtra.mkdirSync(appConfigure.messageAttachmentDirectory);
+      fsExtra.mkdirSync(appConfigure.messageAttachmentDirectory, { recursive: true });
     }
 
     callback(null, appConfigure.messageAttachmentDirectory);

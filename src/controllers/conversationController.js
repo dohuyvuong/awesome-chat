@@ -27,15 +27,13 @@ let addNewPersonalConversation = async (req, res) => {
 
     return res.status(200).send(result);
   } catch (error) {
-    if (error === transErrors.conversation_add_new_user_is_not_contact) {
+    if (
+      error === transErrors.user_not_found ||
+      error === transErrors.conversation_add_new_user_is_not_contact ||
+      error === transErrors.conversation_personal_add_new_existed
+    ) {
       return res.status(400).send(error);
     }
-
-    if (error === transErrors.conversation_personal_add_new_existed) {
-      return res.status(400).send(error);
-    }
-
-    console.log(error);
 
     return res.status(500).send(transErrors.server_error);
   }
@@ -69,7 +67,7 @@ let addNewGroupConversation = async (req, res) => {
 
     return res.status(200).send(result);
   } catch (error) {
-    if (error === transErrors.conversation_add_new_user_is_not_contact) {
+    if (error === transErrors.user_not_found || error === transErrors.conversation_add_new_user_is_not_contact) {
       return res.status(400).send(error);
     }
 
@@ -77,7 +75,30 @@ let addNewGroupConversation = async (req, res) => {
   }
 };
 
+/**
+ * Remove personal conversation
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let removePersonalConversation = async (req, res) => {
+  try {
+    let currentUserId = req.user._id.toString();
+    let userId = req.body.userId;
+
+    if (userId == currentUserId) {
+      return res.status(400).send(transErrors.bad_request);
+    }
+
+    let result = await conversationService.removePersonalConversation(currentUserId, userId);
+
+    return res.status(200).send(result);
+  } catch (error) {
+    return res.status(500).send(transErrors.server_error);
+  }
+};
+
 export const conversationController = {
   addNewPersonalConversation,
   addNewGroupConversation,
+  removePersonalConversation,
 };
