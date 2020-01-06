@@ -108,7 +108,7 @@ let addNewMessageAttachment = async (senderId, conversationId, file) => {
  * @param {Number} offset Offset default 0
  * @param {Number} limit Limit default 50
  */
-let getMessagesByConversationId = async (currentUserId, conversationId, offset = 0, limit = 10) => {
+let getMessagesByConversationId = async (currentUserId, conversationId, offset = 0, limit = 50) => {
   let conversation = await ConversationModel.checkUserInConversation(currentUserId, conversationId);
 
   if (!conversation) {
