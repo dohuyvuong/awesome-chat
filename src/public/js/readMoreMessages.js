@@ -1,5 +1,5 @@
 function readMoreMessages() {
-  $(".right .chat").scroll(function () {
+  $(".right .chat").unbind("scroll").on("scroll", function () {
     if ($(this).scrollTop() === 0) {
       let messageLoading = `
         <div class="read-more-items-loader read-more-messages-loader">

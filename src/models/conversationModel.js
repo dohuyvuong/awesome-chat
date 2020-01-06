@@ -73,11 +73,11 @@ ConversationSchema.statics = {
     }).exec();
   },
 
-  updateTime(conversationId, addedTime) {
+  updateTime(conversationId, updatedTime) {
     return this.updateOne({
       "_id": conversationId,
     }, {
-      "updatedAt": addedTime,
+      "updatedAt": updatedTime,
     }).exec();
   },
 

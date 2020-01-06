@@ -170,6 +170,20 @@ function convertEmoji() {
   });
 }
 
+function handleHaveNoConversationYet() {
+  if (!$("#contacts .contactList").find("li._contactList").length) {
+    Swal.fire({
+      title: "Bạn chưa có bạn bè, hãy kết bạn để trò chuyện!",
+      type: "info",
+      showCancelButton: false,
+      confirmButtonColor: "#2ECC71",
+      confirmButtonText: "Xác nhận",
+    }).then((result) => {
+      $("#contactsModal").modal("show");
+    });
+  }
+}
+
 $(document).ready(function() {
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
@@ -198,6 +212,8 @@ $(document).ready(function() {
 
   // Show image emoji icon
   convertEmoji();
+
+  handleHaveNoConversationYet();
 
   let firstConversationElement = $("ul.people").find(".room-chat")[0];
   if (firstConversationElement) {

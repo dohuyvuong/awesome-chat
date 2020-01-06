@@ -129,6 +129,7 @@ $(document).ready(function () {
         `;
         $("#screen-chat").append(newRightSideConversation);
         handleChangeScreenChat();
+        readMoreMessages();
 
         // Step 3: add image modal
         let imageModal = `
