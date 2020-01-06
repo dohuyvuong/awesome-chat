@@ -5,6 +5,7 @@ import { messageService } from "../services";
 import multer from "multer";
 import { appConfigure } from "../config/app";
 import fsExtra from "fs-extra";
+import { ConversationModel } from "../models";
 
 let messageImageStorage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -152,8 +153,38 @@ let addNewMessageAttachment = async (req, res) => {
   });
 };
 
+/**
+ * Get messages
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let getMessages = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let conversationId = req.query.conversationId;
+    let offset = +req.query.offset;
+    let limit = +req.query.limit;
+
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
+
+    let conversation = await ConversationModel.checkUserInConversation(currentUserId, conversationId);
+
+    if (!conversation) {
+      throw transErrors.message_user_not_in_conversation;
+    }
+
+    let messages = await messageService.getMessagesByConversationId(currentUserId, conversationId, offset, limit);
+
+    return res.status(200).send(messages);
+  } catch (error) {
+    return res.status(500).send(transErrors.server_error);
+  }
+}
+
 export const messageController = {
   addNewMessageText,
   addNewMessageImage,
   addNewMessageAttachment,
+  getMessages,
 };
