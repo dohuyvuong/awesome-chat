@@ -101,8 +101,33 @@ let addNewMessageAttachment = async (senderId, conversationId, file) => {
   return await addNewMessage(newMessage);
 };
 
+/**
+ * Get messages by conversation id
+ * @param {String} currentUserId Current user id
+ * @param {String} conversationId Conversation id
+ * @param {Number} offset Offset default 0
+ * @param {Number} limit Limit default 50
+ */
+let getMessagesByConversationId = async (currentUserId, conversationId, offset = 0, limit = 10) => {
+  let conversation = await ConversationModel.checkUserInConversation(currentUserId, conversationId);
+
+  if (!conversation) {
+    throw transErrors.message_user_not_in_conversation;
+  }
+
+  let messages = await MessageModel.getByConversationId(conversationId, offset, limit);
+
+  for (let i = 0; i < messages.length; i++) {
+    messages[i] = messages[i].toObject();
+    messages[i].sender = await UserModel.findUserById(messages[i].senderId);
+  }
+
+  return messages;
+};
+
 export const messageService = {
   addNewMessageText,
   addNewMessageImage,
   addNewMessageAttachment,
+  getMessagesByConversationId,
 };

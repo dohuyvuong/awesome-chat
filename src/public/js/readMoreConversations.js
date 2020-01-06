@@ -23,7 +23,7 @@ $(document).ready(function () {
         if (conversation.messages.length > 0) {
           switch (conversation.messages[conversation.messages.length - 1].messageType) {
             case "text":
-              lastMessage = conversation.messages[conversation.messages.length - 1].text;
+              lastMessage = emojione.toImage(conversation.messages[conversation.messages.length - 1].text);
               break;
             case "image":
               lastMessage = "<i>[Hình ảnh]</i>";
@@ -82,29 +82,31 @@ $(document).ready(function () {
                   </div>
               </div>
               <div class="content-chat">
-                  <div class="chat" data-chat="${conversation._id}">${conversation.messages.map(message => {
-                    return `
-                      <div class="bubble convert-emoji
-                          ${message.senderId == userId ? "me" : "you"}
-                          ${message.messageType == "image" ? "bubble-image-file" : ""}
-                          ${message.messageType == "file" ? "bubble-image-file" : ""}
-                          data-toggle="tooltip" title="${message.senderId == userId ? getMessageTooltip(message) : getMessageTooltip(message, message.sender)}"
-                          data-mess-id="${message._id}">
-                          <img src="images/users/${message.sender.avatar}" class="avatar-small">
-                              <div class="message-tooltip">${message.senderId == userId ? getMessageTooltip(message) : getMessageTooltip(message, message.sender)}</div>
-                              <div class="message-content">
-                                  ${message.messageType == "text" ? message.text : ""}
-                                  ${message.messageType == "image" ? `<img src="data:${message.file.contentType}; base64, ${message.file.data}" class="show-image-chat">` : ""}
-                                  ${message.messageType == "file" ? `
-                                    <a href="data:${message.file.contentType}; base64, ${message.file.data}"
-                                    download="${message.file.fileName}">
-                                        ${message.file.fileName}
-                                    </a>
-                                  ` : ""}
-                              </div>
-                      </div>
-                    `;
-                  })}</div>
+                  <div class="chat" data-chat="${conversation._id}">
+                      ${conversation.messages.map(message => {
+                        return `
+                          <div class="bubble convert-emoji
+                              ${message.senderId == userId ? "me" : "you"}
+                              ${message.messageType == "image" ? "bubble-image-file" : ""}
+                              ${message.messageType == "file" ? "bubble-image-file" : ""}
+                              data-toggle="tooltip" title="${message.senderId == userId ? getMessageTooltip(message) : getMessageTooltip(message, message.sender)}"
+                              data-mess-id="${message._id}">
+                              <img src="images/users/${message.sender.avatar}" class="avatar-small">
+                                  <div class="message-tooltip">${message.senderId == userId ? getMessageTooltip(message) : getMessageTooltip(message, message.sender)}</div>
+                                  <div class="message-content">
+                                      ${message.messageType == "text" ? emojione.toImage(message.text) : ""}
+                                      ${message.messageType == "image" ? `<img src="data:${message.file.contentType}; base64, ${message.file.data}" class="show-image-chat">` : ""}
+                                      ${message.messageType == "file" ? `
+                                        <a href="data:${message.file.contentType}; base64, ${message.file.data}"
+                                        download="${message.file.fileName}">
+                                            ${message.file.fileName}
+                                        </a>
+                                      ` : ""}
+                                  </div>
+                          </div>
+                        `;
+                      })}
+                  </div>
               </div>
               <div class="write" data-chat="${conversation._id}">
                   <input type="text" id="write-chat-${conversation._id}" class="write-chat" data-chat="${conversation._id}">

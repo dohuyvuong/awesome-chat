@@ -3,6 +3,7 @@ import { CONVERSATION_TYPES } from "../models/conversationModel";
 import dateUtil from "../utils/dateUtil";
 import _ from "lodash";
 import { transErrors } from "../../lang/vi";
+import { messageService } from "./messageService";
 
 /**
  * Create new personal conversation
@@ -99,12 +100,9 @@ let getConversations = async (currentUserId, offset = 0, limit = 10) => {
     conversation = conversation.toObject();
 
     conversation.updatedAtText = dateUtil.timeToNowAsText(conversation.updatedAt);
-    let conversationMessages = await MessageModel.getByConversationId(conversation._id);
+    let conversationMessages = await messageService.getMessagesByConversationId(currentUserId, conversation._id);
     conversation.messages = _.reverse(conversationMessages);
-    for (let i = 0; i < conversation.messages.length; i++) {
-      conversation.messages[i] = conversation.messages[i].toObject();
-      conversation.messages[i].sender = await UserModel.findUserById(conversation.messages[i].senderId);
-    }
+
     conversation.users = await UserModel.findByIds(conversation.members.map(member => member.userId));
     if (conversation.conversationType === CONVERSATION_TYPES.PERSONAL) {
       let otherUserId = conversation.members.filter(member => member.userId != currentUserId)[0].userId;
