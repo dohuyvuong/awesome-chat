@@ -11,7 +11,7 @@
                         <% conversation.messages.forEach(function (message) { %>
                             <% if (message.messageType == 'file') { %>
                                 <li>
-                                    <a href="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data) %>"
+                                    <a href="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data.buffer) %>"
                                     download="<%= message.file.fileName %>">
                                         <%= message.file.fileName %>
                                     </a>

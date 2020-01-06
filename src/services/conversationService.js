@@ -94,7 +94,7 @@ let removePersonalConversation = async (currentUserId, userId) => {
  * @param {Number} offset Offset default 0
  * @param {Number} limit Limit default 10
  */
-let getConversations = async (currentUserId, offset = 0, limit = 15) => {
+let getConversations = async (currentUserId, offset = 0, limit = 10) => {
   let conversations = (await ConversationModel.getConversations(currentUserId, offset, limit)).map(async conversation => {
     conversation = conversation.toObject();
 
@@ -102,8 +102,8 @@ let getConversations = async (currentUserId, offset = 0, limit = 15) => {
     let conversationMessages = await MessageModel.getByConversationId(conversation._id);
     conversation.messages = _.reverse(conversationMessages);
     for (let i = 0; i < conversation.messages.length; i++) {
-      const message = conversation.messages[i];
-      message.sender = await UserModel.findUserById(message.senderId);
+      conversation.messages[i] = conversation.messages[i].toObject();
+      conversation.messages[i].sender = await UserModel.findUserById(conversation.messages[i].senderId);
     }
     conversation.users = await UserModel.findByIds(conversation.members.map(member => member.userId));
     if (conversation.conversationType === CONVERSATION_TYPES.PERSONAL) {

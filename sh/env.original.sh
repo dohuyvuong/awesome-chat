@@ -7,7 +7,7 @@ export DB_USERNAME=
 export DB_PASSWORD=
 
 # Config app environment variable
-export APP_HOST=localhost
+export APP_HOST=0.0.0.0
 export APP_PORT=8000
 
 # Config session variable

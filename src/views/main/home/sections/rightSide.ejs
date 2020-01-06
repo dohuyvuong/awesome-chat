@@ -42,10 +42,10 @@
                                             <%= message.text %>
                                         <% } %>
                                         <% if (message.messageType == 'image') { %>
-                                            <img src="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data) %>" class="show-image-chat">
+                                            <img src="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data.buffer) %>" class="show-image-chat">
                                         <% } %>
                                         <% if (message.messageType == 'file') { %>
-                                            <a href="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data) %>"
+                                            <a href="data:<%= message.file.contentType %>; base64, <%= clientUtil.convertBufferToBase64(message.file.data.buffer) %>"
                                             download="<%= message.file.fileName %>">
                                                 <%= message.file.fileName %>
                                             </a>

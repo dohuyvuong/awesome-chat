@@ -203,8 +203,4 @@ $(document).ready(function() {
   if (firstConversationElement) {
     firstConversationElement.click();
   }
-
-  $(".video-chat-group").off("click").on("click", function () {
-    alertify.notify("Chưa hỗ trợ gọi nhóm!", "error", 5);
-  });
 });

@@ -13,9 +13,8 @@ let getNotifications = async (req, res) => {
     let offset = +req.query.offset;
     let limit = +req.query.limit;
 
-    if (typeof offset !== "number" || typeof limit !== "number") {
-      return res.status(400).send(transErrors.bad_request);
-    }
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
 
     let notifications = await notificationService.getNotifications(currentUserId, offset, limit);
 

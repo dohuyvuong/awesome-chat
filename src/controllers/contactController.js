@@ -129,9 +129,8 @@ let getContactsAsUsers = async (req, res) => {
     let offset = +req.query.offset;
     let limit = +req.query.limit;
 
-    if (typeof offset !== "number" || typeof limit !== "number") {
-      return res.status(400).send(transErrors.bad_request);
-    }
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
 
     let contactsAsUsers = await contactService.getContactsAsUsers(currentUserId, offset, limit);
 
@@ -152,9 +151,8 @@ let getSentRequestingContactsAsUsers = async (req, res) => {
     let offset = +req.query.offset;
     let limit = +req.query.limit;
 
-    if (typeof offset !== "number" || typeof limit !== "number") {
-      return res.status(400).send(transErrors.bad_request);
-    }
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
 
     let sentRequestingContactsAsUsers = await contactService.getSentRequestingContactsAsUsers(currentUserId, offset, limit);
 
@@ -175,9 +173,8 @@ let getReceivedRequestingContactsAsUsers = async (req, res) => {
     let offset = +req.query.offset;
     let limit = +req.query.limit;
 
-    if (typeof offset !== "number" || typeof limit !== "number") {
-      return res.status(400).send(transErrors.bad_request);
-    }
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
 
     let receivedRequestingContactsAsUsers = await contactService.getReceivedRequestingContactsAsUsers(currentUserId, offset, limit);
 
