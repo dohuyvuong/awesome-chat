@@ -5,6 +5,10 @@ function handleVideoCall(conversationId) {
       conversationId,
     });
   });
+
+  $(".video-chat-group").off("click").on("click", function () {
+    alertify.notify("Chưa hỗ trợ gọi nhóm!", "error", 5);
+  });
 }
 
 function startStreaming(targetIdSelector, stream) {

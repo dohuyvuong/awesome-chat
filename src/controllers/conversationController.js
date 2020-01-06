@@ -97,8 +97,31 @@ let removePersonalConversation = async (req, res) => {
   }
 };
 
+/**
+ * Get conversations
+ * @param {express.Request} req Request
+ * @param {express.Response} res Response
+ */
+let getConversations = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let offset = +req.query.offset;
+    let limit = +req.query.limit;
+
+    offset = isNaN(offset) ? undefined : offset;
+    limit = isNaN(limit) ? undefined : limit;
+
+    let conversations = await conversationService.getConversations(currentUserId, offset, limit);
+
+    return res.status(200).send(conversations);
+  } catch (error) {
+    return res.status(500).send(transErrors.server_error);
+  }
+}
+
 export const conversationController = {
   addNewPersonalConversation,
   addNewGroupConversation,
   removePersonalConversation,
+  getConversations,
 };

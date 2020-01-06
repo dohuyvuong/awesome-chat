@@ -58,6 +58,7 @@ let initRoutes = (app) => {
   router.post("/conversation/add-new-personal", authController.checkLoggedIn, conversationController.addNewPersonalConversation);
   router.post("/conversation/add-new-group", authController.checkLoggedIn, groupChatValidation.validateAddNewGroupChat, conversationController.addNewGroupConversation);
   router.delete("/conversation/remove-personal", authController.checkLoggedIn, conversationController.removePersonalConversation);
+  router.get("/conversation/get-conversations", authController.checkLoggedIn, conversationController.getConversations);
 
   return app.use("/", router);
 };

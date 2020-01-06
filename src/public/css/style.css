@@ -465,7 +465,6 @@ label:focus,
 }
 
 .active {
-  background-color: #2ECC71;
   color: #fff;
 }
 
@@ -1328,7 +1327,7 @@ label:focus,
   margin: 10px auto;
 }
 
-.read-more-notifications, .read-more-contacts, .read-more-sent-req-contacts, .read-more-received-req-contacts {
+.read-more-items {
   text-align: center;
   width: 90%;
   margin: 10px auto;
@@ -1428,7 +1427,7 @@ label:focus,
   }
 }
 
-.read-more-notifications-loader, .read-more-contacts-loader, .read-more-sent-req-contacts-loader, .read-more-received-req-contacts-loader {
+.read-more-items-loader {
   text-align: center;
   display: none;
 }
