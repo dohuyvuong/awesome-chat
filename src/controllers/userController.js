@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { userService } from "../services";
 import fsExtra from "fs-extra";
 import { validationResult } from "express-validator";
+import logger from "winston";
 
 let avatarStorageLocation = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -33,6 +34,8 @@ let avatarUploadedFile = multer({
  * @param {express.Response} res Response
  */
 let updateAvatar = (req, res) => {
+  logger.info("Update user avatar");
+
   avatarUploadedFile(req, res, async (error) => {
     if (error) {
       if (error.code && error.code === "LIMIT_FILE_SIZE") {
@@ -63,6 +66,9 @@ let updateAvatar = (req, res) => {
 
       return res.status(200).send(result);
     } catch (error) {
+      // Log error
+      logger.error(error);
+
       return res.status(500).send(transErrors.server_error);
     }
   });
@@ -74,6 +80,8 @@ let updateAvatar = (req, res) => {
  * @param {express.Response} res Response
  */
 let updateInfo = async (req, res) => {
+  logger.info("Update user info");
+
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     let errors = validationErrors.errors.map(error => `- ${error.msg}`).join("<br/>");
@@ -93,6 +101,9 @@ let updateInfo = async (req, res) => {
 
     return res.status(200).send(result);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 };
@@ -103,6 +114,8 @@ let updateInfo = async (req, res) => {
  * @param {express.Response} res Response
  */
 let updatePassword = async (req, res) => {
+  logger.info("Update user password");
+
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     let errors = validationErrors.errors.map(error => `- ${error.msg}`).join("<br/>");
@@ -120,6 +133,9 @@ let updatePassword = async (req, res) => {
 
     return res.status(200).send(result);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     if (error === transErrors.account_not_found || error === transErrors.password_incorrect) {
       return res.status(400).send(error);
     }

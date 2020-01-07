@@ -2,6 +2,7 @@ import express from "express";
 import { validationResult } from "express-validator";
 import { authService } from "../services";
 import { transSuccess, transNotify } from "../../lang/vi";
+import logger from "winston";
 
 /**
  * Return Response rendered Login-Register Page
@@ -9,6 +10,8 @@ import { transSuccess, transNotify } from "../../lang/vi";
  * @param {express.Response} res Response
  */
 let getLoginRegister = (req, res) => {
+  logger.info("Get login-register page");
+
   return res.render("auth/master", {
     errors: req.flash("errors"),
     success: req.flash("success"),
@@ -21,12 +24,18 @@ let getLoginRegister = (req, res) => {
  * @param {express.Response} res Response
  */
 let postRegister = async (req, res) => {
+  logger.info("Post Register");
+
   let errors = [];
   let success = [];
 
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     errors.push(validationErrors.errors.map(error => error.msg));
+
+    // Log error
+    logger.error(errors);
+
     req.flash("errors", errors);
 
     return res.redirect("/login-register");
@@ -47,6 +56,10 @@ let postRegister = async (req, res) => {
     return res.redirect("/login-register");
   } catch (error) {
     errors.push(error);
+
+    // Log error
+    logger.error(errors);
+
     req.flash("errors", errors);
 
     return res.redirect("/login-register");
@@ -73,6 +86,10 @@ let verifyAccount = async (req, res) => {
     return res.redirect("/login-register");
   } catch (error) {
     errors.push(error);
+
+    // Log error
+    logger.error(errors);
+
     req.flash("errors", errors);
 
     return res.redirect("/login-register");
@@ -85,6 +102,8 @@ let verifyAccount = async (req, res) => {
  * @param {express.Response} res Response
  */
 let getLogout = (req, res) => {
+  logger.info("Get logout");
+
   // Remove session passport user
   req.logout();
   req.flash("success", transSuccess.logout_successfully);

@@ -1,6 +1,7 @@
 import express from "express";
 import { transErrors } from "../../lang/vi";
 import { notificationService } from "../services";
+import logger from "winston";
 
 /**
  * Get notifications
@@ -8,6 +9,8 @@ import { notificationService } from "../services";
  * @param {express.Response} res Response
  */
 let getNotifications = async (req, res) => {
+  logger.info("Get notifications");
+
   try {
     let currentUserId = req.user._id;
     let offset = +req.query.offset;
@@ -20,6 +23,9 @@ let getNotifications = async (req, res) => {
 
     return res.status(200).send(notifications);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 };
@@ -30,6 +36,8 @@ let getNotifications = async (req, res) => {
  * @param {express.Response} res Response
  */
 let markNotificationsAsRead = async (req, res) => {
+  logger.info("Mork notification as read");
+
   try {
     let currentUserId = req.user._id;
     let targetUserIds = req.body.targetUserIds;
@@ -38,6 +46,9 @@ let markNotificationsAsRead = async (req, res) => {
 
     return res.status(200).send(result.n > 0 ? true : false);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 };

@@ -12,6 +12,7 @@ import socketIO from "socket.io";
 import initSockets from "./sockets";
 import cookieParser from "cookie-parser";
 import configSocketIO from "./config/socketIO";
+import configLogger from "./config/logger";
 
 // Init app
 let app = express();
@@ -19,6 +20,9 @@ let app = express();
 // Init server with socket.io & express app
 let server = http.createServer(app);
 let io = socketIO(server);
+
+// Config logger
+configLogger(app);
 
 // Connect to MongoDB
 connectDB();

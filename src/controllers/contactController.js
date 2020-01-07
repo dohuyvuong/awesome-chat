@@ -2,6 +2,7 @@ import express from "express";
 import { validationResult } from "express-validator";
 import { contactService } from "../services";
 import { transErrors } from "../../lang/vi";
+import logger from "winston";
 
 /**
  * Search users to add new contact
@@ -9,9 +10,14 @@ import { transErrors } from "../../lang/vi";
  * @param {express.Response} res Response
  */
 let searchNewContact = async (req, res) => {
+  logger.info("Search new contact");
+
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     let errors = validationErrors.errors.map(error => error.msg);
+
+    // Log error
+    logger.error(errors);
 
     return res.status(400).send(errors);
   }
@@ -24,6 +30,9 @@ let searchNewContact = async (req, res) => {
 
     return res.render("main/contact/sections/foundUsersToAddNewContact", { users });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -34,6 +43,8 @@ let searchNewContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let addNewContact = async (req, res) => {
+  logger.info("Add new contact");
+
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
@@ -42,6 +53,9 @@ let addNewContact = async (req, res) => {
 
     return res.status(200).send({ result });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -52,6 +66,8 @@ let addNewContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let removeSentRequestingContact = async (req, res) => {
+  logger.info("Remove sent requesting contact");
+
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
@@ -60,6 +76,9 @@ let removeSentRequestingContact = async (req, res) => {
 
     return res.status(200).send({ result });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -70,6 +89,8 @@ let removeSentRequestingContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let rejectReceivedRequestingContact = async (req, res) => {
+  logger.info("Reject received requesting contact");
+
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
@@ -78,6 +99,9 @@ let rejectReceivedRequestingContact = async (req, res) => {
 
     return res.status(200).send({ result });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -88,6 +112,8 @@ let rejectReceivedRequestingContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let acceptReceivedRequestingContact = async (req, res) => {
+  logger.info("Accept received requesting contact");
+
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
@@ -96,6 +122,9 @@ let acceptReceivedRequestingContact = async (req, res) => {
 
     return res.status(200).send({ result });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -106,6 +135,8 @@ let acceptReceivedRequestingContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let removeContact = async (req, res) => {
+  logger.info("Remove contact");
+
   try {
     let currentUserId = req.user._id;
     let contactId = req.body.uid;
@@ -114,6 +145,9 @@ let removeContact = async (req, res) => {
 
     return res.status(200).send({ result });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -124,6 +158,8 @@ let removeContact = async (req, res) => {
  * @param {express.Response} res Response
  */
 let getContactsAsUsers = async (req, res) => {
+  logger.info("Get contacts as users");
+
   try {
     let currentUserId = req.user._id;
     let offset = +req.query.offset;
@@ -136,6 +172,9 @@ let getContactsAsUsers = async (req, res) => {
 
     return res.status(200).send(contactsAsUsers);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -146,6 +185,8 @@ let getContactsAsUsers = async (req, res) => {
  * @param {express.Response} res Response
  */
 let getSentRequestingContactsAsUsers = async (req, res) => {
+  logger.info("Get sent requesting contacts as users");
+
   try {
     let currentUserId = req.user._id;
     let offset = +req.query.offset;
@@ -158,6 +199,9 @@ let getSentRequestingContactsAsUsers = async (req, res) => {
 
     return res.status(200).send(sentRequestingContactsAsUsers);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -168,6 +212,8 @@ let getSentRequestingContactsAsUsers = async (req, res) => {
  * @param {express.Response} res Response
  */
 let getReceivedRequestingContactsAsUsers = async (req, res) => {
+  logger.info("Get received requesting contacts as users");
+
   try {
     let currentUserId = req.user._id;
     let offset = +req.query.offset;
@@ -180,6 +226,9 @@ let getReceivedRequestingContactsAsUsers = async (req, res) => {
 
     return res.status(200).send(receivedRequestingContactsAsUsers);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
@@ -190,9 +239,14 @@ let getReceivedRequestingContactsAsUsers = async (req, res) => {
  * @param {express.Response} res Response
  */
 let findContact = async (req, res) => {
+  logger.info("Find contacts");
+
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     let errors = validationErrors.errors.map(error => error.msg);
+
+    // Log error
+    logger.error(errors);
 
     return res.status(400).send(errors);
   }
@@ -205,6 +259,9 @@ let findContact = async (req, res) => {
 
     return res.render("main/groupChat/sections/foundUsersToAddToNewGroupChat", { users });
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
