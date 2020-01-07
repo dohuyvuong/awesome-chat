@@ -6,6 +6,7 @@ import multer from "multer";
 import { appConfigure } from "../config/app";
 import fsExtra from "fs-extra";
 import { ConversationModel } from "../models";
+import logger, { error } from "winston";
 
 let messageImageStorage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -56,8 +57,13 @@ let messageAttachmentUploadedFile = multer({
  * @param {express.Response} res Response
  */
 let addNewMessageText = async (req, res) => {
+  logger.info("Add new message text");
+
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
+    // Log error
+    logger.error(validationErrors.errors.map(error => error.msg).join("; "));
+
     return res.status(400).send(validationErrors.errors.map(error => error.msg).join(", "));
   }
 
@@ -70,6 +76,9 @@ let addNewMessageText = async (req, res) => {
 
     return res.status(200).send(result);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     if (error == transErrors.message_user_not_in_conversation) {
       return res.status(400).send(error);
     }
@@ -84,6 +93,8 @@ let addNewMessageText = async (req, res) => {
  * @param {express.Response} res Response
  */
 let addNewMessageImage = async (req, res) => {
+  logger.info("Add new message image");
+
   messageImageUploadedFile(req, res, async (error) => {
     if (error) {
       if (error.code && error.code === "LIMIT_FILE_SIZE") {
@@ -108,6 +119,9 @@ let addNewMessageImage = async (req, res) => {
 
       return res.status(200).send(result);
     } catch (error) {
+      // Log error
+      logger.error(error);
+
       if (error == transErrors.message_user_not_in_conversation) {
         return res.status(400).send(error);
       }
@@ -123,6 +137,8 @@ let addNewMessageImage = async (req, res) => {
  * @param {express.Response} res Response
  */
 let addNewMessageAttachment = async (req, res) => {
+  logger.info("Add new message attachment");
+
   messageAttachmentUploadedFile(req, res, async (error) => {
     if (error) {
       if (error.code && error.code === "LIMIT_FILE_SIZE") {
@@ -144,6 +160,9 @@ let addNewMessageAttachment = async (req, res) => {
 
       return res.status(200).send(result);
     } catch (error) {
+      // Log error
+      logger.error(error);
+
       if (error == transErrors.message_user_not_in_conversation) {
         return res.status(400).send(error);
       }
@@ -159,6 +178,8 @@ let addNewMessageAttachment = async (req, res) => {
  * @param {express.Response} res Response
  */
 let getMessages = async (req, res) => {
+  logger("Get messages");
+
   try {
     let currentUserId = req.user._id;
     let conversationId = req.query.conversationId;
@@ -178,6 +199,9 @@ let getMessages = async (req, res) => {
 
     return res.status(200).send(messages);
   } catch (error) {
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 }
