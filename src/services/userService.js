@@ -2,6 +2,7 @@ import { UserModel } from "../models";
 import { transErrors } from "../../lang/vi";
 import bcrypt from "bcrypt";
 import { appConfigure } from "../config/app";
+import logger from "winston";
 
 /**
  * Update user
@@ -9,6 +10,8 @@ import { appConfigure } from "../config/app";
  * @param {Object} item Updating User Object
  */
 let updateUser = (id, item) => {
+  logger.debug("Update user with id=%s, item=%o", id, item);
+
   return UserModel.updateUser(id, item);
 };
 
@@ -18,6 +21,8 @@ let updateUser = (id, item) => {
  * @param {Object} passwordUpdatingData Password Data Object
  */
 let updateUserPassword = async (id, passwordUpdatingData) => {
+  logger.debug("Update user password with id=%s, passwordUpdatingData=%o", id, passwordUpdatingData);
+
   let currentUser = await UserModel.findUserById(id);
 
   if (!currentUser) {

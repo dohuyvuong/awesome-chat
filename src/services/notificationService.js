@@ -1,6 +1,7 @@
 import { NotificationModel, UserModel } from "../models";
 import renderTemplate from "../utils/renderTemplate";
 import { NOTIFICATION_TYPES } from "../models/notificationModel";
+import logger from "winston";
 
 /**
  * Get notifications default 10 records
@@ -9,6 +10,8 @@ import { NOTIFICATION_TYPES } from "../models/notificationModel";
  * @param {Number} limit Limit default 10
  */
 let getNotifications = async (currentUserId, offset = 0, limit = 10) => {
+  logger.debug("Get notifications with currentUserId=%s, offset=%s, limit=%s", currentUserId, offset, limit);
+
   let notifications = await NotificationModel.getByUserId(currentUserId, offset, limit);
 
   return await Promise.all(notifications.map(async (notification) => {
@@ -22,6 +25,8 @@ let getNotifications = async (currentUserId, offset = 0, limit = 10) => {
  * * @param {String} currentUserId Current user id
  */
 let getNoOfUnreadNotifications = async (currentUserId) => {
+  logger.debug("Get number of notifications with currentUserId=%s", currentUserId);
+
   return await NotificationModel.getNoOfUnreadNotifications(currentUserId);
 };
 
@@ -31,6 +36,8 @@ let getNoOfUnreadNotifications = async (currentUserId) => {
  * @param {Array} targetUserIds Sender ids
  */
 let markNotificationsAsRead = async (currentUserId, targetUserIds) => {
+  logger.debug("Mark notifications as read with currentUserId=%s, targerUserIds=%s", currentUserId, targetUserIds);
+
   return await NotificationModel.markNotificationsAsRead(currentUserId, targetUserIds);
 };
 

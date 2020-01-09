@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import { transErrors, transSuccess, transMail } from "../../lang/vi";
 import mailer from "../utils/mailer";
 import { appConfigure } from "../config/app";
+import logger from "winston";
 
 /**
  * Register an account
@@ -14,6 +15,8 @@ import { appConfigure } from "../config/app";
  * @param {String} host Host
  */
 let register = async (email, gender, password, protocol, host) => {
+  logger.debug("Register account with email=%s, gender=%s, password=%s, protocol=%s, host=%s", email, gender, password, protocol, host);
+
   let userByEmail = await UserModel.findByEmail(email);
   if (userByEmail) {
     if (userByEmail.deletedAt != null) {
@@ -66,6 +69,8 @@ let register = async (email, gender, password, protocol, host) => {
  * @param {String} verifyToken Token
  */
 let verifyAccount = async (verifyToken) => {
+  logger.debug("Verify account with verifyToken=%s", verifyToken);
+
   let userByVerifyToken = await UserModel.findByVerifyToken(verifyToken);
 
   if (!userByVerifyToken) {

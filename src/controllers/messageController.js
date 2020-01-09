@@ -6,7 +6,7 @@ import multer from "multer";
 import { appConfigure } from "../config/app";
 import fsExtra from "fs-extra";
 import { ConversationModel } from "../models";
-import logger, { error } from "winston";
+import logger from "winston";
 
 let messageImageStorage = multer.diskStorage({
   destination: (req, file, callback) => {

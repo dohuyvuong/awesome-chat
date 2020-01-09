@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import { transErrors } from "../../lang/vi";
 import { conversationService } from "../services";
 import _ from "lodash";
-import logger, { error } from "winston";
+import logger from "winston";
 
 /**
  * Add new personal conversation

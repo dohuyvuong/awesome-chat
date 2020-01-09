@@ -2,6 +2,7 @@ import express from "express";
 import { notificationService, contactService, conversationService } from "../services";
 import { transErrors } from "../../lang/vi";
 import clientUtil from "../utils/clientUtil";
+import logger from "winston";
 
 /**
  * Return Response rendered Homepage
@@ -9,6 +10,8 @@ import clientUtil from "../utils/clientUtil";
  * @param {express.Response} res Response
  */
 let getHome = async (req, res) => {
+  logger.info("Get home page");
+
   try {
     let currentUserId = req.user._id;
 
@@ -50,7 +53,9 @@ let getHome = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    console.log(error);
+    // Log error
+    logger.error(error);
+
     return res.status(500).send(transErrors.server_error);
   }
 };

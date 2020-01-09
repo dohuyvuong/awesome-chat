@@ -1,6 +1,7 @@
 import { UserModel, ContactModel, NotificationModel } from "../models";
 import { NOTIFICATION_TYPES } from "../models/notificationModel";
 import _ from "lodash";
+import logger from "winston";
 
 /**
  * Search users to add new contact
@@ -8,6 +9,8 @@ import _ from "lodash";
  * @param {String} currentUserId Current user id
  */
 let searchNewContact = async (keyword, currentUserId) => {
+  logger.debug("Search new contact with keyword=%s, currentUserId=%s", keyword, currentUserId);
+
   let exceptedUserIds = [currentUserId];
 
   let contacts = await ContactModel.findByUserId(currentUserId);
@@ -28,6 +31,8 @@ let searchNewContact = async (keyword, currentUserId) => {
  * @param {String} contactId Current user id
  */
 let addNewContact = async (currentUserId, contactId) => {
+  logger.debug("Add new contact with currentUserId=%s, contactId=%s", currentUserId, contactId);
+
   let existingContact = await ContactModel.findContact(currentUserId, contactId);
   if (existingContact) {
     return false;
@@ -57,6 +62,8 @@ let addNewContact = async (currentUserId, contactId) => {
  * @param {String} contactId Current user id
  */
 let removeSentRequestingContact = async (currentUserId, contactId) => {
+  logger.debug("Remove sent requsting contact with currentUserId=%s, contactId=%s", currentUserId, contactId);
+
   let result = await ContactModel.removeSentRequestingContact(currentUserId, contactId);
   if (result.n === 0) {
     return false;
@@ -73,6 +80,8 @@ let removeSentRequestingContact = async (currentUserId, contactId) => {
  * @param {String} contactId Current user id
  */
 let rejectReceivedRequestingContact = async (currentUserId, contactId) => {
+  logger.debug("Reject received requesting contact with currentUserId=%s, contactId=%s", currentUserId, contactId);
+
   let result = await ContactModel.rejectReceivedRequestingContact(currentUserId, contactId);
 
   return result.n > 0;
@@ -84,6 +93,8 @@ let rejectReceivedRequestingContact = async (currentUserId, contactId) => {
  * @param {String} contactId Current user id
  */
 let acceptReceivedRequestingContact = async (currentUserId, contactId) => {
+  logger.debug("Accept received requesting contact with currentUserId=%s, contactId=%s", currentUserId, contactId);
+
   let result = await ContactModel.acceptReceivedRequestingContact(currentUserId, contactId);
 
   // Create new notification
@@ -103,6 +114,8 @@ let acceptReceivedRequestingContact = async (currentUserId, contactId) => {
  * @param {String} contactId Current user id
  */
 let removeContact = async (currentUserId, contactId) => {
+  logger.debug("Remove contact with currentUserId=%s, contactId=%s", currentUserId, contactId);
+
   let result = await ContactModel.removeContact(currentUserId, contactId);
 
   return result.n > 0;
@@ -115,6 +128,8 @@ let removeContact = async (currentUserId, contactId) => {
  * @param {Number} limit Limit default 10
  */
 let getContactsAsUsers = async (currentUserId, offset = 0, limit = 10) => {
+  logger.debug("Get contacts as users with currentUserId=%s, offset=%s, limit=%s", currentUserId, offset, limit);
+
   let contacts = await ContactModel.getContacts(currentUserId, offset, limit);
 
   return Promise.all(contacts.map(async (contact) => {
@@ -132,6 +147,8 @@ let getContactsAsUsers = async (currentUserId, offset = 0, limit = 10) => {
  * * @param {String} currentUserId Current user id
  */
 let getNoOfContacts = async (currentUserId) => {
+  logger.debug("Get number of contacts with currentUserId=%s", currentUserId);
+
   return await ContactModel.getNoOfContacts(currentUserId);
 };
 
@@ -142,6 +159,8 @@ let getNoOfContacts = async (currentUserId) => {
  * @param {Number} limit Limit default 10
  */
 let getSentRequestingContactsAsUsers = async (currentUserId, offset = 0, limit = 10) => {
+  logger.debug("Get sent requesting contacts as users with currentUserId=%s, offset=%s, limit=%s", currentUserId, offset, limit);
+
   let sentRequestingContacts = await ContactModel.getSentRequestingContacts(currentUserId, offset, limit);
 
   return Promise.all(sentRequestingContacts.map(async (contact) => {
@@ -154,6 +173,8 @@ let getSentRequestingContactsAsUsers = async (currentUserId, offset = 0, limit =
  * * @param {String} currentUserId Current user id
  */
 let getNoOfSentRequestingContacts = async (currentUserId) => {
+  logger.debug("Get number of sent requesting contacts with currentUserId=%s", currentUserId);
+
   return await ContactModel.getNoOfSentRequestingContacts(currentUserId);
 };
 
@@ -164,6 +185,8 @@ let getNoOfSentRequestingContacts = async (currentUserId) => {
  * @param {Number} limit Limit default 10
  */
 let getReceivedRequestingContactsAsUsers = async (currentUserId, offset = 0, limit = 10) => {
+  logger.debug("Get received requesting contacts as users with currentUserId=%s, offset=%s, limit=%s", currentUserId, offset, limit);
+
   let receivedRequestingContacts = await ContactModel.getReceivedRequestingContacts(currentUserId, offset, limit);
 
   return Promise.all(receivedRequestingContacts.map(async (contact) => {
@@ -176,6 +199,8 @@ let getReceivedRequestingContactsAsUsers = async (currentUserId, offset = 0, lim
  * * @param {String} currentUserId Current user id
  */
 let getNoOfReceivedRequestingContacts = async (currentUserId) => {
+  logger.debug("Get number of received requesting contacts with currentUserId=%s", currentUserId);
+
   return await ContactModel.getNoOfReceivedRequestingContacts(currentUserId);
 };
 
@@ -185,6 +210,8 @@ let getNoOfReceivedRequestingContacts = async (currentUserId) => {
  * @param {String} currentUserId Current user id
  */
 let findContact = async (keyword, currentUserId) => {
+  logger.debug("Find contact with keyword=%s, currentUserId=%s", keyword, currentUserId);
+
   let userIds = [currentUserId];
 
   let contacts = await ContactModel.findByUserId(currentUserId);

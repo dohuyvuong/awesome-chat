@@ -55,7 +55,7 @@ $(document).ready(function () {
   peer.on("call", function(call) {
     let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
 
-    getUserMedia({video: false, audio: true}, function(stream) {
+    getUserMedia({video: true, audio: true}, function(stream) {
       call.answer(stream); // Answer the call with an A/V stream.
 
       //Show and handle close stream modal
@@ -200,7 +200,7 @@ $(document).ready(function () {
         $("#btn-accept-call").off("click").on("click", function () {
           Swal.close();
           clearInterval(timerInterval);
-          soundManager.playDisconnectedSound();
+          soundManager.playConnectedSound();
 
           // Step 10
           socket.emit("video-call-receiver-accept-request-call-to-server", {
@@ -250,7 +250,7 @@ $(document).ready(function () {
     soundManager.playConnectedSound();
 
     let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
-    getUserMedia({video: false, audio: true}, function(stream) {
+    getUserMedia({video: true, audio: true}, function(stream) {
       let call = peer.call(receiverPeerId, stream);
 
       //Show and handle close stream modal

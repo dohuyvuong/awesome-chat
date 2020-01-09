@@ -2,12 +2,15 @@ import { MessageModel, ConversationModel, UserModel } from "../models";
 import { transErrors } from "../../lang/vi";
 import { MESSAGE_TYPES } from "../models/messageModel";
 import fsExtra from "fs-extra";
+import logger from "winston";
 
 /**
  * Add a new message
  * @param {Object} messageItem
  */
 let addNewMessage = async (messageItem) => {
+  logger.debug("Add mew message with messageItem=%o", messageItem);
+
   let message = await MessageModel.createNew(messageItem);
   await ConversationModel.updateAfterAddedNewMessage(message.conversationId, message.createdAt);
 
@@ -24,6 +27,8 @@ let addNewMessage = async (messageItem) => {
  * @param {String} text
  */
 let addNewMessageText = async (senderId, conversationId, text) => {
+  logger.debug("Add mew message text with senderId=%s, conversationId=%s, text=%s", senderId, conversationId, text);
+
   let conversation = await ConversationModel.checkUserInConversation(senderId, conversationId);
 
   if (!conversation) {
@@ -46,6 +51,8 @@ let addNewMessageText = async (senderId, conversationId, text) => {
  * @param {File} file
  */
 let addNewMessageImage = async (senderId, conversationId, file) => {
+  logger.debug("Add mew message image with senderId=%s, conversationId=%s, file=%o", senderId, conversationId, file);
+
   let conversation = await ConversationModel.checkUserInConversation(senderId, conversationId);
 
   if (!conversation) {
@@ -77,6 +84,8 @@ let addNewMessageImage = async (senderId, conversationId, file) => {
  * @param {File} file
  */
 let addNewMessageAttachment = async (senderId, conversationId, file) => {
+  logger.debug("Add mew message attachment with senderId=%s, conversationId=%s, file=%o", senderId, conversationId, file);
+
   let conversation = await ConversationModel.checkUserInConversation(senderId, conversationId);
 
   if (!conversation) {
@@ -109,6 +118,8 @@ let addNewMessageAttachment = async (senderId, conversationId, file) => {
  * @param {Number} limit Limit default 50
  */
 let getMessagesByConversationId = async (currentUserId, conversationId, offset = 0, limit = 50) => {
+  logger.debug("Get messages by conversation id with currentUserId=%s, conversationId=%s, offset=%s, limit=%s", currentUserId, conversationId, offset, limit);
+
   let conversation = await ConversationModel.checkUserInConversation(currentUserId, conversationId);
 
   if (!conversation) {

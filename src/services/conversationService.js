@@ -4,6 +4,7 @@ import dateUtil from "../utils/dateUtil";
 import _ from "lodash";
 import { transErrors } from "../../lang/vi";
 import { messageService } from "./messageService";
+import logger from "winston";
 
 /**
  * Create new personal conversation
@@ -11,6 +12,8 @@ import { messageService } from "./messageService";
  * @param {String} userId target user id
  */
 let createNewPersonalConversation = async (currentUserId, userId) => {
+  logger.debug("Create new personal conversation with currentUserId=%s, userId=%s", currentUserId, userId);
+
   let user = await UserModel.findUserById(userId);
   if (!user) {
     throw transErrors.user_not_found;
@@ -50,6 +53,8 @@ let createNewPersonalConversation = async (currentUserId, userId) => {
  * @param {String} name Name of group conversation
  */
 let createNewGroupConversation = async (currentUserId, userIds, name) => {
+  logger.debug("Create new group conversation with currentUserId=%s, userId=%s, name=%s", currentUserId, userIds, name);
+
   for (let i = 0; i < userIds.length; i++) {
     const userId = userIds[i];
 
@@ -82,6 +87,8 @@ let createNewGroupConversation = async (currentUserId, userIds, name) => {
  * @param {String} userId target user id
  */
 let removePersonalConversation = async (currentUserId, userId) => {
+  logger.debug("Remove personal conversation with currentUserId=%s, userId=%s", currentUserId, userId);
+
   let conversation = await ConversationModel.getConversation([currentUserId, userId]);
   let n = await ConversationModel.removePersonalConversation([currentUserId, userId]);
   if (n.deletedCount > 0) {
@@ -96,6 +103,8 @@ let removePersonalConversation = async (currentUserId, userId) => {
  * @param {Number} limit Limit default 10
  */
 let getConversations = async (currentUserId, offset = 0, limit = 10) => {
+  logger.debug("Get conversations with currentUserId=%s, offset=%s, limit=%s", currentUserId, offset, limit);
+
   let conversations = (await ConversationModel.getConversations(currentUserId, offset, limit)).map(async conversation => {
     conversation = conversation.toObject();
 
